@@ -1,5 +1,5 @@
 # MERN Stack Learning
-
+# Author: Vikram Singh
 <p align="center">
   <img src="https://img.shields.io/badge/HTML-red?style=for-the-badge&logo=html5&logoColor=white" alt="HTML Badge">
   <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS Badge">
@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-  <a href="https://Babamosie333.github.io/mern-stack/" target="_blank">Live Demo</a> •
-  <a href="https://github.com/Babamosie333/mern-stack" target="_blank">GitHub Repo</a>
+  <a href="https://Babamosie333.github.io/Mern-Stack-Practise/" target="_blank">Live Demo</a> •
+  <a href="https://github.com/Babamosie333/Mern-Stack-Practise.git" target="_blank">GitHub Repo</a>
 </p>
 
 ---
