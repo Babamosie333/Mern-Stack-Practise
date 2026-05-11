@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Laptop Operating Systems - Home</title>
+<style>
+  body {
+    background: linear-gradient(270deg, #000c18, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: animateBG 8s ease infinite;
+  }
+
+  @keyframes animateBG {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+   h1, h2, h3, h4, h5, h6 { color: white; }
+  p, li, td, th, label, summary, legend { color: white; }
+  a { color: #7eb8f7; }
+
+  .home-link {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 10px 16px;
+  background: rgba(10, 20, 60, 0.75);
+  color: white;
+  text-decoration: none;
+  border: 1px solid rgba(74, 170, 255, 0.6);
+  border-radius: 10px;
+  z-index: 9999;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: 0.3s ease;
+}
+
+.home-link:hover {
+  background: rgba(74, 170, 255, 0.25);
+  box-shadow: 0 0 18px rgba(74, 170, 255, 0.45);
+}
+
+</style>
+
+</head>
+<body>
+<a href="../index.html" class="home-link">🏠 Home</a>
+
+  <h1 id="top">&#128187; Laptop Operating Systems</h1>
+  <p>
+    An <abbr title="Operating System: software that manages computer hardware and software resources">OS</abbr>
+    is the core software that powers your laptop. Explore the three major laptop operating systems below.
+  </p>
+  <!-- QUICK NAVIGATION DROPDOWN -->
+  <fieldset>
+    <legend>&#128205; Quick Navigate</legend>
+    <label for="jump">Jump to section or page:</label>
+    <select id="jump" onchange="location=this.value">
+      <option value="#">-- Select --</option>
+      <option value="#windows">&#129695; Windows (this page)</option>
+      <option value="#linux">&#128039; Linux (this page)</option>
+      <option value="#apple">&#127822; macOS (this page)</option>
+      <option value="#compare">&#128202; Comparison Table</option>
+      <option value="#quiz">&#129300; Quiz</option>
+      <option value="#faq">&#10067; FAQ</option>
+      <option value="windows.html">&#128196; Windows Detail Page</option>
+      <option value="linux.html">&#128196; Linux Detail Page</option>
+      <option value="apple.html">&#128196; macOS Detail Page</option>
+    </select>
+  </fieldset>
+
+  <!-- TABLE OF CONTENTS -->
+  <fieldset>
+    <legend>&#128220; Table of Contents</legend>
+    <ol>
+      <li><a href="#windows">Microsoft Windows</a></li>
+      <li><a href="#linux">Linux</a></li>
+      <li><a href="#apple">Apple macOS</a></li>
+      <li><a href="#compare">Side-by-Side Comparison</a></li>
+      <li><a href="#quiz">Which OS is Right for You? (Quiz)</a></li>
+      <li><a href="#faq">Frequently Asked Questions</a></li>
+    </ol>
+  </fieldset>
+
+  <hr>
+
+  <!-- ===== WINDOWS ===== -->
+  <h2 id="windows">1. &#129695; Microsoft Windows</h2>
+  <a href="windows.html">
+    <img src="/HTML Practising/images/window.avif"
+      alt="Microsoft Windows Logo" width="180" height="180">
+  </a>
+  <p>
+    <b>Developer:</b> Microsoft &nbsp;|&nbsp; <b>First Release:</b> 1985 &nbsp;|&nbsp; <b>Market Share:</b> ~72%
+  </p>
+  <p>The world's most popular OS — known for its massive software library, gaming dominance, and familiar Start Menu.</p>
+
+  <details>
+    <summary>&#128269; Key Facts</summary>
+    <ul>
+      <li><b>Kernel:</b> Windows NT</li>
+      <li><b>Latest Version:</b> Windows 11 (2021)</li>
+      <li><b>License:</b> Proprietary (paid)</li>
+      <li><b>Shell:</b> Explorer GUI + PowerShell + Command Prompt</li>
+      <li><b>File Systems:</b> NTFS, FAT32, exFAT</li>
+      <li><b>Supported Chips:</b> x86, x64, ARM</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#9889; Top Features</summary>
+    <ul>
+      <li>Start Menu &amp; Taskbar for quick access to everything</li>
+      <li>DirectX 12 — the best gaming platform on any laptop</li>
+      <li>Microsoft Office (Word, Excel, PowerPoint, Teams)</li>
+      <li>Windows Subsystem for Linux (WSL) — run Linux inside Windows</li>
+      <li>Widest hardware driver and peripheral support</li>
+      <li>Microsoft Copilot AI assistant built into Windows 11</li>
+      <li>Xbox Game Pass integration</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#9878;&#65039; Pros &amp; Cons</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>&#9989; Pros</th><th>&#10060; Cons</th></tr>
+      <tr><td>Largest software library in the world</td><td>More vulnerable to viruses and malware</td></tr>
+      <tr><td>Best laptop gaming platform</td><td>Licence costs money</td></tr>
+      <tr><td>Works with almost all hardware</td><td>Pre-installed bloatware on new PCs</td></tr>
+      <tr><td>Familiar to most users worldwide</td><td>Forced updates can interrupt work</td></tr>
+      <tr><td>Best Office and enterprise support</td><td>Privacy concerns with telemetry data</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#11088; Ratings</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>Category</th><th>Score</th><th>Meter</th></tr>
+      <tr><td>Ease of Use</td><td>9 / 10</td><td><meter value="9" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Gaming</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Security</td><td>6 / 10</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter></td></tr>
+      <tr><td>Performance</td><td>7 / 10</td><td><meter value="7" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Customization</td><td>6 / 10</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter></td></tr>
+      <tr><td>Software Library</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#128187; Popular Laptop Brands Running Windows</summary>
+    <ul>
+      <li>Dell — XPS, Inspiron, Latitude</li>
+      <li>HP — Spectre, Envy, EliteBook</li>
+      <li>Lenovo — ThinkPad, IdeaPad, Yoga</li>
+      <li>ASUS — ZenBook, VivoBook, ROG</li>
+      <li>Microsoft — Surface Pro, Surface Laptop</li>
+      <li>Acer — Swift, Aspire, Predator</li>
+      <li>Samsung — Galaxy Book series</li>
+    </ul>
+  </details>
+
+  <p>
+    <a href="windows.html">&#128196; Full Windows Detail Page &rarr;</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#top">&#11014;&#65039; Back to Top</a>
+  </p>
+  <hr>
+
+  <!-- ===== LINUX ===== -->
+  <h2 id="linux">2. &#128039; Linux</h2>
+  <a href="linux.html">
+    <img src="/HTML Practising/images/linux.jpeg"
+      alt="Linux Tux Mascot" width="160" height="185">
+  </a>
+  <p>
+    <b>Creator:</b> Linus Torvalds &nbsp;|&nbsp; <b>First Release:</b> 1991 &nbsp;|&nbsp; <b>Market Share:</b> ~4% desktop
+  </p>
+  <p>Free, open-source, and incredibly powerful — Linux runs the world's servers, supercomputers, and Android phones.</p>
+
+  <details>
+    <summary>&#128269; Key Facts</summary>
+    <ul>
+      <li><b>Kernel:</b> Linux (monolithic)</li>
+      <li><b>License:</b> GNU GPL v2 — free &amp; open source</li>
+      <li><b>Shell:</b> Bash, Zsh, Fish</li>
+      <li><b>File Systems:</b> ext4, Btrfs, XFS, ZFS</li>
+      <li><b>Platforms:</b> x86, x64, ARM, RISC-V, and more</li>
+      <li><b>Famous Distros:</b> Ubuntu, Debian, Fedora, Arch, Mint, Kali</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#128204; Choose Your Linux Distro</summary>
+    <p>Select your experience level to see the best distro for you:</p>
+    <form>
+      <fieldset>
+        <legend>I am a...</legend>
+        <label><input type="radio" name="level" value="beginner"> Complete Beginner</label><br>
+        <label><input type="radio" name="level" value="intermediate"> Intermediate User</label><br>
+        <label><input type="radio" name="level" value="developer"> Developer / Programmer</label><br>
+        <label><input type="radio" name="level" value="security"> Cybersecurity Professional</label><br>
+        <label><input type="radio" name="level" value="advanced"> Advanced / Power User</label>
+      </fieldset>
+    </form>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>Level</th><th>Best Distro</th><th>Why</th></tr>
+      <tr><td>Beginner</td><td>Linux Mint / Ubuntu</td><td>Familiar layout, easy setup, great community</td></tr>
+      <tr><td>Intermediate</td><td>Fedora / Pop!_OS</td><td>Cutting-edge packages, polished experience</td></tr>
+      <tr><td>Developer</td><td>Ubuntu / Arch</td><td>Best toolchain support, AUR packages</td></tr>
+      <tr><td>Cybersecurity</td><td>Kali Linux / Parrot OS</td><td>Pre-loaded with 600+ security tools</td></tr>
+      <tr><td>Power User</td><td>Arch / Gentoo</td><td>Build exactly what you want from scratch</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#9889; Top Features</summary>
+    <ul>
+      <li>100% free and open-source — forever</li>
+      <li>Extremely secure with very low malware risk</li>
+      <li>Runs smoothly even on 10-year-old laptops</li>
+      <li>Powerful Bash terminal for automation and scripting</li>
+      <li>Full control: choose your desktop environment (GNOME, KDE, XFCE)</li>
+      <li>Package managers (apt, dnf, pacman) for one-command installs</li>
+      <li>Powers 96% of the world's top 1 million web servers</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#9878;&#65039; Pros &amp; Cons</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>&#9989; Pros</th><th>&#10060; Cons</th></tr>
+      <tr><td>Completely free forever</td><td>Steeper learning curve for beginners</td></tr>
+      <tr><td>Extremely secure and stable</td><td>Some hardware may lack driver support</td></tr>
+      <tr><td>Fully customizable</td><td>Not all Windows apps run natively</td></tr>
+      <tr><td>Runs on old and low-end hardware</td><td>Gaming library smaller (Steam is improving this)</td></tr>
+      <tr><td>Best environment for programming</td><td>Many distros to choose from — can be confusing</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#11088; Ratings</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>Category</th><th>Score</th><th>Meter</th></tr>
+      <tr><td>Ease of Use</td><td>5 / 10</td><td><meter value="5" min="0" max="10" low="4" high="7"></meter></td></tr>
+      <tr><td>Gaming</td><td>6 / 10</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter></td></tr>
+      <tr><td>Security</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Performance</td><td>9 / 10</td><td><meter value="9" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Customization</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Cost</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+    </table>
+  </details>
+
+  <p>
+    <a href="linux.html">&#128196; Full Linux Detail Page &rarr;</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#top">&#11014;&#65039; Back to Top</a>
+  </p>
+  <hr>
+
+  <!-- ===== APPLE macOS ===== -->
+  <h2 id="apple">3. &#127822; Apple macOS</h2>
+  <a href="apple.html">
+    <img src="/HTML Practising/images/macos.jpeg"
+      alt="macOS Logo" width="230" height="150">
+  </a>
+  <p>
+    <b>Developer:</b> Apple Inc. &nbsp;|&nbsp; <b>First Release:</b> 2001 &nbsp;|&nbsp; <b>Market Share:</b> ~15%
+  </p>
+  <p>Apple's exclusive OS for MacBook laptops — sleek, secure, Unix-based, and deeply integrated with iPhone and iPad.</p>
+
+  <details>
+    <summary>&#128269; Key Facts</summary>
+    <ul>
+      <li><b>Kernel:</b> XNU (Darwin — Unix-based)</li>
+      <li><b>Latest Version:</b> macOS Sequoia 15 (2024)</li>
+      <li><b>License:</b> Proprietary (free, requires Apple hardware)</li>
+      <li><b>Shell:</b> Zsh (default), Bash also available</li>
+      <li><b>File System:</b> APFS (Apple File System)</li>
+      <li><b>Chips:</b> Apple Silicon M1, M2, M3, M4 series</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#128187; Which MacBook Should You Get?</summary>
+    <p>Pick your use case to see the best MacBook for you:</p>
+    <form>
+      <fieldset>
+        <legend>I mainly use my laptop for...</legend>
+        <label><input type="radio" name="mac" value="student"> Studying and everyday tasks</label><br>
+        <label><input type="radio" name="mac" value="creative"> Graphic design / Photo editing</label><br>
+        <label><input type="radio" name="mac" value="video"> Video and music production</label><br>
+        <label><input type="radio" name="mac" value="developer"> Software development</label>
+      </fieldset>
+    </form>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>Use Case</th><th>Best MacBook</th><th>Chip</th></tr>
+      <tr><td>Study / Everyday</td><td>MacBook Air 13"</td><td>M3</td></tr>
+      <tr><td>Design / Photo</td><td>MacBook Pro 14"</td><td>M4 Pro</td></tr>
+      <tr><td>Video / Music</td><td>MacBook Pro 16"</td><td>M4 Max</td></tr>
+      <tr><td>Development</td><td>MacBook Pro 14"</td><td>M4 Pro</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#9889; Top Features</summary>
+    <ul>
+      <li>Finder + Dock — elegant and intuitive file management</li>
+      <li>AirDrop — instant wireless sharing with nearby Apple devices</li>
+      <li>Handoff — start on iPhone, continue on Mac seamlessly</li>
+      <li>Time Machine — automatic incremental backups built in</li>
+      <li>Apple M-series chips — best battery life + performance of any laptop</li>
+      <li>Final Cut Pro &amp; Logic Pro — industry-standard creative apps</li>
+      <li>iCloud — sync files, photos, messages across all Apple devices</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#9878;&#65039; Pros &amp; Cons</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>&#9989; Pros</th><th>&#10060; Cons</th></tr>
+      <tr><td>Premium design and build quality</td><td>Expensive compared to Windows laptops</td></tr>
+      <tr><td>Best hardware-software integration</td><td>Only works on Apple hardware</td></tr>
+      <tr><td>Outstanding for creative professionals</td><td>Limited gaming support</td></tr>
+      <tr><td>Very secure; rare malware</td><td>RAM and storage upgrades are costly</td></tr>
+      <tr><td>Exceptional battery life (M-series)</td><td>Closed ecosystem can feel restrictive</td></tr>
+      <tr><td>Seamless iPhone/iPad integration</td><td>Fewer software choices than Windows</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#11088; Ratings</summary>
+    <table border="1" cellpadding="6" cellspacing="0">
+      <tr><th>Category</th><th>Score</th><th>Meter</th></tr>
+      <tr><td>Ease of Use</td><td>9 / 10</td><td><meter value="9" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Gaming</td><td>5 / 10</td><td><meter value="5" min="0" max="10" low="4" high="7"></meter></td></tr>
+      <tr><td>Security</td><td>9 / 10</td><td><meter value="9" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Performance</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Battery Life</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+      <tr><td>Creative Tools</td><td>10 / 10</td><td><meter value="10" min="0" max="10" high="7"></meter></td></tr>
+    </table>
+  </details>
+
+  <p>
+    <a href="apple.html">&#128196; Full macOS Detail Page &rarr;</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#top">&#11014;&#65039; Back to Top</a>
+  </p>
+  <hr>
+
+  <!-- ===== COMPARISON TABLE ===== -->
+  <h2 id="compare">&#128202; Full Side-by-Side Comparison</h2>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+      <th>Feature</th>
+      <th>&#129695; Windows</th>
+      <th>&#128039; Linux</th>
+      <th>&#127822; macOS</th>
+    </tr>
+    <tr><td>Developer</td><td>Microsoft</td><td>Community / Torvalds</td><td>Apple Inc.</td></tr>
+    <tr><td>First Released</td><td>1985</td><td>1991</td><td>2001</td></tr>
+    <tr><td>Cost</td><td>Paid licence</td><td>Free forever</td><td>Free (Apple hardware needed)</td></tr>
+    <tr><td>Open Source</td><td>No</td><td>Yes</td><td>Partly (Darwin)</td></tr>
+    <tr><td>Kernel</td><td>NT</td><td>Linux</td><td>XNU / Darwin</td></tr>
+    <tr><td>Best For</td><td>Gaming, Business</td><td>Dev, Servers, Privacy</td><td>Creatives, Apple Users</td></tr>
+    <tr><td>Gaming</td><td><meter value="10" min="0" max="10" high="7"></meter> 10/10</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter> 6/10</td><td><meter value="5" min="0" max="10" low="4" high="7"></meter> 5/10</td></tr>
+    <tr><td>Security</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter> 6/10</td><td><meter value="10" min="0" max="10" high="7"></meter> 10/10</td><td><meter value="9" min="0" max="10" high="7"></meter> 9/10</td></tr>
+    <tr><td>Ease of Use</td><td><meter value="9" min="0" max="10" high="7"></meter> 9/10</td><td><meter value="5" min="0" max="10" low="4" high="7"></meter> 5/10</td><td><meter value="9" min="0" max="10" high="7"></meter> 9/10</td></tr>
+    <tr><td>Customization</td><td><meter value="6" min="0" max="10" low="4" high="7"></meter> 6/10</td><td><meter value="10" min="0" max="10" high="7"></meter> 10/10</td><td><meter value="4" min="0" max="10" low="4" high="7"></meter> 4/10</td></tr>
+    <tr><td>Battery Life</td><td><meter value="7" min="0" max="10" high="7"></meter> 7/10</td><td><meter value="8" min="0" max="10" high="7"></meter> 8/10</td><td><meter value="10" min="0" max="10" high="7"></meter> 10/10</td></tr>
+    <tr><td>Hardware Choice</td><td>Any PC brand</td><td>Any PC brand</td><td>Apple Mac only</td></tr>
+    <tr><td>Market Share</td><td>~72%</td><td>~4%</td><td>~15%</td></tr>
+    <tr><td>Runs on Old Hardware</td><td>Partly</td><td>Yes — very well</td><td>No</td></tr>
+    <tr><td>Touch / Tablet Mode</td><td>Yes (Surface)</td><td>Limited</td><td>No (iPad is separate)</td></tr>
+  </table>
+
+  <p><a href="#top">&#11014;&#65039; Back to Top</a></p>
+  <hr>
+
+  <!-- ===== QUIZ ===== -->
+  <h2 id="quiz">&#129300; Which OS is Right for You?</h2>
+  <p>Answer the questions, then open the result box below.</p>
+  <form>
+    <fieldset>
+      <legend>Q1: What do you mainly use your laptop for?</legend>
+      <label><input type="radio" name="q1"> Playing video games</label><br>
+      <label><input type="radio" name="q1"> Programming and development</label><br>
+      <label><input type="radio" name="q1"> Graphic design or video editing</label><br>
+      <label><input type="radio" name="q1"> Office work and web browsing</label><br>
+      <label><input type="radio" name="q1"> Cybersecurity / ethical hacking</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Q2: How important is the cost of the OS?</legend>
+      <label><input type="radio" name="q2"> Must be free</label><br>
+      <label><input type="radio" name="q2"> Willing to pay a moderate amount</label><br>
+      <label><input type="radio" name="q2"> Happy to pay for the best quality</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Q3: Do you already own Apple devices (iPhone / iPad)?</legend>
+      <label><input type="radio" name="q3"> Yes — I'm in the Apple ecosystem</label><br>
+      <label><input type="radio" name="q3"> No — I use Android / other devices</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Q4: How comfortable are you with technology?</legend>
+      <label><input type="radio" name="q4"> Beginner — I want things to just work</label><br>
+      <label><input type="radio" name="q4"> Intermediate — I can troubleshoot</label><br>
+      <label><input type="radio" name="q4"> Expert — I love customizing everything</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Q5: Which matters more to you?</legend>
+      <label><input type="radio" name="q5"> Privacy and security</label><br>
+      <label><input type="radio" name="q5"> Game and app availability</label><br>
+      <label><input type="radio" name="q5"> Design and premium feel</label>
+    </fieldset>
+    <br>
+    <details>
+      <summary>&#128161; Click here to see your results</summary>
+      <table border="1" cellpadding="8" cellspacing="0">
+        <tr><th>Your Profile</th><th>Best OS</th><th>Reason</th></tr>
+        <tr>
+          <td>Gamer on a budget PC</td>
+          <td>&#129695; Windows</td>
+          <td>Best DirectX support, Xbox Game Pass, widest game library</td>
+        </tr>
+        <tr>
+          <td>Developer / programmer</td>
+          <td>&#128039; Linux</td>
+          <td>Native terminal, Docker, Git, package managers out of the box</td>
+        </tr>
+        <tr>
+          <td>Creative in Apple ecosystem</td>
+          <td>&#127822; macOS</td>
+          <td>Final Cut Pro, Logic Pro, seamless iPhone integration</td>
+        </tr>
+        <tr>
+          <td>Beginner / office worker</td>
+          <td>&#129695; Windows</td>
+          <td>Familiar interface, works on any budget laptop, huge support community</td>
+        </tr>
+        <tr>
+          <td>Privacy-focused user</td>
+          <td>&#128039; Linux</td>
+          <td>Open source, no telemetry, no forced updates, full control</td>
+        </tr>
+        <tr>
+          <td>Student with iPhone</td>
+          <td>&#127822; macOS</td>
+          <td>iPhone Mirroring, AirDrop, Handoff, best battery life for class</td>
+        </tr>
+        <tr>
+          <td>Cybersecurity professional</td>
+          <td>&#128039; Kali Linux</td>
+          <td>600+ pre-installed penetration testing and security tools</td>
+        </tr>
+        <tr>
+          <td>Old laptop revival</td>
+          <td>&#128039; Linux Mint</td>
+          <td>Runs fast on low-spec hardware, lightweight and free</td>
+        </tr>
+      </table>
+    </details>
+  </form>
+
+  <p><a href="#top">&#11014;&#65039; Back to Top</a></p>
+  <hr>
+
+  <!-- ===== FAQ ===== -->
+  <h2 id="faq">&#10067; Frequently Asked Questions</h2>
+
+  <details>
+    <summary>Can I switch from Windows to Linux without losing my files?</summary>
+    <p>
+      Yes, but always back up first. You can dual-boot both Windows and Linux on the same laptop,
+      or do a full clean install of Linux. Tools like <b>Timeshift</b> help preserve your Linux
+      system state, and you can move personal files to an external drive beforehand.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can I install macOS on a non-Apple laptop?</summary>
+    <p>
+      Officially, no. macOS is exclusively for Apple hardware. "Hackintosh" projects exist
+      but are unsupported by Apple, potentially unstable, and may violate Apple's Terms of Service.
+    </p>
+  </details>
+
+  <details>
+    <summary>Is Linux really free? What is the catch?</summary>
+    <p>
+      Linux is genuinely free — no hidden fees. The main trade-off is a steeper learning curve
+      compared to Windows or macOS. Some proprietary apps (Adobe Creative Suite, certain games)
+      don't run natively, though compatibility via Wine and Steam Proton has improved enormously.
+    </p>
+  </details>
+
+  <details>
+    <summary>Which OS is safest from viruses and malware?</summary>
+    <p>
+      Linux is widely considered the most secure for everyday use, followed by macOS.
+      Windows is the most frequent target due to its dominant market share, though
+      Windows Defender and SmartScreen have improved substantially in recent years.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can Windows run on a MacBook?</summary>
+    <p>
+      On older Intel MacBooks: yes — using Apple's <b>Boot Camp</b> assistant.
+      On newer Apple Silicon MacBooks (M1 / M2 / M3 / M4): Boot Camp is gone,
+      but you can run Windows via virtualization software like <b>Parallels Desktop</b>
+      or <b>VMware Fusion</b>.
+    </p>
+  </details>
+
+  <details>
+    <summary>What is a Linux distribution (distro)?</summary>
+    <p>
+      A distro is a complete OS built around the Linux kernel, bundled with its own
+      desktop environment, software manager, and default apps. Think of the Linux kernel
+      as an engine — the distro is the whole car. Ubuntu, Fedora, Debian, and Arch are
+      all different "cars" using the same "engine."
+    </p>
+  </details>
+
+  <details>
+    <summary>Which OS is best for programming?</summary>
+    <p>
+      Most professional developers prefer <b>Linux</b> or <b>macOS</b> because both are
+      Unix-based, providing a native terminal, package managers, and first-class support
+      for Docker, Git, SSH, and dev tools. Windows has improved dramatically with
+      <b>WSL 2</b> (Windows Subsystem for Linux) but remains second choice for many developers.
+    </p>
+  </details>
+
+  <details>
+    <summary>What is the difference between 32-bit and 64-bit OS?</summary>
+    <p>
+      A 32-bit OS can address up to 4 GB of RAM, while a 64-bit OS can handle vastly more
+      (theoretically 16 exabytes). All modern laptops run 64-bit operating systems.
+      Windows, Linux, and macOS all ship as 64-bit today. Older 32-bit software can
+      usually still run in compatibility mode on 64-bit Windows.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can I run all three OS on one laptop?</summary>
+    <p>
+      On a non-Apple laptop: yes — you can triple-boot Windows, Linux, and (unofficially) macOS,
+      though this is complex and not recommended for beginners. On an Apple Silicon Mac,
+      you can run macOS natively and Windows or Linux in a virtual machine side-by-side.
+    </p>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Back to Top</a></p>
+  <hr>
+
+  <h3>&#128196; Explore Detail Pages</h3>
+  <ul>
+    <li><a href="windows.html">&#129695; Microsoft Windows — Full Detail Page</a></li>
+    <li><a href="linux.html">&#128039; Linux — Full Detail Page</a></li>
+    <li><a href="apple.html">&#127822; Apple macOS — Full Detail Page</a></li>
+  </ul>
+
+  <hr>
+  <p><small>&#128187; Built with <b>pure HTML only</b> &mdash; By Vikram Singh.</small></p>
+
+</body>
+</html>

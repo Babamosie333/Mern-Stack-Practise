@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linux OS - Full Detail</title>
+  <style>
+  body {
+    background: linear-gradient(270deg, #000c18, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: animateBG 8s ease infinite;
+  }
+
+  @keyframes animateBG {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+   h1, h2, h3, h4, h5, h6 { color: white; }
+  p, li, td, th, label, summary, legend { color: white; }
+  a { color: #7eb8f7; }
+</style>
+</head>
+<body>
+
+  <p>
+    <a href="index.html">&#128187; Home</a> &nbsp;|&nbsp;
+    <a href="windows.html">&#129695; Windows</a> &nbsp;|&nbsp;
+    <a href="apple.html">&#127822; macOS</a>
+  </p>
+
+  <h1 id="top">&#128039; Linux Operating System</h1>
+  <img
+    src="/HTML Practising/images/linux.jpeg"
+    alt="Linux Tux Mascot" width="160" height="185">
+
+  <!-- TABLE OF CONTENTS -->
+  <fieldset>
+    <legend>&#128220; On This Page</legend>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#history">History Timeline</a></li>
+      <li><a href="#distros">Linux Distributions</a></li>
+      <li><a href="#desktop">Desktop Environments</a></li>
+      <li><a href="#features">Key Features</a></li>
+      <li><a href="#ratings">Ratings</a></li>
+      <li><a href="#commands">Essential Terminal Commands</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </fieldset>
+
+  <hr>
+
+  <!-- OVERVIEW -->
+  <h2 id="overview">&#128196; Overview</h2>
+  <table border="1" cellpadding="7" cellspacing="0">
+    <tr><th>Attribute</th><th>Detail</th></tr>
+    <tr><td>Creator</td><td>Linus Torvalds</td></tr>
+    <tr><td>First Released</td><td>September 17, 1991</td></tr>
+    <tr><td>Kernel Type</td><td>Monolithic (Linux kernel)</td></tr>
+    <tr><td>License</td><td>GNU General Public License v2 (Free &amp; Open Source)</td></tr>
+    <tr><td>Default Shell</td><td>Bash, Zsh, Fish (varies by distro)</td></tr>
+    <tr><td>File Systems</td><td>ext4, Btrfs, XFS, ZFS, NTFS (read/write), FAT</td></tr>
+    <tr><td>Supported Architectures</td><td>x86, x64, ARM, RISC-V, PowerPC, MIPS, and more</td></tr>
+    <tr><td>Package Managers</td><td>apt (Debian/Ubuntu), dnf (Fedora), pacman (Arch), zypper (openSUSE)</td></tr>
+    <tr><td>Desktop Market Share</td><td>~4% (but ~96% of top web servers)</td></tr>
+    <tr><td>Latest Kernel Version</td><td>6.x (rolling updates continuously)</td></tr>
+  </table>
+  <p>
+    Linux is a free and open-source OS kernel. Unlike Windows or macOS, "Linux" refers to
+    the kernel itself — the core engine — while complete systems are called <b>distributions</b>.
+    The Android phones used by billions worldwide, the cloud servers behind Google and Amazon,
+    and the world's fastest 500 supercomputers all run Linux.
+  </p>
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- HISTORY -->
+  <h2 id="history">&#128336; History Timeline</h2>
+
+  <details>
+    <summary>&#128269; 1990s — The Beginning</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Year</th><th>Event</th></tr>
+      <tr><td>1991</td><td>Linus Torvalds posts the Linux kernel 0.01 to a Usenet newsgroup</td></tr>
+      <tr><td>1992</td><td>Kernel relicensed under GNU GPL; becomes truly open source</td></tr>
+      <tr><td>1993</td><td>Slackware and Debian distributions founded</td></tr>
+      <tr><td>1994</td><td>Linux kernel 1.0 officially released</td></tr>
+      <tr><td>1996</td><td>Tux the penguin chosen as the Linux mascot</td></tr>
+      <tr><td>1998</td><td>Major companies (IBM, Oracle, HP) announce Linux support</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#128269; 2000s — Going Mainstream</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Year</th><th>Event</th></tr>
+      <tr><td>2004</td><td>Ubuntu released — Linux becomes accessible to everyday users</td></tr>
+      <tr><td>2005</td><td>Linux kernel development moves to Git (created by Torvalds)</td></tr>
+      <tr><td>2007</td><td>Linux Foundation formed to support kernel development</td></tr>
+      <tr><td>2008</td><td>Android (Linux-based) launches on smartphones</td></tr>
+      <tr><td>2009</td><td>Linux Mint releases; praised for Windows-like experience</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#128269; 2010s–Present — Dominating Servers &amp; Beyond</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Year</th><th>Event</th></tr>
+      <tr><td>2011</td><td>Linux Mint becomes most downloaded distro on DistroWatch</td></tr>
+      <tr><td>2013</td><td>Valve announces Steam for Linux — gaming begins on Linux</td></tr>
+      <tr><td>2016</td><td>Microsoft adds WSL (Windows Subsystem for Linux)</td></tr>
+      <tr><td>2019</td><td>Linux 5.0 released; improved hardware support</td></tr>
+      <tr><td>2022</td><td>Valve Steam Deck ships — runs SteamOS (Arch-based Linux)</td></tr>
+      <tr><td>2023+</td><td>Linux kernel 6.x; RISC-V and ARM improvements</td></tr>
+    </table>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- DISTROS -->
+  <h2 id="distros">&#128204; Linux Distributions</h2>
+  <p>Click each distro to expand details:</p>
+
+  <details>
+    <summary>&#128994; Ubuntu — Best for Beginners</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Debian</td></tr>
+      <tr><td>Desktop</td><td>GNOME (default)</td></tr>
+      <tr><td>Package Manager</td><td>apt / Snap</td></tr>
+      <tr><td>Release Cycle</td><td>Every 6 months; LTS every 2 years</td></tr>
+      <tr><td>Best For</td><td>Beginners, general use, developers</td></tr>
+    </table>
+    <p>Ubuntu is the most popular Linux distro for desktops. Backed by Canonical, it offers excellent hardware support and a massive community. Ideal as a first Linux experience.</p>
+  </details>
+
+  <details>
+    <summary>&#128307; Linux Mint — Best for Windows Switchers</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Ubuntu / Debian</td></tr>
+      <tr><td>Desktop</td><td>Cinnamon, MATE, or XFCE</td></tr>
+      <tr><td>Package Manager</td><td>apt</td></tr>
+      <tr><td>Best For</td><td>Windows users switching to Linux</td></tr>
+    </table>
+    <p>Linux Mint's Cinnamon desktop looks and feels familiar to Windows users. It is stable, fast, and comes with media codecs pre-installed. Consistently rated among the most user-friendly distros.</p>
+  </details>
+
+  <details>
+    <summary>&#128998; Fedora — Best for Developers</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Red Hat</td></tr>
+      <tr><td>Desktop</td><td>GNOME (default), KDE Plasma (spin)</td></tr>
+      <tr><td>Package Manager</td><td>dnf / RPM</td></tr>
+      <tr><td>Best For</td><td>Developers, bleeding-edge software</td></tr>
+    </table>
+    <p>Fedora always ships the latest software and is often used by developers who want cutting-edge packages. It is sponsored by Red Hat (IBM) and is the upstream for Red Hat Enterprise Linux.</p>
+  </details>
+
+  <details>
+    <summary>&#128997; Arch Linux — Best for Power Users</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Independent</td></tr>
+      <tr><td>Desktop</td><td>You choose — none installed by default</td></tr>
+      <tr><td>Package Manager</td><td>pacman + AUR (Arch User Repository)</td></tr>
+      <tr><td>Best For</td><td>Advanced users; total customization</td></tr>
+    </table>
+    <p>Arch follows a "do it yourself" philosophy. You build your system from scratch. This gives you a lean, fast system with exactly what you want — nothing more. The AUR has the largest community-maintained software repo of any distro.</p>
+  </details>
+
+  <details>
+    <summary>&#128308; Kali Linux — Best for Cybersecurity</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Debian</td></tr>
+      <tr><td>Desktop</td><td>XFCE (default)</td></tr>
+      <tr><td>Package Manager</td><td>apt</td></tr>
+      <tr><td>Best For</td><td>Penetration testing, ethical hacking, security research</td></tr>
+    </table>
+    <p>Kali comes pre-loaded with 600+ cybersecurity and penetration testing tools including Metasploit, Nmap, Wireshark, Burp Suite, and Aircrack-ng. Maintained by Offensive Security.</p>
+  </details>
+
+  <details>
+    <summary>&#128309; Debian — Best for Stability</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Attribute</th><th>Detail</th></tr>
+      <tr><td>Based On</td><td>Independent (the "grandfather" distro)</td></tr>
+      <tr><td>Desktop</td><td>GNOME, KDE, XFCE, and others</td></tr>
+      <tr><td>Package Manager</td><td>apt / dpkg</td></tr>
+      <tr><td>Best For</td><td>Servers, stability-critical environments</td></tr>
+    </table>
+    <p>Debian is one of the oldest and most respected distributions. Its "Stable" branch is rock-solid — packages are tested for months before release. Ubuntu and Linux Mint are both built on Debian.</p>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- DESKTOP ENVIRONMENTS -->
+  <h2 id="desktop">&#128444;&#65039; Desktop Environments</h2>
+  <p>
+    Unlike Windows or macOS, Linux lets you choose your own desktop environment — the visual shell
+    you interact with. Click each to learn more:
+  </p>
+
+  <details>
+    <summary>GNOME — Modern and Minimal</summary>
+    <p>GNOME is the default DE for Ubuntu and Fedora. It features a clean top bar, Activities Overview,
+    and a modern, distraction-free design. Best for users who want a sleek, touchscreen-friendly interface.</p>
+    <ul>
+      <li>Used by: Ubuntu, Fedora, Debian</li>
+      <li>RAM Usage: ~800 MB</li>
+      <li>Best for: Beginners, modern look</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>KDE Plasma — Powerful and Windows-like</summary>
+    <p>KDE Plasma is the most feature-rich and customizable desktop. It looks somewhat like Windows,
+    making it a popular choice for switchers. Surprisingly lightweight despite its features.</p>
+    <ul>
+      <li>Used by: KDE Neon, Kubuntu, openSUSE</li>
+      <li>RAM Usage: ~600 MB</li>
+      <li>Best for: Power users, Windows switchers, customization</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>XFCE — Lightweight and Fast</summary>
+    <p>XFCE is designed for speed. It runs smoothly on very old or low-spec hardware.
+    It is simple, stable, and highly customizable without being resource-heavy.</p>
+    <ul>
+      <li>Used by: Xubuntu, Linux Mint XFCE, Kali Linux</li>
+      <li>RAM Usage: ~300 MB</li>
+      <li>Best for: Old laptops, low RAM systems</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Cinnamon — Classic and User-Friendly</summary>
+    <p>Cinnamon is Linux Mint's flagship desktop. It has a traditional taskbar layout
+    (similar to Windows 7) and is polished, fast, and beginner-friendly.</p>
+    <ul>
+      <li>Used by: Linux Mint</li>
+      <li>RAM Usage: ~500 MB</li>
+      <li>Best for: Windows switchers, beginners</li>
+    </ul>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- KEY FEATURES -->
+  <h2 id="features">&#9889; Key Features</h2>
+
+  <details>
+    <summary>&#128272; Security &amp; Privacy</summary>
+    <ul>
+      <li>Permission-based architecture: programs cannot install without your approval</li>
+      <li>No telemetry data sent to any company (unlike Windows or macOS)</li>
+      <li>Regular, transparent security patches from the open-source community</li>
+      <li>AppArmor and SELinux for mandatory access control</li>
+      <li>Full-disk encryption available with LUKS at installation</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#128736;&#65039; Development &amp; Terminal Power</summary>
+    <ul>
+      <li>Native Bash / Zsh terminal for scripting and automation</li>
+      <li>First-class support for Python, Node.js, Ruby, Go, Rust, C/C++</li>
+      <li>Docker and Kubernetes run best natively on Linux</li>
+      <li>SSH client and server built in</li>
+      <li>cron jobs for scheduled task automation</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>&#9881;&#65039; System Customization</summary>
+    <ul>
+      <li>Choose your kernel, desktop environment, display server (X11 or Wayland)</li>
+      <li>Tiling window managers (i3, bspwm) for keyboard-driven power users</li>
+      <li>Theming: change icons, cursors, GTK/Qt themes</li>
+      <li>Custom kernel builds for specialized hardware</li>
+      <li>Systemd, OpenRC, or runit as init systems</li>
+    </ul>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- RATINGS -->
+  <h2 id="ratings">&#11088; Linux Ratings</h2>
+  <table border="1" cellpadding="7" cellspacing="0">
+    <tr><th>Category</th><th>Score</th><th>Visual</th><th>Notes</th></tr>
+    <tr>
+      <td>Ease of Use</td><td>5 / 10</td>
+      <td><meter value="5" min="0" max="10" low="4" high="7"></meter></td>
+      <td>Steep learning curve; improving with distros like Mint</td>
+    </tr>
+    <tr>
+      <td>Gaming</td><td>6 / 10</td>
+      <td><meter value="6" min="0" max="10" low="4" high="7"></meter></td>
+      <td>Growing fast with Steam Proton and Steam Deck</td>
+    </tr>
+    <tr>
+      <td>Security</td><td>10 / 10</td>
+      <td><meter value="10" min="0" max="10" high="7"></meter></td>
+      <td>Best in class; powers most of the world's servers</td>
+    </tr>
+    <tr>
+      <td>Performance</td><td>9 / 10</td>
+      <td><meter value="9" min="0" max="10" high="7"></meter></td>
+      <td>Extremely efficient; runs on very old hardware</td>
+    </tr>
+    <tr>
+      <td>Customization</td><td>10 / 10</td>
+      <td><meter value="10" min="0" max="10" high="7"></meter></td>
+      <td>Change everything from the kernel to the cursor</td>
+    </tr>
+    <tr>
+      <td>Cost</td><td>10 / 10</td>
+      <td><meter value="10" min="0" max="10" high="7"></meter></td>
+      <td>Completely free forever</td>
+    </tr>
+    <tr>
+      <td>Privacy</td><td>10 / 10</td>
+      <td><meter value="10" min="0" max="10" high="7"></meter></td>
+      <td>No telemetry, no forced accounts, fully transparent</td>
+    </tr>
+    <tr>
+      <td>Software Library</td><td>7 / 10</td>
+      <td><meter value="7" min="0" max="10" high="7"></meter></td>
+      <td>Growing fast; some proprietary apps still missing</td>
+    </tr>
+  </table>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- TERMINAL COMMANDS -->
+  <h2 id="commands">&#128187; Essential Terminal Commands</h2>
+  <p>Click a category to expand the commands:</p>
+
+  <details>
+    <summary>&#128193; File and Directory Commands</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>ls</code></td><td>List files in current directory</td></tr>
+      <tr><td><code>ls -la</code></td><td>List all files including hidden, with details</td></tr>
+      <tr><td><code>cd /path</code></td><td>Change directory</td></tr>
+      <tr><td><code>pwd</code></td><td>Print current working directory</td></tr>
+      <tr><td><code>mkdir name</code></td><td>Create a new directory</td></tr>
+      <tr><td><code>rm -rf name</code></td><td>Delete a directory and all contents (careful!)</td></tr>
+      <tr><td><code>cp file dest</code></td><td>Copy file to destination</td></tr>
+      <tr><td><code>mv file dest</code></td><td>Move or rename a file</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#128229; Package Management (Ubuntu / Debian)</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>sudo apt update</code></td><td>Refresh the list of available packages</td></tr>
+      <tr><td><code>sudo apt upgrade</code></td><td>Upgrade all installed packages</td></tr>
+      <tr><td><code>sudo apt install name</code></td><td>Install a package</td></tr>
+      <tr><td><code>sudo apt remove name</code></td><td>Remove a package</td></tr>
+      <tr><td><code>apt search name</code></td><td>Search for a package</td></tr>
+    </table>
+  </details>
+
+  <details>
+    <summary>&#128268; System &amp; Network Commands</summary>
+    <table border="1" cellpadding="7" cellspacing="0">
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><code>top</code></td><td>Real-time CPU and memory usage (like Task Manager)</td></tr>
+      <tr><td><code>htop</code></td><td>Interactive version of top (install first)</td></tr>
+      <tr><td><code>df -h</code></td><td>Show disk space usage</td></tr>
+      <tr><td><code>free -h</code></td><td>Show RAM usage</td></tr>
+      <tr><td><code>ping google.com</code></td><td>Test internet connection</td></tr>
+      <tr><td><code>ip addr</code></td><td>Show network interface IP addresses</td></tr>
+      <tr><td><code>sudo reboot</code></td><td>Restart the computer</td></tr>
+      <tr><td><code>sudo shutdown now</code></td><td>Shut down immediately</td></tr>
+    </table>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <!-- FAQ -->
+  <h2 id="faq">&#10067; Linux FAQ</h2>
+
+  <details>
+    <summary>Do I need to use the terminal to use Linux?</summary>
+    <p>
+      Not on modern distros like Ubuntu or Linux Mint. You can do most tasks — install apps,
+      connect to Wi-Fi, adjust settings — entirely through the graphical interface. The terminal
+      becomes valuable when you want to go deeper, automate tasks, or troubleshoot.
+    </p>
+  </details>
+
+  <details>
+    <summary>Will my printer / scanner / hardware work on Linux?</summary>
+    <p>
+      Most common hardware works out of the box on modern Linux. Printers using CUPS work with
+      many popular brands. NVIDIA and AMD GPUs have good driver support. Occasionally niche or
+      very new hardware may need extra steps to configure. Checking your hardware on the
+      Linux Hardware Database before switching is recommended.
+    </p>
+  </details>
+
+  <details>
+    <summary>Can I run Windows software on Linux?</summary>
+    <p>
+      Many Windows apps can run on Linux through <b>Wine</b> or <b>Bottles</b>.
+      Steam games run on Linux via <b>Steam Proton</b>. Microsoft Office can be accessed
+      via the web browser. Some apps like Adobe Creative Suite still don't have native
+      Linux support, though alternatives like GIMP, Inkscape, and Kdenlive cover many needs.
+    </p>
+  </details>
+
+  <details>
+    <summary>What does "sudo" mean?</summary>
+    <p>
+      <code>sudo</code> stands for <b>S</b>uper<b>u</b>ser <b>Do</b>. It runs a command
+      with administrator (root) privileges. Similar to "Run as Administrator" in Windows.
+      Always be careful when using sudo, as it can modify critical system files.
+    </p>
+  </details>
+
+  <p><a href="#top">&#11014;&#65039; Top</a></p>
+  <hr>
+
+  <p>
+    <a href="index.html">&#128187; Home</a> &nbsp;|&nbsp;
+    <a href="windows.html">&#129695; Windows Page</a> &nbsp;|&nbsp;
+    <a href="apple.html">&#127822; macOS Page</a>
+  </p>
+  <hr>
+  <p><small>&#128187; Built with <b>pure HTML only</b> &mdash; By Vikram Singh.</small></p>
+
+</body>
+</html>
