@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #f0a500;
+      --accent2: #e06c35;
+      --bg: #0f1117;
+      --bg2: #161b22;
+      --bg3: #1c2128;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --border: #30363d;
+      --green: #3fb950;
+      --red: #f85149;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+      --cyan: #8be9fd;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:'Sora',sans-serif; font-size:14px;
+      line-height:1.7; min-height:100vh;
+    }
+
+    /* ── WELCOME SCREEN ── */
+    #welcome {
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      min-height:100vh; padding:40px;
+      background: radial-gradient(ellipse at 50% 40%, rgba(240,165,0,0.06) 0%, transparent 65%);
+    }
+    .welcome-icon {
+      font-family:'JetBrains Mono',monospace;
+      font-size:72px; font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      line-height:1; margin-bottom:24px;
+      filter:drop-shadow(0 0 30px rgba(240,165,0,0.3));
+    }
+    .welcome-title {
+      font-size:28px; font-weight:700; color:var(--text);
+      margin-bottom:10px; letter-spacing:-0.5px;
+    }
+    .welcome-sub {
+      color:var(--text-muted); font-size:14px; text-align:center;
+      max-width:400px; margin-bottom:32px;
+    }
+    .welcome-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:12px; max-width:480px; width:100%;
+    }
+    .welcome-card {
+      background:var(--bg2); border:1px solid var(--border);
+      border-radius:10px; padding:14px;
+      text-align:center;
+    }
+    .welcome-card .wc-num {
+      font-family:'JetBrains Mono',monospace;
+      font-size:22px; font-weight:700;
+      color:var(--accent); display:block;
+    }
+    .welcome-card .wc-label {
+      font-size:10px; color:var(--text-muted);
+      text-transform:uppercase; letter-spacing:1px;
+    }
+    .welcome-hint {
+      margin-top:28px; padding:12px 20px;
+      background:rgba(240,165,0,0.07); border:1px solid rgba(240,165,0,0.2);
+      border-radius:8px;
+      font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent);
+    }
+
+    /* ── TAG PAGE ── */
+    #tag-page { display:none; padding:0; }
+
+    /* Hero */
+    .tag-hero {
+      background:linear-gradient(135deg, #0d1117 0%, #131922 100%);
+      border-bottom:1px solid var(--border);
+      padding:32px 40px 28px;
+      position:relative; overflow:hidden;
+    }
+    .tag-hero::before {
+      content:''; position:absolute;
+      top:-60px; right:-60px; width:250px; height:250px;
+      background:radial-gradient(circle, rgba(240,165,0,0.08) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hero-breadcrumb {
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px; color:var(--text-muted);
+      margin-bottom:12px; letter-spacing:0.5px;
+    }
+    .hero-breadcrumb span { color:var(--accent); }
+    .hero-tag-name {
+      font-family:'JetBrains Mono',monospace;
+      font-size:40px; font-weight:700;
+      color:var(--text); line-height:1;
+      margin-bottom:10px;
+    }
+    .hero-tag-name .angle { color:rgba(240,165,0,0.4); font-size:32px; }
+    .hero-tag-name .tname { color:var(--accent); }
+    .hero-desc {
+      font-size:15px; color:var(--text-muted);
+      max-width:680px; line-height:1.6;
+      margin-bottom:16px;
+    }
+    .hero-badges { display:flex; gap:8px; flex-wrap:wrap; }
+    .hbadge {
+      padding:4px 11px; border-radius:20px;
+      font-size:10px; font-family:'JetBrains Mono',monospace;
+      font-weight:600; letter-spacing:0.8px; text-transform:uppercase;
+    }
+    .hb-cat { background:rgba(88,166,255,0.12); color:var(--blue); border:1px solid rgba(88,166,255,0.25); }
+    .hb-type { background:rgba(63,185,80,0.12); color:var(--green); border:1px solid rgba(63,185,80,0.25); }
+    .hb-dep { background:rgba(248,81,73,0.12); color:var(--red); border:1px solid rgba(248,81,73,0.25); }
+    .hb-new { background:rgba(63,185,80,0.12); color:var(--green); border:1px solid rgba(63,185,80,0.25); }
+    .hb-html5 { background:rgba(224,108,53,0.12); color:var(--accent2); border:1px solid rgba(224,108,53,0.25); }
+    .hb-void { background:rgba(139,233,253,0.12); color:var(--cyan); border:1px solid rgba(139,233,253,0.25); }
+
+    /* Content */
+    .tag-content { padding:32px 40px 60px; }
+
+    /* Sections */
+    .section { margin-bottom:36px; }
+    .section-title {
+      font-size:11px; font-weight:700;
+      font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted); letter-spacing:2px;
+      text-transform:uppercase; margin-bottom:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-title::after {
+      content:''; flex:1; height:1px; background:var(--border);
+    }
+    .section p { color:#b0bec5; line-height:1.8; margin-bottom:10px; }
+    .section p:last-child { margin-bottom:0; }
+
+    /* Code block */
+    .code-block {
+      background:#0d1117; border:1px solid var(--border);
+      border-radius:10px; overflow:hidden;
+      margin:8px 0;
+    }
+    .code-header {
+      background:var(--bg2); padding:8px 16px;
+      display:flex; justify-content:space-between; align-items:center;
+      border-bottom:1px solid var(--border);
+    }
+    .code-lang {
+      font-family:'JetBrains Mono',monospace;
+      font-size:10px; color:var(--text-muted);
+      text-transform:uppercase; letter-spacing:1px;
+    }
+    .code-copy {
+      font-size:10px; color:var(--text-muted);
+      cursor:pointer; padding:2px 8px;
+      border:1px solid var(--border); border-radius:4px;
+      background:transparent; font-family:'JetBrains Mono',monospace;
+      transition:all 0.15s;
+    }
+    .code-copy:hover { color:var(--accent); border-color:var(--accent); }
+    pre {
+      padding:16px 20px; overflow-x:auto;
+      font-family:'JetBrains Mono',monospace;
+      font-size:12.5px; line-height:1.7;
+      color:#e6edf3;
+    }
+    pre::-webkit-scrollbar { height:4px; }
+    pre::-webkit-scrollbar-track { background:transparent; }
+    pre::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+    /* Syntax highlight */
+    .ht { color:#f92672; }  /* tag */
+    .ha { color:#a6e22e; }  /* attr */
+    .hv { color:#e6db74; }  /* value */
+    .hc { color:#6e7681; }  /* comment */
+    .hs { color:var(--text); } /* string */
+
+    /* Attributes table */
+    .attr-table {
+      width:100%; border-collapse:collapse;
+      font-size:13px; margin-top:4px;
+    }
+    .attr-table th {
+      text-align:left; padding:8px 12px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:10px; color:var(--text-muted);
+      letter-spacing:1px; text-transform:uppercase;
+      border-bottom:1px solid var(--border);
+      background:var(--bg2);
+    }
+    .attr-table td {
+      padding:9px 12px; border-bottom:1px solid rgba(48,54,61,0.5);
+      vertical-align:top;
+    }
+    .attr-table tr:last-child td { border-bottom:none; }
+    .attr-table tr:hover td { background:rgba(255,255,255,0.02); }
+    .attr-name {
+      font-family:'JetBrains Mono',monospace;
+      color:var(--accent); font-size:12px; font-weight:600;
+      white-space:nowrap;
+    }
+    .attr-type {
+      font-family:'JetBrains Mono',monospace;
+      font-size:10px; color:var(--cyan);
+    }
+    .attr-desc { color:var(--text-muted); font-size:13px; }
+
+    /* Info cards */
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .info-card {
+      background:var(--bg2); border:1px solid var(--border);
+      border-radius:10px; padding:16px;
+    }
+    .info-card .ic-label {
+      font-size:9px; font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted); text-transform:uppercase;
+      letter-spacing:1.5px; margin-bottom:6px;
+    }
+    .info-card .ic-val {
+      font-size:14px; font-weight:600; color:var(--text);
+    }
+    .ic-val.yes { color:var(--green); }
+    .ic-val.no { color:var(--red); }
+
+    /* Note / warning */
+    .note {
+      padding:12px 16px; border-radius:8px;
+      border-left:3px solid; margin:10px 0;
+      font-size:13px; line-height:1.6;
+    }
+    .note-info { background:rgba(88,166,255,0.07); border-color:var(--blue); color:#79b8e8; }
+    .note-warn { background:rgba(248,81,73,0.07); border-color:var(--red); color:#f0857f; }
+    .note-tip  { background:rgba(63,185,80,0.07); border-color:var(--green); color:#6ed67e; }
+    .note strong { font-weight:600; }
+  </style>
+</head>
+<body>
+
+<div id="welcome">
+  <div class="welcome-icon">&lt;/&gt;</div>
+  <div class="welcome-title">HTML Tags Reference</div>
+  <div class="welcome-sub">A complete guide to every HTML element — select any tag from the sidebar to explore its theory, syntax, and attributes.</div>
+  <div class="welcome-grid">
+    <div class="welcome-card"><span class="wc-num">140+</span><span class="wc-label">Total Tags</span></div>
+    <div class="welcome-card"><span class="wc-num">HTML5</span><span class="wc-label">Standard</span></div>
+    <div class="welcome-card"><span class="wc-num">13</span><span class="wc-label">Categories</span></div>
+  </div>
+  <div class="welcome-hint">← Click any tag in the sidebar to begin</div>
+</div>
+
+<div id="tag-page"></div>
+
+<script>
+const DB = {
+  "!DOCTYPE": {
+    desc:"Declares the document type and version of HTML. It must be the very first thing in an HTML document, before the &lt;html&gt; tag. It is not an HTML tag; it is an instruction to the web browser about what version of HTML the page is written in.",
+    category:"Document Structure", type:"Declaration", void:true,
+    syntax:`&lt;!<span class="ht">DOCTYPE</span> <span class="ha">html</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Always the first line of any HTML file --&gt;</span>\n&lt;!<span class="ht">DOCTYPE</span> <span class="ha">html</span>&gt;\n&lt;<span class="ht">html</span> <span class="ha">lang</span>=<span class="hv">"en"</span>&gt;\n  &lt;<span class="ht">head</span>&gt;\n    &lt;<span class="ht">title</span>&gt;My Page&lt;/<span class="ht">title</span>&gt;\n  &lt;/<span class="ht">head</span>&gt;\n  &lt;<span class="ht">body</span>&gt;...&lt;/<span class="ht">body</span>&gt;\n&lt;/<span class="ht">html</span>&gt;`,
+    attrs:[],
+    notes:`<p>In HTML5, the doctype is greatly simplified to just <code style="color:var(--accent)">!DOCTYPE html</code>. Older HTML versions like HTML 4.01 required a much longer declaration referencing a DTD (Document Type Definition).</p>`,
+    info:{display:"N/A",selfClose:"Yes",block:"N/A",inline:"N/A"}
+  },
+  "html": {
+    desc:"The root element of an HTML page. All other elements must be descendants of this element. It represents the top-level element and is known as the document root element.",
+    category:"Document Structure", type:"Root Element",
+    syntax:`&lt;<span class="ht">html</span> <span class="ha">lang</span>=<span class="hv">"en"</span>&gt; ... &lt;/<span class="ht">html</span>&gt;`,
+    example:`&lt;<span class="ht">html</span> <span class="ha">lang</span>=<span class="hv">"en"</span> <span class="ha">dir</span>=<span class="hv">"ltr"</span>&gt;\n  &lt;<span class="ht">head</span>&gt;\n    &lt;<span class="ht">meta</span> <span class="ha">charset</span>=<span class="hv">"UTF-8"</span>&gt;\n  &lt;/<span class="ht">head</span>&gt;\n  &lt;<span class="ht">body</span>&gt;\n    &lt;<span class="ht">p</span>&gt;Hello World!&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">body</span>&gt;\n&lt;/<span class="ht">html</span>&gt;`,
+    attrs:[
+      {n:"lang",t:"string",d:"Specifies the language of the element's content (e.g., en, fr, de)"},
+      {n:"dir",t:"ltr|rtl|auto",d:"Specifies the text direction (left-to-right or right-to-left)"},
+      {n:"xmlns",t:"URL",d:"Specifies the XML namespace for XHTML documents"}
+    ],
+    notes:`<p>The <strong>lang</strong> attribute is essential for accessibility — screen readers use it to pronounce content correctly. For international sites, always specify the correct BCP 47 language tag.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "head": {
+    desc:"The head element contains machine-readable information (metadata) about the document, like its title, scripts, and style sheets. It sits between the &lt;html&gt; and &lt;body&gt; tags.",
+    category:"Document Structure", type:"Metadata Container",
+    syntax:`&lt;<span class="ht">head</span>&gt; ... &lt;/<span class="ht">head</span>&gt;`,
+    example:`&lt;<span class="ht">head</span>&gt;\n  &lt;<span class="ht">meta</span> <span class="ha">charset</span>=<span class="hv">"UTF-8"</span>&gt;\n  &lt;<span class="ht">meta</span> <span class="ha">name</span>=<span class="hv">"viewport"</span> <span class="ha">content</span>=<span class="hv">"width=device-width, initial-scale=1.0"</span>&gt;\n  &lt;<span class="ht">title</span>&gt;Page Title&lt;/<span class="ht">title</span>&gt;\n  &lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"stylesheet"</span> <span class="ha">href</span>=<span class="hv">"style.css"</span>&gt;\n&lt;/<span class="ht">head</span>&gt;`,
+    attrs:[],
+    notes:`<p>Nothing inside &lt;head&gt; is directly rendered on the page. It contains SEO metadata, links to CSS/JS files, charset declaration, and the page title shown in the browser tab.</p>`,
+    info:{display:"none",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "body": {
+    desc:"The body element represents the content of an HTML document. There can be only one body element in a document. Everything visible on the web page — text, images, links, tables, forms — is placed inside the body.",
+    category:"Document Structure", type:"Content Container",
+    syntax:`&lt;<span class="ht">body</span>&gt; ... &lt;/<span class="ht">body</span>&gt;`,
+    example:`&lt;<span class="ht">body</span> <span class="ha">onload</span>=<span class="hv">"initPage()"</span>&gt;\n  &lt;<span class="ht">header</span>&gt;...&lt;/<span class="ht">header</span>&gt;\n  &lt;<span class="ht">main</span>&gt;\n    &lt;<span class="ht">p</span>&gt;Page content here&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">main</span>&gt;\n  &lt;<span class="ht">footer</span>&gt;...&lt;/<span class="ht">footer</span>&gt;\n&lt;/<span class="ht">body</span>&gt;`,
+    attrs:[
+      {n:"onload",t:"script",d:"Fires when the page has finished loading"},
+      {n:"onunload",t:"script",d:"Fires when the page is about to be unloaded"},
+      {n:"onresize",t:"script",d:"Fires when the browser window is resized"}
+    ],
+    notes:`<p>The body has many event handler attributes but it's modern best practice to attach events via JavaScript (addEventListener) rather than inline attributes.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "title": {
+    desc:"The title element defines the document's title that is shown in a browser's title bar or a page's tab. It only contains text — tags within the element are ignored. It is required in all HTML documents.",
+    category:"Document Structure", type:"Metadata",
+    syntax:`&lt;<span class="ht">title</span>&gt;Page Title Here&lt;/<span class="ht">title</span>&gt;`,
+    example:`&lt;<span class="ht">head</span>&gt;\n  <span class="hc">&lt;!-- Good: descriptive and concise --&gt;</span>\n  &lt;<span class="ht">title</span>&gt;Home – My Awesome Website&lt;/<span class="ht">title</span>&gt;\n&lt;/<span class="ht">head</span>&gt;`,
+    attrs:[],
+    notes:`<p>The title is critical for SEO. Search engines display it in search results. Keep it under 60 characters for best display. It should be unique per page and descriptive of the page's content.</p>`,
+    info:{display:"none",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "meta": {
+    desc:"The meta element represents metadata that cannot be represented by other HTML meta-related elements. It is used for charset declaration, viewport settings, SEO descriptions, Open Graph tags, and HTTP-equiv directives.",
+    category:"Metadata", type:"Void Element", void:true,
+    syntax:`&lt;<span class="ht">meta</span> <span class="ha">name</span>=<span class="hv">"..."</span> <span class="ha">content</span>=<span class="hv">"..."</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Charset --&gt;</span>\n&lt;<span class="ht">meta</span> <span class="ha">charset</span>=<span class="hv">"UTF-8"</span>&gt;\n<span class="hc">&lt;!-- Viewport for responsive design --&gt;</span>\n&lt;<span class="ht">meta</span> <span class="ha">name</span>=<span class="hv">"viewport"</span> <span class="ha">content</span>=<span class="hv">"width=device-width, initial-scale=1.0"</span>&gt;\n<span class="hc">&lt;!-- SEO Description --&gt;</span>\n&lt;<span class="ht">meta</span> <span class="ha">name</span>=<span class="hv">"description"</span> <span class="ha">content</span>=<span class="hv">"Page description for search engines"</span>&gt;\n<span class="hc">&lt;!-- Open Graph --&gt;</span>\n&lt;<span class="ht">meta</span> <span class="ha">property</span>=<span class="hv">"og:title"</span> <span class="ha">content</span>=<span class="hv">"My Page"</span>&gt;`,
+    attrs:[
+      {n:"charset",t:"string",d:"Declares the character encoding (UTF-8 recommended)"},
+      {n:"name",t:"string",d:"Specifies metadata name: description, keywords, viewport, author, robots"},
+      {n:"content",t:"string",d:"Value associated with the name or http-equiv attribute"},
+      {n:"http-equiv",t:"string",d:"Provides HTTP header information (refresh, content-type, X-UA-Compatible)"},
+      {n:"property",t:"string",d:"Used for Open Graph metadata (og:title, og:image, etc.)"}
+    ],
+    notes:`<p>The <strong>charset</strong> meta tag must be within the first 1024 bytes of the document. UTF-8 supports virtually all characters. Always include the viewport meta for responsive design.</p>`,
+    info:{display:"none",selfClose:"Yes",block:"Yes",inline:"No"}
+  },
+  "link": {
+    desc:"The link element specifies relationships between the current document and external resources. Most commonly used to link to CSS stylesheets, but also used for favicons, canonical URLs, and preloaded resources.",
+    category:"Metadata", type:"Void Element", void:true,
+    syntax:`&lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"stylesheet"</span> <span class="ha">href</span>=<span class="hv">"style.css"</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Stylesheet --&gt;</span>\n&lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"stylesheet"</span> <span class="ha">href</span>=<span class="hv">"main.css"</span>&gt;\n<span class="hc">&lt;!-- Favicon --&gt;</span>\n&lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"icon"</span> <span class="ha">href</span>=<span class="hv">"favicon.ico"</span> <span class="ha">type</span>=<span class="hv">"image/x-icon"</span>&gt;\n<span class="hc">&lt;!-- Preload critical font --&gt;</span>\n&lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"preload"</span> <span class="ha">href</span>=<span class="hv">"font.woff2"</span> <span class="ha">as</span>=<span class="hv">"font"</span> <span class="ha">crossorigin</span>&gt;\n<span class="hc">&lt;!-- Canonical URL --&gt;</span>\n&lt;<span class="ht">link</span> <span class="ha">rel</span>=<span class="hv">"canonical"</span> <span class="ha">href</span>=<span class="hv">"https://example.com/page"</span>&gt;`,
+    attrs:[
+      {n:"rel",t:"string",d:"Required. Relationship type: stylesheet, icon, canonical, preload, alternate"},
+      {n:"href",t:"URL",d:"URL of the linked resource"},
+      {n:"type",t:"MIME",d:"MIME type of the linked document"},
+      {n:"media",t:"string",d:"Specifies what media/device the linked document is optimized for"},
+      {n:"crossorigin",t:"string",d:"How to handle cross-origin requests (anonymous, use-credentials)"},
+      {n:"integrity",t:"string",d:"Subresource Integrity hash for security verification"}
+    ],
+    notes:`<p>Use <code style="color:var(--accent)">rel="preload"</code> for critical resources to improve page load performance. The <strong>integrity</strong> attribute helps prevent CDN tampering.</p>`,
+    info:{display:"none",selfClose:"Yes",block:"Yes",inline:"No"}
+  },
+  "style": {
+    desc:"The style element contains CSS styling information for a document, or part of a document. CSS contained inside a &lt;style&gt; element is called internal or embedded CSS.",
+    category:"Metadata", type:"Metadata",
+    syntax:`&lt;<span class="ht">style</span>&gt; css rules here &lt;/<span class="ht">style</span>&gt;`,
+    example:`&lt;<span class="ht">style</span>&gt;\n  body {\n    font-family: sans-serif;\n    background: #f0f0f0;\n  }\n  h1 { color: #333; }\n&lt;/<span class="ht">style</span>&gt;`,
+    attrs:[
+      {n:"media",t:"string",d:"Specifies what media the styles apply to"},
+      {n:"nonce",t:"string",d:"Cryptographic nonce for Content Security Policy"}
+    ],
+    notes:`<p>For production sites, prefer external stylesheets (via &lt;link&gt;) over embedded styles for better caching and separation of concerns. Internal styles are useful for critical CSS or single-page applications.</p>`,
+    info:{display:"none",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "script": {
+    desc:"The script element is used to embed executable code — usually JavaScript — though it can also represent other languages like WebAssembly. It can reference an external script file or contain inline code.",
+    category:"Scripting & Templates", type:"Metadata/Flow",
+    syntax:`&lt;<span class="ht">script</span> <span class="ha">src</span>=<span class="hv">"app.js"</span> <span class="ha">defer</span>&gt;&lt;/<span class="ht">script</span>&gt;`,
+    example:`<span class="hc">&lt;!-- External script (defer = load after HTML) --&gt;</span>\n&lt;<span class="ht">script</span> <span class="ha">src</span>=<span class="hv">"app.js"</span> <span class="ha">defer</span>&gt;&lt;/<span class="ht">script</span>&gt;\n<span class="hc">&lt;!-- Async (order not guaranteed) --&gt;</span>\n&lt;<span class="ht">script</span> <span class="ha">src</span>=<span class="hv">"analytics.js"</span> <span class="ha">async</span>&gt;&lt;/<span class="ht">script</span>&gt;\n<span class="hc">&lt;!-- Inline JavaScript --&gt;</span>\n&lt;<span class="ht">script</span>&gt;\n  console.log('Hello World!');\n&lt;/<span class="ht">script</span>&gt;\n<span class="hc">&lt;!-- Module --&gt;</span>\n&lt;<span class="ht">script</span> <span class="ha">type</span>=<span class="hv">"module"</span> <span class="ha">src</span>=<span class="hv">"main.mjs"</span>&gt;&lt;/<span class="ht">script</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"URL of an external script file"},
+      {n:"defer",t:"boolean",d:"Script executes after document is parsed (maintains order)"},
+      {n:"async",t:"boolean",d:"Script executes asynchronously (order not guaranteed)"},
+      {n:"type",t:"MIME",d:"MIME type: text/javascript (default), module, importmap"},
+      {n:"crossorigin",t:"string",d:"CORS settings for external scripts"},
+      {n:"integrity",t:"string",d:"SRI hash for security"},
+      {n:"nomodule",t:"boolean",d:"Fallback script for browsers not supporting modules"}
+    ],
+    notes:`<p>Always use <strong>defer</strong> for scripts that depend on the DOM. Use <strong>async</strong> for independent scripts like analytics. Never use <code style="color:var(--accent)">document.write()</code> in modern code.</p>`,
+    info:{display:"none",selfClose:"No",block:"Both",inline:"No"}
+  },
+  "header": {
+    desc:"The header element represents introductory content, typically a group of introductory or navigational aids. It may contain heading elements, a logo, a search form, an author's name, and other elements. There can be multiple &lt;header&gt; elements in a page (one per section).",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">header</span>&gt; ... &lt;/<span class="ht">header</span>&gt;`,
+    example:`&lt;<span class="ht">header</span>&gt;\n  &lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"logo.png"</span> <span class="ha">alt</span>=<span class="hv">"Logo"</span>&gt;\n  &lt;<span class="ht">nav</span>&gt;\n    &lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/"</span>&gt;Home&lt;/<span class="ht">a</span>&gt;\n    &lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/about"</span>&gt;About&lt;/<span class="ht">a</span>&gt;\n  &lt;/<span class="ht">nav</span>&gt;\n&lt;/<span class="ht">header</span>&gt;`,
+    attrs:[],
+    notes:`<p>The &lt;header&gt; element cannot be a descendant of an &lt;address&gt;, &lt;footer&gt;, or another &lt;header&gt; element. It is not the same as the &lt;head&gt; element.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "nav": {
+    desc:"The nav element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents. Common examples are menus, tables of contents, and indexes.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">nav</span>&gt; ... &lt;/<span class="ht">nav</span>&gt;`,
+    example:`&lt;<span class="ht">nav</span> <span class="ha">aria-label</span>=<span class="hv">"Main navigation"</span>&gt;\n  &lt;<span class="ht">ul</span>&gt;\n    &lt;<span class="ht">li</span>&gt;&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/"</span>&gt;Home&lt;/<span class="ht">a</span>&gt;&lt;/<span class="ht">li</span>&gt;\n    &lt;<span class="ht">li</span>&gt;&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/blog"</span>&gt;Blog&lt;/<span class="ht">a</span>&gt;&lt;/<span class="ht">li</span>&gt;\n    &lt;<span class="ht">li</span>&gt;&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/contact"</span>&gt;Contact&lt;/<span class="ht">a</span>&gt;&lt;/<span class="ht">li</span>&gt;\n  &lt;/<span class="ht">ul</span>&gt;\n&lt;/<span class="ht">nav</span>&gt;`,
+    attrs:[],
+    notes:`<p>Not all groups of links need to be in a &lt;nav&gt; element — only sections that consist of major navigation blocks. Use <code style="color:var(--accent)">aria-label</code> when there are multiple &lt;nav&gt; elements to differentiate them for screen readers.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "main": {
+    desc:"The main element represents the dominant content of the body of a document. The main content area consists of content that is directly related to or expands upon the central topic of a document. There should be only ONE &lt;main&gt; element per page.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">main</span>&gt; ... &lt;/<span class="ht">main</span>&gt;`,
+    example:`&lt;<span class="ht">body</span>&gt;\n  &lt;<span class="ht">header</span>&gt;...&lt;/<span class="ht">header</span>&gt;\n  &lt;<span class="ht">main</span>&gt;\n    &lt;<span class="ht">h1</span>&gt;Article Title&lt;/<span class="ht">h1</span>&gt;\n    &lt;<span class="ht">p</span>&gt;Article content...&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">main</span>&gt;\n  &lt;<span class="ht">footer</span>&gt;...&lt;/<span class="ht">footer</span>&gt;\n&lt;/<span class="ht">body</span>&gt;`,
+    attrs:[],
+    notes:`<p>The &lt;main&gt; element must NOT be a descendant of &lt;article&gt;, &lt;aside&gt;, &lt;footer&gt;, &lt;header&gt;, or &lt;nav&gt;. It's a landmark element used by assistive technologies to skip to main content.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "section": {
+    desc:"The section element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading element. It's used to group related content together.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">section</span>&gt; ... &lt;/<span class="ht">section</span>&gt;`,
+    example:`&lt;<span class="ht">section</span>&gt;\n  &lt;<span class="ht">h2</span>&gt;Introduction&lt;/<span class="ht">h2</span>&gt;\n  &lt;<span class="ht">p</span>&gt;This section introduces the topic...&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">section</span>&gt;\n&lt;<span class="ht">section</span>&gt;\n  &lt;<span class="ht">h2</span>&gt;Details&lt;/<span class="ht">h2</span>&gt;\n  &lt;<span class="ht">p</span>&gt;More detailed information...&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">section</span>&gt;`,
+    attrs:[],
+    notes:`<p>If you can't give a section a heading, you might want to use &lt;div&gt; instead. &lt;section&gt; is for semantic grouping — it creates an entry in the document outline.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "article": {
+    desc:"The article element represents a self-contained composition in a document that is intended to be independently distributable or reusable — for example, a forum post, a magazine or newspaper article, a blog entry, a product card, or a user-submitted comment.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">article</span>&gt; ... &lt;/<span class="ht">article</span>&gt;`,
+    example:`&lt;<span class="ht">article</span>&gt;\n  &lt;<span class="ht">h2</span>&gt;How to Learn HTML&lt;/<span class="ht">h2</span>&gt;\n  &lt;<span class="ht">p</span>&gt;By: Jane Doe | March 2024&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">p</span>&gt;HTML stands for HyperText Markup Language...&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">section</span>&gt;\n    &lt;<span class="ht">h3</span>&gt;Getting Started&lt;/<span class="ht">h3</span>&gt;\n    &lt;<span class="ht">p</span>&gt;Start with the basics...&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">section</span>&gt;\n&lt;/<span class="ht">article</span>&gt;`,
+    attrs:[],
+    notes:`<p>Articles can be nested — for instance, a comment is an article nested within a parent article. Ask yourself: "Would this make sense syndicated on its own?" If yes, use &lt;article&gt;.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "aside": {
+    desc:"The aside element represents a portion of a document whose content is only indirectly related to the document's main content. Asides are frequently presented as sidebars. Examples include author biography, related links, glossary terms, or advertisements.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">aside</span>&gt; ... &lt;/<span class="ht">aside</span>&gt;`,
+    example:`&lt;<span class="ht">main</span>&gt;\n  &lt;<span class="ht">article</span>&gt;&lt;<span class="ht">p</span>&gt;Main content here...&lt;/<span class="ht">p</span>&gt;&lt;/<span class="ht">article</span>&gt;\n  &lt;<span class="ht">aside</span>&gt;\n    &lt;<span class="ht">h3</span>&gt;Related Articles&lt;/<span class="ht">h3</span>&gt;\n    &lt;<span class="ht">ul</span>&gt;\n      &lt;<span class="ht">li</span>&gt;&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"#"</span>&gt;Related Post 1&lt;/<span class="ht">a</span>&gt;&lt;/<span class="ht">li</span>&gt;\n    &lt;/<span class="ht">ul</span>&gt;\n  &lt;/<span class="ht">aside</span>&gt;\n&lt;/<span class="ht">main</span>&gt;`,
+    attrs:[],
+    notes:`<p>Do not use &lt;aside&gt; for parenthetical text — only for content that truly stands separately from the main content flow.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "footer": {
+    desc:"The footer element represents a footer for its nearest ancestor sectioning content or sectioning root element. A footer typically contains information about the author, copyright data, and related links. A document can have multiple footers.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">footer</span>&gt; ... &lt;/<span class="ht">footer</span>&gt;`,
+    example:`&lt;<span class="ht">footer</span>&gt;\n  &lt;<span class="ht">p</span>&gt;&amp;copy; 2024 My Company. All rights reserved.&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">nav</span>&gt;\n    &lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/privacy"</span>&gt;Privacy&lt;/<span class="ht">a</span>&gt;\n    &lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"/terms"</span>&gt;Terms&lt;/<span class="ht">a</span>&gt;\n  &lt;/<span class="ht">nav</span>&gt;\n&lt;/<span class="ht">footer</span>&gt;`,
+    attrs:[],
+    notes:`<p>Contact information in a footer should be wrapped in &lt;address&gt;. The footer element does not create a new sectioning content — it belongs to the nearest ancestor sectioning element.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "h1": {
+    desc:"The h1 element represents the highest-level section heading. It should represent the main topic of the page. Best practice is to have only ONE &lt;h1&gt; per page — it helps both SEO and accessibility by clearly defining the page's primary subject.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">h1</span>&gt;Page Main Heading&lt;/<span class="ht">h1</span>&gt;`,
+    example:`&lt;<span class="ht">h1</span>&gt;Complete Guide to HTML&lt;/<span class="ht">h1</span>&gt;\n&lt;<span class="ht">h2</span>&gt;Chapter 1: Basics&lt;/<span class="ht">h2</span>&gt;\n&lt;<span class="ht">h3</span>&gt;1.1 Document Structure&lt;/<span class="ht">h3</span>&gt;\n&lt;<span class="ht">h4</span>&gt;Tags and Attributes&lt;/<span class="ht">h4</span>&gt;`,
+    attrs:[],
+    notes:`<p>Heading levels should not be skipped — don't jump from &lt;h1&gt; to &lt;h3&gt;. The heading hierarchy creates the document outline used by accessibility tools and search engines.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "h2":{desc:"The h2 element represents the second-level section heading, used for major subsections under the &lt;h1&gt;. Multiple &lt;h2&gt; elements can exist on a page.",category:"Content Sectioning",type:"Block-level",syntax:`&lt;<span class="ht">h2</span>&gt;Section Heading&lt;/<span class="ht">h2</span>&gt;`,example:`&lt;<span class="ht">h1</span>&gt;Web Development&lt;/<span class="ht">h1</span>&gt;\n&lt;<span class="ht">h2</span>&gt;HTML Fundamentals&lt;/<span class="ht">h2</span>&gt;\n&lt;<span class="ht">h2</span>&gt;CSS Basics&lt;/<span class="ht">h2</span>&gt;`,attrs:[],notes:`<p>Use &lt;h2&gt; for top-level sections of the page content. Never use heading tags for styling alone — use CSS instead.</p>`,info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}},
+  "h3":{desc:"Third-level heading for sub-sections within an h2. Used to create a clear hierarchical document structure.",category:"Content Sectioning",type:"Block-level",syntax:`&lt;<span class="ht">h3</span>&gt;Sub-section&lt;/<span class="ht">h3</span>&gt;`,example:`&lt;<span class="ht">h2</span>&gt;HTML Forms&lt;/<span class="ht">h2</span>&gt;\n&lt;<span class="ht">h3</span>&gt;Input Types&lt;/<span class="ht">h3</span>&gt;\n&lt;<span class="ht">h3</span>&gt;Validation&lt;/<span class="ht">h3</span>&gt;`,attrs:[],notes:`<p>h3 through h6 follow the same rules — they nest logically within their parent heading level and can appear multiple times on a page.</p>`,info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}},
+  "h4":{desc:"Fourth-level heading for sub-subsections. Rarely needed in most documents — consider simplifying content structure if you need h4 frequently.",category:"Content Sectioning",type:"Block-level",syntax:`&lt;<span class="ht">h4</span>&gt;Sub-subsection&lt;/<span class="ht">h4</span>&gt;`,example:`&lt;<span class="ht">h3</span>&gt;Input Types&lt;/<span class="ht">h3</span>&gt;\n&lt;<span class="ht">h4</span>&gt;Text Inputs&lt;/<span class="ht">h4</span>&gt;\n&lt;<span class="ht">h4</span>&gt;Number Inputs&lt;/<span class="ht">h4</span>&gt;`,attrs:[],notes:`<p>Use h4–h6 sparingly. Deeply nested document structures can confuse users and accessibility tools.</p>`,info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}},
+  "h5":{desc:"Fifth-level heading. Very rarely used in typical documents. Consider restructuring your content if you need this level of nesting.",category:"Content Sectioning",type:"Block-level",syntax:`&lt;<span class="ht">h5</span>&gt;Deep Section&lt;/<span class="ht">h5</span>&gt;`,example:`&lt;<span class="ht">h5</span>&gt;Technical specification detail&lt;/<span class="ht">h5</span>&gt;`,attrs:[],notes:`<p>If you find yourself using h5 often, consider using &lt;strong&gt; with CSS styling instead, or restructuring the document outline.</p>`,info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}},
+  "h6":{desc:"The lowest-level heading element. Represents minor headings at the deepest nesting level. Almost never used in modern web development.",category:"Content Sectioning",type:"Block-level",syntax:`&lt;<span class="ht">h6</span>&gt;Minor Heading&lt;/<span class="ht">h6</span>&gt;`,example:`&lt;<span class="ht">h6</span>&gt;Fine print heading&lt;/<span class="ht">h6</span>&gt;`,attrs:[],notes:`<p>Browsers give h6 the smallest default font size among headings. If you need it for styling, use CSS — don't use a higher heading just for visual appearance.</p>`,info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}},
+  "p": {
+    desc:"The p element represents a paragraph. Paragraphs are block-level elements and are automatically separated from adjacent elements with blank lines. The browser inserts default top and bottom margins.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">p</span>&gt;Paragraph text here.&lt;/<span class="ht">p</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;The &lt;<span class="ht">strong</span>&gt;HTML paragraph&lt;/<span class="ht">strong</span>&gt; element defines a paragraph of text. Browsers add default margins above and below each paragraph.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;A new &lt;<span class="ht">em</span>&gt;paragraph&lt;/<span class="ht">em</span>&gt; starts here.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Do not use empty &lt;p&gt; tags to add spacing — use CSS margin/padding instead. You cannot nest block elements (like &lt;div&gt;) inside a &lt;p&gt; element.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "div": {
+    desc:"The div element is a generic container for flow content. It has no effect on the content or layout until styled with CSS. It is the most commonly used element for layout, grouping, and styling purposes.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">div</span> <span class="ha">class</span>=<span class="hv">"container"</span>&gt; ... &lt;/<span class="ht">div</span>&gt;`,
+    example:`&lt;<span class="ht">div</span> <span class="ha">class</span>=<span class="hv">"card"</span>&gt;\n  &lt;<span class="ht">div</span> <span class="ha">class</span>=<span class="hv">"card-header"</span>&gt;\n    &lt;<span class="ht">h3</span>&gt;Card Title&lt;/<span class="ht">h3</span>&gt;\n  &lt;/<span class="ht">div</span>&gt;\n  &lt;<span class="ht">div</span> <span class="ha">class</span>=<span class="hv">"card-body"</span>&gt;\n    &lt;<span class="ht">p</span>&gt;Card content goes here.&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">div</span>&gt;\n&lt;/<span class="ht">div</span>&gt;`,
+    attrs:[
+      {n:"id",t:"string",d:"Unique identifier for CSS/JavaScript targeting"},
+      {n:"class",t:"string",d:"CSS class names for styling"},
+      {n:"style",t:"CSS",d:"Inline CSS styles"},
+      {n:"data-*",t:"string",d:"Custom data attributes for storing extra information"}
+    ],
+    notes:`<p>Use semantic elements (&lt;header&gt;, &lt;main&gt;, &lt;section&gt;, etc.) when possible. Use &lt;div&gt; only when no semantic element is appropriate. Overuse of &lt;div&gt; is called "div soup."</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "span": {
+    desc:"The span element is an inline generic container for phrasing content. Like &lt;div&gt; for block content, span has no inherent meaning or presentation — it is purely for grouping inline elements to apply styles or JavaScript.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">span</span> <span class="ha">class</span>=<span class="hv">"highlight"</span>&gt;text&lt;/<span class="ht">span</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;The sky is &lt;<span class="ht">span</span> <span class="ha">style</span>=<span class="hv">"color:blue;"</span>&gt;blue&lt;/<span class="ht">span</span>&gt; today.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;Price: &lt;<span class="ht">span</span> <span class="ha">class</span>=<span class="hv">"price"</span>&gt;$29.99&lt;/<span class="ht">span</span>&gt;&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Like &lt;div&gt;, &lt;span&gt; should be a last resort. Use semantic inline elements (&lt;em&gt;, &lt;strong&gt;, &lt;mark&gt;, &lt;code&gt;, etc.) when they apply.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "a": {
+    desc:"The anchor element creates a hyperlink to web pages, files, email addresses, locations on the same page, or anything else a URL can address. The href attribute defines the link destination.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"URL"</span>&gt;link text&lt;/<span class="ht">a</span>&gt;`,
+    example:`<span class="hc">&lt;!-- External link --&gt;</span>\n&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"https://example.com"</span> <span class="ha">target</span>=<span class="hv">"_blank"</span> <span class="ha">rel</span>=<span class="hv">"noopener noreferrer"</span>&gt;Visit Example&lt;/<span class="ht">a</span>&gt;\n<span class="hc">&lt;!-- Email --&gt;</span>\n&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"mailto:user@example.com"</span>&gt;Send Email&lt;/<span class="ht">a</span>&gt;\n<span class="hc">&lt;!-- Phone --&gt;</span>\n&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"tel:+1234567890"</span>&gt;Call Us&lt;/<span class="ht">a</span>&gt;\n<span class="hc">&lt;!-- Same-page anchor --&gt;</span>\n&lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"#section2"</span>&gt;Jump to Section 2&lt;/<span class="ht">a</span>&gt;`,
+    attrs:[
+      {n:"href",t:"URL",d:"The URL or destination the hyperlink points to"},
+      {n:"target",t:"string",d:"Where to open the link: _blank (new tab), _self, _parent, _top"},
+      {n:"rel",t:"string",d:"Relationship: noopener, noreferrer, nofollow, bookmark"},
+      {n:"download",t:"string",d:"Download the linked file instead of navigating"},
+      {n:"hreflang",t:"string",d:"Language of the linked resource"},
+      {n:"type",t:"MIME",d:"MIME type of the linked resource"}
+    ],
+    notes:`<p>Always use <code style="color:var(--accent)">rel="noopener noreferrer"</code> with <code style="color:var(--accent)">target="_blank"</code> to prevent security vulnerabilities (tab-napping). Ensure link text is descriptive — avoid "click here".</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "img": {
+    desc:"The img element embeds an image into the document. It is a void element (no closing tag). The src and alt attributes are required — src for the image source, alt for accessibility and fallback text.",
+    category:"Images & Multimedia", type:"Void/Inline", void:true,
+    syntax:`&lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"image.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Description"</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Basic image --&gt;</span>\n&lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"photo.jpg"</span> <span class="ha">alt</span>=<span class="hv">"A mountain landscape"</span> <span class="ha">width</span>=<span class="hv">"800"</span> <span class="ha">height</span>=<span class="hv">"600"</span>&gt;\n<span class="hc">&lt;!-- Responsive image --&gt;</span>\n&lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"image.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Photo"</span>\n     <span class="ha">srcset</span>=<span class="hv">"small.jpg 400w, medium.jpg 800w, large.jpg 1200w"</span>\n     <span class="ha">sizes</span>=<span class="hv">"(max-width: 600px) 400px, 800px"</span>&gt;\n<span class="hc">&lt;!-- Lazy loaded --&gt;</span>\n&lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"photo.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Photo"</span> <span class="ha">loading</span>=<span class="hv">"lazy"</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"Required. Path to the image file"},
+      {n:"alt",t:"string",d:"Required. Alternative text for accessibility and broken images"},
+      {n:"width",t:"number",d:"Image display width in pixels"},
+      {n:"height",t:"number",d:"Image display height in pixels (prevents layout shift)"},
+      {n:"loading",t:"lazy|eager",d:"Defers loading until image is near viewport (lazy)"},
+      {n:"srcset",t:"string",d:"Set of source images for different screen sizes"},
+      {n:"sizes",t:"string",d:"Media conditions for choosing from srcset"},
+      {n:"decoding",t:"string",d:"Image decoding hint: sync, async, auto"}
+    ],
+    notes:`<p>Always specify <strong>width</strong> and <strong>height</strong> to prevent Cumulative Layout Shift (CLS), a Core Web Vital. For decorative images, use <code style="color:var(--accent)">alt=""</code> (empty, not omitted) so screen readers skip them.</p>`,
+    info:{display:"inline-block",selfClose:"Yes",block:"No",inline:"Yes"}
+  },
+  "ul": {
+    desc:"The ul element represents an unordered list of items, typically rendered as a bulleted list. The list items (&lt;li&gt;) have no particular order. Use when the sequence of items does not matter.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">ul</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Item&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ul</span>&gt;`,
+    example:`&lt;<span class="ht">ul</span>&gt;\n  &lt;<span class="ht">li</span>&gt;HTML&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;CSS&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;JavaScript&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ul</span>&gt;\n<span class="hc">&lt;!-- Nested list --&gt;</span>\n&lt;<span class="ht">ul</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Frontend\n    &lt;<span class="ht">ul</span>&gt;\n      &lt;<span class="ht">li</span>&gt;HTML&lt;/<span class="ht">li</span>&gt;\n      &lt;<span class="ht">li</span>&gt;CSS&lt;/<span class="ht">li</span>&gt;\n    &lt;/<span class="ht">ul</span>&gt;\n  &lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ul</span>&gt;`,
+    attrs:[],
+    notes:`<p>The direct children of &lt;ul&gt; must be &lt;li&gt; elements. Nested lists should be placed inside the &lt;li&gt; element, not directly inside &lt;ul&gt;.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "ol": {
+    desc:"The ol element represents an ordered list of items, where the order is meaningful. Items are typically numbered. Used for steps, rankings, instructions, or any sequence where order matters.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">ol</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Step&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ol</span>&gt;`,
+    example:`&lt;<span class="ht">ol</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Boil water&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Add pasta&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Cook for 10 minutes&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ol</span>&gt;\n<span class="hc">&lt;!-- Custom start and reversed --&gt;</span>\n&lt;<span class="ht">ol</span> <span class="ha">start</span>=<span class="hv">"5"</span> <span class="ha">reversed</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Fifth item (counts down)&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Fourth item&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ol</span>&gt;`,
+    attrs:[
+      {n:"reversed",t:"boolean",d:"Numbers items in descending order"},
+      {n:"start",t:"number",d:"Starting value for the list (default is 1)"},
+      {n:"type",t:"string",d:"Numbering type: 1 (default), A, a, I, i"}
+    ],
+    notes:`<p>CSS counter-reset and list-style-type provide more flexible styling options for ordered lists. Use &lt;ol&gt; whenever the sequence is meaningful (steps, rankings, legal documents).</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "li": {
+    desc:"The li element is used to represent an item in a list. It must be contained inside &lt;ul&gt;, &lt;ol&gt;, or &lt;menu&gt; elements. In ordered lists, the value attribute can override the item's ordinal position.",
+    category:"Text Content", type:"List Item",
+    syntax:`&lt;<span class="ht">li</span>&gt;List item text&lt;/<span class="ht">li</span>&gt;`,
+    example:`&lt;<span class="ht">ul</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Item One&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;Item Two&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ul</span>&gt;\n&lt;<span class="ht">ol</span>&gt;\n  &lt;<span class="ht">li</span> <span class="ha">value</span>=<span class="hv">"3"</span>&gt;This is item 3&lt;/<span class="ht">li</span>&gt;\n  &lt;<span class="ht">li</span>&gt;This is item 4&lt;/<span class="ht">li</span>&gt;\n&lt;/<span class="ht">ol</span>&gt;`,
+    attrs:[{n:"value",t:"number",d:"Sets the current ordinal value (ordered lists only)"}],
+    notes:`<p>The closing tag &lt;/li&gt; can technically be omitted in HTML but it is best practice to always include it for clarity and maintainability.</p>`,
+    info:{display:"list-item",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "table": {
+    desc:"The table element represents tabular data — information presented in a two-dimensional table with rows and columns. Tables should ONLY be used for data, never for page layout.",
+    category:"Tables", type:"Block-level",
+    syntax:`&lt;<span class="ht">table</span>&gt; ... &lt;/<span class="ht">table</span>&gt;`,
+    example:`&lt;<span class="ht">table</span>&gt;\n  &lt;<span class="ht">caption</span>&gt;Quarterly Sales&lt;/<span class="ht">caption</span>&gt;\n  &lt;<span class="ht">thead</span>&gt;\n    &lt;<span class="ht">tr</span>&gt;\n      &lt;<span class="ht">th</span>&gt;Quarter&lt;/<span class="ht">th</span>&gt;\n      &lt;<span class="ht">th</span>&gt;Revenue&lt;/<span class="ht">th</span>&gt;\n    &lt;/<span class="ht">tr</span>&gt;\n  &lt;/<span class="ht">thead</span>&gt;\n  &lt;<span class="ht">tbody</span>&gt;\n    &lt;<span class="ht">tr</span>&gt;\n      &lt;<span class="ht">td</span>&gt;Q1&lt;/<span class="ht">td</span>&gt;\n      &lt;<span class="ht">td</span>&gt;$50,000&lt;/<span class="ht">td</span>&gt;\n    &lt;/<span class="ht">tr</span>&gt;\n  &lt;/<span class="ht">tbody</span>&gt;\n&lt;/<span class="ht">table</span>&gt;`,
+    attrs:[],
+    notes:`<p>Always use &lt;caption&gt;, &lt;thead&gt;, &lt;tbody&gt;, and &lt;tfoot&gt; for proper table semantics. Add <code style="color:var(--accent)">role="table"</code> and appropriate ARIA labels for complex tables.</p>`,
+    info:{display:"table",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "form": {
+    desc:"The form element represents a document section containing interactive controls for submitting information. Forms can send data to a server via HTTP GET or POST methods. Every form input should have an associated &lt;label&gt;.",
+    category:"Forms", type:"Block-level",
+    syntax:`&lt;<span class="ht">form</span> <span class="ha">action</span>=<span class="hv">"/submit"</span> <span class="ha">method</span>=<span class="hv">"post"</span>&gt; ... &lt;/<span class="ht">form</span>&gt;`,
+    example:`&lt;<span class="ht">form</span> <span class="ha">action</span>=<span class="hv">"/login"</span> <span class="ha">method</span>=<span class="hv">"post"</span> <span class="ha">novalidate</span>&gt;\n  &lt;<span class="ht">label</span> <span class="ha">for</span>=<span class="hv">"email"</span>&gt;Email&lt;/<span class="ht">label</span>&gt;\n  &lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"email"</span> <span class="ha">id</span>=<span class="hv">"email"</span> <span class="ha">name</span>=<span class="hv">"email"</span> <span class="ha">required</span>&gt;\n  &lt;<span class="ht">label</span> <span class="ha">for</span>=<span class="hv">"pwd"</span>&gt;Password&lt;/<span class="ht">label</span>&gt;\n  &lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"password"</span> <span class="ha">id</span>=<span class="hv">"pwd"</span> <span class="ha">name</span>=<span class="hv">"password"</span>&gt;\n  &lt;<span class="ht">button</span> <span class="ha">type</span>=<span class="hv">"submit"</span>&gt;Login&lt;/<span class="ht">button</span>&gt;\n&lt;/<span class="ht">form</span>&gt;`,
+    attrs:[
+      {n:"action",t:"URL",d:"URL to send the form data to"},
+      {n:"method",t:"get|post",d:"HTTP method for submission (GET appends to URL, POST sends in body)"},
+      {n:"enctype",t:"string",d:"Encoding type: application/x-www-form-urlencoded (default), multipart/form-data, text/plain"},
+      {n:"novalidate",t:"boolean",d:"Disables browser's native validation"},
+      {n:"autocomplete",t:"on|off",d:"Enables or disables browser autocomplete"},
+      {n:"target",t:"string",d:"Where to display the response (_self, _blank)"}
+    ],
+    notes:`<p>Use <code style="color:var(--accent)">enctype="multipart/form-data"</code> when your form includes file uploads. Always validate on the server side — never trust only client-side validation.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "input": {
+    desc:"The input element is used to create interactive controls for web-based forms to accept data from the user. The type attribute determines what kind of control to render — text, password, email, checkbox, radio, file, date, range, color, and many more.",
+    category:"Forms", type:"Void Element", void:true,
+    syntax:`&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"text"</span> <span class="ha">name</span>=<span class="hv">"username"</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Text types --&gt;</span>\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"text"</span> <span class="ha">placeholder</span>=<span class="hv">"Your name"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"email"</span> <span class="ha">required</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"password"</span> <span class="ha">minlength</span>=<span class="hv">"8"</span>&gt;\n<span class="hc">&lt;!-- Selection --&gt;</span>\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"checkbox"</span> <span class="ha">id</span>=<span class="hv">"agree"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"radio"</span> <span class="ha">name</span>=<span class="hv">"color"</span> <span class="ha">value</span>=<span class="hv">"red"</span>&gt;\n<span class="hc">&lt;!-- Date and time --&gt;</span>\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"date"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"time"</span>&gt;\n<span class="hc">&lt;!-- Other types --&gt;</span>\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"file"</span> <span class="ha">accept</span>=<span class="hv">"image/*"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"range"</span> <span class="ha">min</span>=<span class="hv">"0"</span> <span class="ha">max</span>=<span class="hv">"100"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"color"</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"hidden"</span> <span class="ha">name</span>=<span class="hv">"token"</span> <span class="ha">value</span>=<span class="hv">"abc123"</span>&gt;`,
+    attrs:[
+      {n:"type",t:"string",d:"Control type: text, password, email, number, tel, url, date, time, file, checkbox, radio, range, color, hidden, submit, reset, button, search, month, week, datetime-local"},
+      {n:"name",t:"string",d:"Name submitted with form data"},
+      {n:"value",t:"string",d:"Initial value of the control"},
+      {n:"placeholder",t:"string",d:"Hint text shown when empty"},
+      {n:"required",t:"boolean",d:"Field must be filled before submission"},
+      {n:"disabled",t:"boolean",d:"Disables the input"},
+      {n:"readonly",t:"boolean",d:"Prevents editing but still submits"},
+      {n:"min/max",t:"number",d:"Minimum and maximum values (for number, date, range)"},
+      {n:"pattern",t:"regex",d:"Regular expression the value must match"},
+      {n:"autocomplete",t:"string",d:"Hint for browser autocomplete: on, off, name, email, etc."}
+    ],
+    notes:`<p>The &lt;input&gt; element has over 20 type values. HTML5 added date, time, color, range, search, and more. Always pair inputs with &lt;label&gt; elements for accessibility.</p>`,
+    info:{display:"inline-block",selfClose:"Yes",block:"No",inline:"Yes"}
+  },
+  "button": {
+    desc:"The button element is a clickable button. Unlike &lt;input type='button'&gt;, the &lt;button&gt; element can contain HTML content like icons. It can be used to submit forms, reset forms, or trigger JavaScript actions.",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">button</span> <span class="ha">type</span>=<span class="hv">"submit"</span>&gt;Click Me&lt;/<span class="ht">button</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Submit button --&gt;</span>\n&lt;<span class="ht">button</span> <span class="ha">type</span>=<span class="hv">"submit"</span>&gt;Submit Form&lt;/<span class="ht">button</span>&gt;\n<span class="hc">&lt;!-- JS button --&gt;</span>\n&lt;<span class="ht">button</span> <span class="ha">type</span>=<span class="hv">"button"</span> <span class="ha">onclick</span>=<span class="hv">"doAction()"</span>&gt;🚀 Launch&lt;/<span class="ht">button</span>&gt;\n<span class="hc">&lt;!-- Disabled --&gt;</span>\n&lt;<span class="ht">button</span> <span class="ha">disabled</span>&gt;Unavailable&lt;/<span class="ht">button</span>&gt;`,
+    attrs:[
+      {n:"type",t:"submit|button|reset",d:"submit (default in form), button (JS trigger), reset (clear form)"},
+      {n:"disabled",t:"boolean",d:"Prevents interaction"},
+      {n:"name",t:"string",d:"Name for form submission"},
+      {n:"value",t:"string",d:"Value associated with name when submitted"},
+      {n:"form",t:"id",d:"Associates button with a form element by its id"}
+    ],
+    notes:`<p>Always specify <code style="color:var(--accent)">type="button"</code> for non-form buttons to prevent accidental form submission. Inside a &lt;form&gt;, the default type is "submit".</p>`,
+    info:{display:"inline-block",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "iframe": {
+    desc:"The iframe element (inline frame) embeds another HTML page within the current page. It is commonly used to embed YouTube videos, Google Maps, social media widgets, and third-party content.",
+    category:"Embedded Content", type:"Replaced Element",
+    syntax:`&lt;<span class="ht">iframe</span> <span class="ha">src</span>=<span class="hv">"URL"</span> <span class="ha">title</span>=<span class="hv">"description"</span>&gt;&lt;/<span class="ht">iframe</span>&gt;`,
+    example:`<span class="hc">&lt;!-- YouTube embed --&gt;</span>\n&lt;<span class="ht">iframe</span>\n  <span class="ha">src</span>=<span class="hv">"https://www.youtube.com/embed/VIDEO_ID"</span>\n  <span class="ha">title</span>=<span class="hv">"Video title"</span>\n  <span class="ha">width</span>=<span class="hv">"560"</span> <span class="ha">height</span>=<span class="hv">"315"</span>\n  <span class="ha">frameborder</span>=<span class="hv">"0"</span>\n  <span class="ha">allowfullscreen</span>&gt;\n&lt;/<span class="ht">iframe</span>&gt;\n<span class="hc">&lt;!-- Google Maps --&gt;</span>\n&lt;<span class="ht">iframe</span>\n  <span class="ha">src</span>=<span class="hv">"https://maps.google.com/maps?q=london&amp;output=embed"</span>\n  <span class="ha">title</span>=<span class="hv">"Map of London"</span>&gt;\n&lt;/<span class="ht">iframe</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"URL of the page to embed"},
+      {n:"title",t:"string",d:"Required for accessibility — describes the embedded content"},
+      {n:"width/height",t:"number",d:"Dimensions of the frame"},
+      {n:"sandbox",t:"string",d:"Security restrictions on the embedded content"},
+      {n:"allow",t:"string",d:"Feature policy: camera, microphone, fullscreen, etc."},
+      {n:"allowfullscreen",t:"boolean",d:"Allows the embedded content to go fullscreen"},
+      {n:"loading",t:"lazy|eager",d:"Lazy loads the iframe for performance"}
+    ],
+    notes:`<p>Use the <strong>sandbox</strong> attribute to restrict iframe permissions for security. The <strong>title</strong> attribute is required for accessibility. Be aware that many sites block being embedded via X-Frame-Options headers.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "video": {
+    desc:"The video element embeds a media player that supports video playback. It can contain multiple &lt;source&gt; elements for different video formats. If the browser doesn't support the element, fallback content is shown.",
+    category:"Images & Multimedia", type:"Block/Inline",
+    syntax:`&lt;<span class="ht">video</span> <span class="ha">controls</span>&gt;...&lt;/<span class="ht">video</span>&gt;`,
+    example:`&lt;<span class="ht">video</span> <span class="ha">controls</span> <span class="ha">width</span>=<span class="hv">"640"</span> <span class="ha">height</span>=<span class="hv">"360"</span> <span class="ha">poster</span>=<span class="hv">"thumbnail.jpg"</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">src</span>=<span class="hv">"video.mp4"</span> <span class="ha">type</span>=<span class="hv">"video/mp4"</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">src</span>=<span class="hv">"video.webm"</span> <span class="ha">type</span>=<span class="hv">"video/webm"</span>&gt;\n  &lt;<span class="ht">track</span> <span class="ha">src</span>=<span class="hv">"subtitles.vtt"</span> <span class="ha">kind</span>=<span class="hv">"subtitles"</span> <span class="ha">srclang</span>=<span class="hv">"en"</span>&gt;\n  Your browser does not support video.\n&lt;/<span class="ht">video</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"URL of the video (or use child source elements)"},
+      {n:"controls",t:"boolean",d:"Shows browser's default playback controls"},
+      {n:"autoplay",t:"boolean",d:"Starts playing automatically (muted required for autoplay)"},
+      {n:"muted",t:"boolean",d:"Mutes the audio"},
+      {n:"loop",t:"boolean",d:"Loops the video continuously"},
+      {n:"poster",t:"URL",d:"Image shown before the video plays"},
+      {n:"preload",t:"none|metadata|auto",d:"How much to preload"},
+      {n:"playsinline",t:"boolean",d:"Plays inline on mobile (doesn't go fullscreen)"}
+    ],
+    notes:`<p>Autoplay is blocked by most browsers unless the video is muted. Always provide multiple formats (MP4 + WebM) for cross-browser compatibility. Include captions via &lt;track&gt; for accessibility.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "audio": {
+    desc:"The audio element embeds sound content in documents. It may contain one or more &lt;source&gt; elements with different audio formats. The browser chooses the first format it supports.",
+    category:"Images & Multimedia", type:"Inline",
+    syntax:`&lt;<span class="ht">audio</span> <span class="ha">controls</span>&gt;...&lt;/<span class="ht">audio</span>&gt;`,
+    example:`&lt;<span class="ht">audio</span> <span class="ha">controls</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">src</span>=<span class="hv">"audio.mp3"</span> <span class="ha">type</span>=<span class="hv">"audio/mpeg"</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">src</span>=<span class="hv">"audio.ogg"</span> <span class="ha">type</span>=<span class="hv">"audio/ogg"</span>&gt;\n  Your browser does not support audio.\n&lt;/<span class="ht">audio</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"URL of the audio file"},
+      {n:"controls",t:"boolean",d:"Shows browser playback controls"},
+      {n:"autoplay",t:"boolean",d:"Plays automatically when ready"},
+      {n:"loop",t:"boolean",d:"Loops the audio"},
+      {n:"muted",t:"boolean",d:"Mutes the audio by default"},
+      {n:"preload",t:"none|metadata|auto",d:"Preload behaviour hint"}
+    ],
+    notes:`<p>Provide multiple formats for browser compatibility. MP3 is widely supported, but OGG/Vorbis is open-source. Consider user experience — autoplay audio is generally considered bad practice.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "canvas": {
+    desc:"The canvas element is used to draw graphics via JavaScript using the Canvas API or WebGL. It's used for animations, games, data visualizations, photo editing, and real-time video processing.",
+    category:"Embedded Content", type:"Replaced Element",
+    syntax:`&lt;<span class="ht">canvas</span> <span class="ha">id</span>=<span class="hv">"myCanvas"</span> <span class="ha">width</span>=<span class="hv">"400"</span> <span class="ha">height</span>=<span class="hv">"300"</span>&gt;&lt;/<span class="ht">canvas</span>&gt;`,
+    example:`&lt;<span class="ht">canvas</span> <span class="ha">id</span>=<span class="hv">"c"</span> <span class="ha">width</span>=<span class="hv">"400"</span> <span class="ha">height</span>=<span class="hv">"200"</span>&gt;&lt;/<span class="ht">canvas</span>&gt;\n&lt;<span class="ht">script</span>&gt;\n  const ctx = document.getElementById('c').getContext('2d');\n  ctx.fillStyle = '#f0a500';\n  ctx.fillRect(10, 10, 150, 100);\n  ctx.font = '20px Arial';\n  ctx.fillStyle = 'white';\n  ctx.fillText('Hello Canvas!', 25, 65);\n&lt;/<span class="ht">script</span>&gt;`,
+    attrs:[
+      {n:"width",t:"number",d:"Width of the canvas in CSS pixels (default: 300)"},
+      {n:"height",t:"number",d:"Height of the canvas in CSS pixels (default: 150)"}
+    ],
+    notes:`<p>Set canvas dimensions via HTML attributes, not CSS — CSS scales the rendered bitmap and causes blurriness on high-DPI displays. Use <code style="color:var(--accent)">devicePixelRatio</code> to handle Retina displays.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "details": {
+    desc:"The details element creates a disclosure widget that shows or hides content. When open, it shows the &lt;summary&gt; and its additional content. It can be toggled by the user without JavaScript.",
+    category:"Interactive Elements", type:"Block-level",
+    syntax:`&lt;<span class="ht">details</span>&gt;\n  &lt;<span class="ht">summary</span>&gt;Click to expand&lt;/<span class="ht">summary</span>&gt;\n  Hidden content\n&lt;/<span class="ht">details</span>&gt;`,
+    example:`&lt;<span class="ht">details</span> <span class="ha">open</span>&gt;\n  &lt;<span class="ht">summary</span>&gt;What is HTML?&lt;/<span class="ht">summary</span>&gt;\n  &lt;<span class="ht">p</span>&gt;HTML stands for HyperText Markup Language. It is the standard markup language for creating web pages.&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">details</span>&gt;\n&lt;<span class="ht">details</span>&gt;\n  &lt;<span class="ht">summary</span>&gt;Advanced Topics&lt;/<span class="ht">summary</span>&gt;\n  &lt;<span class="ht">p</span>&gt;ARIA roles, semantic HTML, accessibility...&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">details</span>&gt;`,
+    attrs:[
+      {n:"open",t:"boolean",d:"If present, the details are shown (expanded) by default"}
+    ],
+    notes:`<p>The &lt;details&gt; element is a pure-HTML accordion that needs zero JavaScript. Style the summary's triangle marker with <code style="color:var(--accent)">summary::marker</code> or <code style="color:var(--accent)">summary::-webkit-details-marker</code>.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "summary": {
+    desc:"The summary element is the visible heading for a &lt;details&gt; element. It provides a summary, caption, or legend for the details. Clicking it toggles the open/closed state of the parent &lt;details&gt;.",
+    category:"Interactive Elements", type:"Block-level",
+    syntax:`&lt;<span class="ht">summary</span>&gt;Toggle Label&lt;/<span class="ht">summary</span>&gt;`,
+    example:`&lt;<span class="ht">details</span>&gt;\n  &lt;<span class="ht">summary</span>&gt;🔍 Show code example&lt;/<span class="ht">summary</span>&gt;\n  &lt;<span class="ht">pre</span>&gt;&lt;<span class="ht">code</span>&gt;const x = 42;&lt;/<span class="ht">code</span>&gt;&lt;/<span class="ht">pre</span>&gt;\n&lt;/<span class="ht">details</span>&gt;`,
+    attrs:[],
+    notes:`<p>The &lt;summary&gt; must be the first child of &lt;details&gt;. If omitted, the browser provides a default "Details" label. The disclosure triangle can be removed with <code style="color:var(--accent)">summary { list-style: none }</code>.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "dialog": {
+    desc:"The dialog element represents a dialog box or subwindow. It can be used as a modal or non-modal popup. JavaScript methods showModal() and show() control it. It traps focus when open as a modal — a huge accessibility improvement over div-based dialogs.",
+    category:"Interactive Elements", type:"Block-level",
+    syntax:`&lt;<span class="ht">dialog</span> <span class="ha">id</span>=<span class="hv">"myDialog"</span>&gt; ... &lt;/<span class="ht">dialog</span>&gt;`,
+    example:`&lt;<span class="ht">button</span> <span class="ha">onclick</span>=<span class="hv">"document.getElementById('d').showModal()"</span>&gt;Open Dialog&lt;/<span class="ht">button</span>&gt;\n&lt;<span class="ht">dialog</span> <span class="ha">id</span>=<span class="hv">"d"</span>&gt;\n  &lt;<span class="ht">h2</span>&gt;Dialog Title&lt;/<span class="ht">h2</span>&gt;\n  &lt;<span class="ht">p</span>&gt;This is a native HTML dialog.&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">button</span> <span class="ha">onclick</span>=<span class="hv">"document.getElementById('d').close()"</span>&gt;Close&lt;/<span class="ht">button</span>&gt;\n&lt;/<span class="ht">dialog</span>&gt;`,
+    attrs:[
+      {n:"open",t:"boolean",d:"If present, the dialog is shown"}
+    ],
+    notes:`<p>The native &lt;dialog&gt; is superior to custom modal divs — it handles focus trapping, Escape key closing, and accessibility automatically. Style the backdrop with <code style="color:var(--accent)">::backdrop</code> pseudo-element.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "strong": {
+    desc:"The strong element indicates that its contents have strong importance, seriousness, or urgency. Browsers typically render it in bold. It is a semantic element — use it to mark text that is truly important, not just for visual boldness.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">strong</span>&gt;Important text&lt;/<span class="ht">strong</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;&lt;<span class="ht">strong</span>&gt;Warning:&lt;/<span class="ht">strong</span>&gt; Do not press the red button.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;The &lt;<span class="ht">strong</span>&gt;deadline is Friday&lt;/<span class="ht">strong</span>&gt;; please submit by then.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Don't use &lt;strong&gt; just to make text bold visually — use CSS <code style="color:var(--accent)">font-weight: bold</code> for that. &lt;strong&gt; communicates semantic importance to screen readers and search engines.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "em": {
+    desc:"The em element marks text that has stress emphasis. Browsers render it as italic. Screen readers pronounce emphasized text differently. Unlike &lt;i&gt; (which is stylistic), &lt;em&gt; changes the semantic meaning.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">em</span>&gt;emphasized text&lt;/<span class="ht">em</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;You &lt;<span class="ht">em</span>&gt;must&lt;/<span class="ht">em</span>&gt; complete the form before submitting.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;I &lt;<span class="ht">em</span>&gt;never&lt;/<span class="ht">em</span>&gt; said she stole the money.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Nesting &lt;em&gt; increases emphasis level. Distingush from &lt;i&gt; (italic for technical terms, foreign words) and &lt;strong&gt; (bold for importance vs. stress).</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "code": {
+    desc:"The code element displays its contents styled in a monospace font, indicating the text is a short fragment of computer code. For multi-line code blocks, wrap &lt;code&gt; inside a &lt;pre&gt; element.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">code</span>&gt;code snippet&lt;/<span class="ht">code</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;Use &lt;<span class="ht">code</span>&gt;console.log()&lt;/<span class="ht">code</span>&gt; for debugging.&lt;/<span class="ht">p</span>&gt;\n<span class="hc">&lt;!-- Multi-line code block --&gt;</span>\n&lt;<span class="ht">pre</span>&gt;&lt;<span class="ht">code</span>&gt;\nfunction greet(name) {\n  return \`Hello, \${name}!\`;\n}\n&lt;/<span class="ht">code</span>&gt;&lt;/<span class="ht">pre</span>&gt;`,
+    attrs:[],
+    notes:`<p>Use syntax highlighting libraries like Highlight.js or Prism.js on top of &lt;pre&gt;&lt;code&gt; blocks for colored code display. Escape HTML special characters inside code blocks.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "pre": {
+    desc:"The pre element represents preformatted text which is to be presented exactly as written in the HTML file. Whitespace inside is preserved. Commonly used to display code blocks with &lt;code&gt;.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">pre</span>&gt;preformatted text&lt;/<span class="ht">pre</span>&gt;`,
+    example:`&lt;<span class="ht">pre</span>&gt;\n  Name:    Alice\n  Score:   95/100\n  Grade:   A\n&lt;/<span class="ht">pre</span>&gt;\n\n&lt;<span class="ht">pre</span>&gt;&lt;<span class="ht">code</span>&gt;const pi = 3.14159;&lt;/<span class="ht">code</span>&gt;&lt;/<span class="ht">pre</span>&gt;`,
+    attrs:[],
+    notes:`<p>Text in &lt;pre&gt; overflows its container by default. Add <code style="color:var(--accent)">overflow: auto</code> or <code style="color:var(--accent)">white-space: pre-wrap</code> via CSS to handle long lines.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "blockquote": {
+    desc:"The blockquote element indicates that the enclosed text is an extended quotation. It is usually rendered with indentation. The cite attribute can specify the URL of the source document.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">blockquote</span> <span class="ha">cite</span>=<span class="hv">"URL"</span>&gt;...&lt;/<span class="ht">blockquote</span>&gt;`,
+    example:`&lt;<span class="ht">blockquote</span> <span class="ha">cite</span>=<span class="hv">"https://www.w3.org/"</span>&gt;\n  &lt;<span class="ht">p</span>&gt;The World Wide Web is the most powerful medium for sharing knowledge in human history.&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">footer</span>&gt;— &lt;<span class="ht">cite</span>&gt;Tim Berners-Lee&lt;/<span class="ht">cite</span>&gt;&lt;/<span class="ht">footer</span>&gt;\n&lt;/<span class="ht">blockquote</span>&gt;`,
+    attrs:[{n:"cite",t:"URL",d:"URL of the source document or message"}],
+    notes:`<p>Use &lt;q&gt; for inline quotations. The &lt;cite&gt; element inside blockquote attributes the source — it is different from the cite attribute which is a URL.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "br": {
+    desc:"The br element produces a line break in text (carriage-return). It is a void element. Use for line breaks that are part of the content (addresses, poems) — not for spacing between paragraphs.",
+    category:"Inline Text Semantics", type:"Void Element", void:true,
+    syntax:`&lt;<span class="ht">br</span>&gt;`,
+    example:`&lt;<span class="ht">address</span>&gt;\n  123 Main Street&lt;<span class="ht">br</span>&gt;\n  New York, NY 10001&lt;<span class="ht">br</span>&gt;\n  United States\n&lt;/<span class="ht">address</span>&gt;\n&lt;<span class="ht">p</span>&gt;Roses are red,&lt;<span class="ht">br</span>&gt;\nViolets are blue.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Never use multiple &lt;br&gt; tags for spacing. Use CSS margin, padding, or proper block elements instead. &lt;br&gt; is for meaningful line breaks within inline content.</p>`,
+    info:{display:"inline",selfClose:"Yes",block:"No",inline:"Yes"}
+  },
+  "hr": {
+    desc:"The hr element represents a thematic break between paragraph-level elements: for example, a change of scene in a story, or a shift to another topic within a section. It is rendered as a horizontal rule.",
+    category:"Text Content", type:"Void Element", void:true,
+    syntax:`&lt;<span class="ht">hr</span>&gt;`,
+    example:`&lt;<span class="ht">section</span>&gt;\n  &lt;<span class="ht">p</span>&gt;Section one content...&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">hr</span>&gt;\n  &lt;<span class="ht">p</span>&gt;Section two content after the thematic break.&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">section</span>&gt;`,
+    attrs:[],
+    notes:`<p>Don't use &lt;hr&gt; just for visual decoration — use CSS borders for that. &lt;hr&gt; has semantic meaning: a thematic shift. Screen readers may announce it to users.</p>`,
+    info:{display:"block",selfClose:"Yes",block:"Yes",inline:"No"}
+  },
+  "label": {
+    desc:"The label element represents a caption for an item in a user interface. Clicking a label focuses its associated control. It can be associated via the 'for' attribute matching an input's id, or by wrapping the input.",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">label</span> <span class="ha">for</span>=<span class="hv">"inputId"</span>&gt;Label Text&lt;/<span class="ht">label</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Using 'for' attribute --&gt;</span>\n&lt;<span class="ht">label</span> <span class="ha">for</span>=<span class="hv">"name"</span>&gt;Full Name:&lt;/<span class="ht">label</span>&gt;\n&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"text"</span> <span class="ha">id</span>=<span class="hv">"name"</span>&gt;\n<span class="hc">&lt;!-- Wrapping method --&gt;</span>\n&lt;<span class="ht">label</span>&gt;\n  &lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"checkbox"</span>&gt; I agree to the terms\n&lt;/<span class="ht">label</span>&gt;`,
+    attrs:[{n:"for",t:"id",d:"References the id of the form control this label is associated with"}],
+    notes:`<p>Always associate labels with inputs — it's critical for accessibility. Screen readers announce the label when the input is focused. Labels also increase the clickable area for checkboxes and radio buttons.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "select": {
+    desc:"The select element creates a dropdown selection control. It contains &lt;option&gt; elements and optionally &lt;optgroup&gt; for grouped options. The multiple attribute allows selecting more than one option.",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">select</span> <span class="ha">name</span>=<span class="hv">"choice"</span>&gt;&lt;<span class="ht">option</span>&gt;...&lt;/<span class="ht">option</span>&gt;&lt;/<span class="ht">select</span>&gt;`,
+    example:`&lt;<span class="ht">select</span> <span class="ha">name</span>=<span class="hv">"country"</span> <span class="ha">id</span>=<span class="hv">"country"</span>&gt;\n  &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">""</span>&gt;Select a country&lt;/<span class="ht">option</span>&gt;\n  &lt;<span class="ht">optgroup</span> <span class="ha">label</span>=<span class="hv">"Asia"</span>&gt;\n    &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"in"</span>&gt;India&lt;/<span class="ht">option</span>&gt;\n    &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"cn"</span>&gt;China&lt;/<span class="ht">option</span>&gt;\n  &lt;/<span class="ht">optgroup</span>&gt;\n  &lt;<span class="ht">optgroup</span> <span class="ha">label</span>=<span class="hv">"Europe"</span>&gt;\n    &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"fr"</span>&gt;France&lt;/<span class="ht">option</span>&gt;\n  &lt;/<span class="ht">optgroup</span>&gt;\n&lt;/<span class="ht">select</span>&gt;`,
+    attrs:[
+      {n:"name",t:"string",d:"Name for form submission"},
+      {n:"multiple",t:"boolean",d:"Allows multiple selections (use Ctrl/Cmd + click)"},
+      {n:"size",t:"number",d:"Number of visible options"},
+      {n:"required",t:"boolean",d:"At least one option must be selected"},
+      {n:"disabled",t:"boolean",d:"Disables the dropdown"}
+    ],
+    notes:`<p>Styling &lt;select&gt; elements across browsers is notoriously difficult. Consider custom dropdown libraries for consistent cross-browser appearance. For searchable dropdowns, use &lt;input&gt; with &lt;datalist&gt;.</p>`,
+    info:{display:"inline-block",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "textarea": {
+    desc:"The textarea element represents a multiline plain-text editing control. Unlike &lt;input type='text'&gt;, it allows multiple lines and is resizable. The content between tags is the default value.",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">textarea</span> <span class="ha">rows</span>=<span class="hv">"4"</span> <span class="ha">cols</span>=<span class="hv">"50"</span>&gt;&lt;/<span class="ht">textarea</span>&gt;`,
+    example:`&lt;<span class="ht">label</span> <span class="ha">for</span>=<span class="hv">"msg"</span>&gt;Message:&lt;/<span class="ht">label</span>&gt;\n&lt;<span class="ht">textarea</span>\n  <span class="ha">id</span>=<span class="hv">"msg"</span>\n  <span class="ha">name</span>=<span class="hv">"message"</span>\n  <span class="ha">rows</span>=<span class="hv">"5"</span>\n  <span class="ha">placeholder</span>=<span class="hv">"Type your message here..."</span>\n  <span class="ha">maxlength</span>=<span class="hv">"500"</span>\n  <span class="ha">required</span>&gt;\n&lt;/<span class="ht">textarea</span>&gt;`,
+    attrs:[
+      {n:"rows",t:"number",d:"Visible number of text lines"},
+      {n:"cols",t:"number",d:"Visible width in average character widths"},
+      {n:"placeholder",t:"string",d:"Hint text shown when empty"},
+      {n:"maxlength",t:"number",d:"Maximum number of characters allowed"},
+      {n:"minlength",t:"number",d:"Minimum number of characters required"},
+      {n:"resize",t:"CSS",d:"Control via CSS: none, both, horizontal, vertical"},
+      {n:"wrap",t:"soft|hard",d:"How text is wrapped when submitted"}
+    ],
+    notes:`<p>Control resize behaviour with CSS: <code style="color:var(--accent)">resize: none</code> disables it. Don't put whitespace between opening and closing tags unless you want default content with leading/trailing spaces.</p>`,
+    info:{display:"inline-block",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "picture": {
+    desc:"The picture element is a container for multiple image sources. It allows more flexible specification of image resources for art direction (different crops) and format selection (WebP vs JPEG fallback).",
+    category:"Images & Multimedia", type:"Inline",
+    syntax:`&lt;<span class="ht">picture</span>&gt;...&lt;/<span class="ht">picture</span>&gt;`,
+    example:`&lt;<span class="ht">picture</span>&gt;\n  <span class="hc">&lt;!-- Modern format --&gt;</span>\n  &lt;<span class="ht">source</span> <span class="ha">srcset</span>=<span class="hv">"image.avif"</span> <span class="ha">type</span>=<span class="hv">"image/avif"</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">srcset</span>=<span class="hv">"image.webp"</span> <span class="ha">type</span>=<span class="hv">"image/webp"</span>&gt;\n  <span class="hc">&lt;!-- Fallback --&gt;</span>\n  &lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"image.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Description"</span>&gt;\n&lt;/<span class="ht">picture</span>&gt;\n<span class="hc">&lt;!-- Art direction --&gt;</span>\n&lt;<span class="ht">picture</span>&gt;\n  &lt;<span class="ht">source</span> <span class="ha">media</span>=<span class="hv">"(max-width: 600px)"</span> <span class="ha">srcset</span>=<span class="hv">"portrait.jpg"</span>&gt;\n  &lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"landscape.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Hero image"</span>&gt;\n&lt;/<span class="ht">picture</span>&gt;`,
+    attrs:[],
+    notes:`<p>The browser picks the first &lt;source&gt; whose media condition and type are supported. Always include an &lt;img&gt; fallback inside &lt;picture&gt; — it's required and also defines the alt text.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "svg": {
+    desc:"The svg element is a container that defines an SVG (Scalable Vector Graphics) image. SVGs are XML-based, resolution-independent, and can be styled with CSS and scripted with JavaScript. Perfect for icons, logos, and illustrations.",
+    category:"Embedded Content", type:"Inline/Block",
+    syntax:`&lt;<span class="ht">svg</span> <span class="ha">xmlns</span>=<span class="hv">"http://www.w3.org/2000/svg"</span> <span class="ha">viewBox</span>=<span class="hv">"0 0 100 100"</span>&gt;...&lt;/<span class="ht">svg</span>&gt;`,
+    example:`&lt;<span class="ht">svg</span> <span class="ha">xmlns</span>=<span class="hv">"http://www.w3.org/2000/svg"</span> <span class="ha">viewBox</span>=<span class="hv">"0 0 100 100"</span> <span class="ha">width</span>=<span class="hv">"100"</span> <span class="ha">height</span>=<span class="hv">"100"</span>&gt;\n  &lt;<span class="ht">circle</span> <span class="ha">cx</span>=<span class="hv">"50"</span> <span class="ha">cy</span>=<span class="hv">"50"</span> <span class="ha">r</span>=<span class="hv">"40"</span> <span class="ha">fill</span>=<span class="hv">"#f0a500"</span>/&gt;\n  &lt;<span class="ht">text</span> <span class="ha">x</span>=<span class="hv">"50"</span> <span class="ha">y</span>=<span class="hv">"55"</span> <span class="ha">text-anchor</span>=<span class="hv">"middle"</span> <span class="ha">fill</span>=<span class="hv">"white"</span>&gt;SVG&lt;/<span class="ht">text</span>&gt;\n&lt;/<span class="ht">svg</span>&gt;`,
+    attrs:[
+      {n:"viewBox",t:"string",d:"Defines coordinate system (minX minY width height)"},
+      {n:"width/height",t:"number|string",d:"Dimensions (omit to make it fluid)"},
+      {n:"xmlns",t:"URL",d:"Required namespace for SVG"},
+      {n:"fill",t:"color",d:"Default fill color for SVG shapes"},
+      {n:"stroke",t:"color",d:"Default stroke color"}
+    ],
+    notes:`<p>Inline SVG (directly in HTML) allows CSS styling and JavaScript access. Use <code style="color:var(--accent)">&lt;title&gt;</code> and <code style="color:var(--accent)">aria-labelledby</code> inside SVG for accessibility.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "template": {
+    desc:"The template element holds HTML that is not rendered immediately when a page is loaded. The content is instantiated via JavaScript. It is used in Web Components to define reusable markup structures.",
+    category:"Scripting & Templates", type:"Metadata",
+    syntax:`&lt;<span class="ht">template</span> <span class="ha">id</span>=<span class="hv">"myTemplate"</span>&gt;...&lt;/<span class="ht">template</span>&gt;`,
+    example:`&lt;<span class="ht">template</span> <span class="ha">id</span>=<span class="hv">"card-template"</span>&gt;\n  &lt;<span class="ht">div</span> <span class="ha">class</span>=<span class="hv">"card"</span>&gt;\n    &lt;<span class="ht">h3</span> <span class="ha">class</span>=<span class="hv">"card-title"</span>&gt;&lt;/<span class="ht">h3</span>&gt;\n    &lt;<span class="ht">p</span> <span class="ha">class</span>=<span class="hv">"card-body"</span>&gt;&lt;/<span class="ht">p</span>&gt;\n  &lt;/<span class="ht">div</span>&gt;\n&lt;/<span class="ht">template</span>&gt;\n&lt;<span class="ht">script</span>&gt;\n  const tmpl = document.getElementById('card-template');\n  const clone = tmpl.content.cloneNode(true);\n  clone.querySelector('.card-title').textContent = 'Hello!';\n  document.body.appendChild(clone);\n&lt;/<span class="ht">script</span>&gt;`,
+    attrs:[],
+    notes:`<p>Template content is inert — scripts don't run, images don't load until the template is used. Access content via <code style="color:var(--accent)">template.content</code> (a DocumentFragment).</p>`,
+    info:{display:"none",selfClose:"No",block:"N/A",inline:"No"}
+  },
+  "frameset": {
+    desc:"The frameset element was used to define a set of frames (or windows) in an HTML document. Each frame could display a separate HTML document. It replaced the &lt;body&gt; element. DEPRECATED in HTML5 — use CSS layouts or &lt;iframe&gt; instead.",
+    category:"Frames (Legacy)", type:"Deprecated", deprecated:true,
+    syntax:`&lt;<span class="ht">frameset</span> <span class="ha">cols</span>=<span class="hv">"25%,75%"</span>&gt;...&lt;/<span class="ht">frameset</span>&gt;`,
+    example:`<span class="hc">&lt;!-- HTML 4 / XHTML only - DO NOT USE in HTML5 --&gt;</span>\n&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"&gt;\n&lt;<span class="ht">html</span>&gt;\n  &lt;<span class="ht">head</span>&gt;&lt;<span class="ht">title</span>&gt;Frames&lt;/<span class="ht">title</span>&gt;&lt;/<span class="ht">head</span>&gt;\n  &lt;<span class="ht">frameset</span> <span class="ha">cols</span>=<span class="hv">"200,*"</span>&gt;\n    &lt;<span class="ht">frame</span> <span class="ha">src</span>=<span class="hv">"sidebar.html"</span> <span class="ha">name</span>=<span class="hv">"sidebar"</span>&gt;\n    &lt;<span class="ht">frame</span> <span class="ha">src</span>=<span class="hv">"main.html"</span> <span class="ha">name</span>=<span class="hv">"main"</span>&gt;\n  &lt;/<span class="ht">frameset</span>&gt;\n&lt;/<span class="ht">html</span>&gt;`,
+    attrs:[
+      {n:"cols",t:"string",d:"Comma-separated column widths (pixels, %, or *)"},
+      {n:"rows",t:"string",d:"Comma-separated row heights"},
+      {n:"border",t:"number",d:"Width of frame borders in pixels"}
+    ],
+    notes:`<p class="note note-warn"><strong>⚠️ Deprecated:</strong> Frameset is not supported in HTML5. Use CSS Flexbox/Grid for layouts and &lt;iframe&gt; for embedding external content. Search engines and screen readers had poor frameset support.</p>`,
+    info:{display:"N/A",selfClose:"No",block:"N/A",inline:"N/A"}
+  },
+  "frame": {
+    desc:"The frame element defined individual windows (panes) inside a &lt;frameset&gt;. Each frame displayed a separate HTML document independently. DEPRECATED in HTML5 — use &lt;iframe&gt; for similar functionality.",
+    category:"Frames (Legacy)", type:"Deprecated/Void", deprecated:true, void:true,
+    syntax:`&lt;<span class="ht">frame</span> <span class="ha">src</span>=<span class="hv">"page.html"</span> <span class="ha">name</span>=<span class="hv">"frameName"</span>&gt;`,
+    example:`<span class="hc">&lt;!-- HTML 4 only - DEPRECATED --&gt;</span>\n&lt;<span class="ht">frameset</span> <span class="ha">rows</span>=<span class="hv">"20%,80%"</span>&gt;\n  &lt;<span class="ht">frame</span> <span class="ha">src</span>=<span class="hv">"nav.html"</span> <span class="ha">name</span>=<span class="hv">"nav"</span> <span class="ha">scrolling</span>=<span class="hv">"no"</span>&gt;\n  &lt;<span class="ht">frame</span> <span class="ha">src</span>=<span class="hv">"content.html"</span> <span class="ha">name</span>=<span class="hv">"content"</span>&gt;\n&lt;/<span class="ht">frameset</span>&gt;`,
+    attrs:[
+      {n:"src",t:"URL",d:"URL of the document to display in this frame"},
+      {n:"name",t:"string",d:"Name used as target for links"},
+      {n:"scrolling",t:"yes|no|auto",d:"Controls scrollbars"},
+      {n:"noresize",t:"boolean",d:"Prevents user resizing"},
+      {n:"frameborder",t:"0|1",d:"Shows or hides frame border"}
+    ],
+    notes:`<p class="note note-warn"><strong>⚠️ Deprecated:</strong> The frame element is obsolete. Modern equivalent is &lt;iframe&gt; which works inside the document body and has better accessibility and security features.</p>`,
+    info:{display:"N/A",selfClose:"Yes",block:"N/A",inline:"N/A"}
+  },
+  "address": {
+    desc:"The address element indicates that the enclosed HTML provides contact information for a person or people, or for an organization. Typically rendered in italic. It often appears inside &lt;footer&gt; elements.",
+    category:"Content Sectioning", type:"Block-level",
+    syntax:`&lt;<span class="ht">address</span>&gt;...&lt;/<span class="ht">address</span>&gt;`,
+    example:`&lt;<span class="ht">address</span>&gt;\n  &lt;<span class="ht">strong</span>&gt;Mozilla Corporation&lt;/<span class="ht">strong</span>&gt;&lt;<span class="ht">br</span>&gt;\n  331 E. Evelyn Avenue&lt;<span class="ht">br</span>&gt;\n  Mountain View, CA 94041&lt;<span class="ht">br</span>&gt;\n  &lt;<span class="ht">a</span> <span class="ha">href</span>=<span class="hv">"mailto:info@mozilla.org"</span>&gt;info@mozilla.org&lt;/<span class="ht">a</span>&gt;\n&lt;/<span class="ht">address</span>&gt;`,
+    attrs:[],
+    notes:`<p>The &lt;address&gt; element is not for postal addresses in general — only for contact information related to the nearest &lt;article&gt; or &lt;body&gt; ancestor. Don't use it for arbitrary addresses.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "figure": {
+    desc:"The figure element represents self-contained content, optionally with a caption (&lt;figcaption&gt;). It is used for images, illustrations, diagrams, code listings, and other content that is referenced from the main flow but could stand alone.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">figure</span>&gt;...&lt;/<span class="ht">figure</span>&gt;`,
+    example:`&lt;<span class="ht">figure</span>&gt;\n  &lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"diagram.png"</span> <span class="ha">alt</span>=<span class="hv">"System architecture diagram"</span>&gt;\n  &lt;<span class="ht">figcaption</span>&gt;Fig. 1: System architecture overview&lt;/<span class="ht">figcaption</span>&gt;\n&lt;/<span class="ht">figure</span>&gt;\n&lt;<span class="ht">figure</span>&gt;\n  &lt;<span class="ht">pre</span>&gt;&lt;<span class="ht">code</span>&gt;const x = 42;&lt;/<span class="ht">code</span>&gt;&lt;/<span class="ht">pre</span>&gt;\n  &lt;<span class="ht">figcaption</span>&gt;Example 1: Variable declaration&lt;/<span class="ht">figcaption</span>&gt;\n&lt;/<span class="ht">figure</span>&gt;`,
+    attrs:[],
+    notes:`<p>The &lt;figcaption&gt; can appear as the first or last child of &lt;figure&gt;. Content in a figure is referenced from the main document flow but can be moved to an appendix without affecting the flow.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "figcaption": {
+    desc:"The figcaption element represents a caption or legend describing the rest of the contents of its parent &lt;figure&gt; element. It can appear as the first or last element inside a figure.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">figcaption</span>&gt;Caption text&lt;/<span class="ht">figcaption</span>&gt;`,
+    example:`&lt;<span class="ht">figure</span>&gt;\n  &lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"photo.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Eiffel Tower at sunset"</span>&gt;\n  &lt;<span class="ht">figcaption</span>&gt;The Eiffel Tower illuminated at sunset, Paris, France.&lt;/<span class="ht">figcaption</span>&gt;\n&lt;/<span class="ht">figure</span>&gt;`,
+    attrs:[],
+    notes:`<p>There can only be one &lt;figcaption&gt; inside a &lt;figure&gt;. If the figcaption text fully describes the image, you can use an empty alt attribute on the image to avoid duplicate announcements.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "mark": {
+    desc:"The mark element represents text which is marked or highlighted for reference or notation purposes, due to its relevance or importance in another context.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">mark</span>&gt;highlighted text&lt;/<span class="ht">mark</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;Search results for "HTML": ... you can learn &lt;<span class="ht">mark</span>&gt;HTML&lt;/<span class="ht">mark</span>&gt; in just a few weeks.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;Important: &lt;<span class="ht">mark</span>&gt;The exam is on Monday.&lt;/<span class="ht">mark</span>&gt;&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[],
+    notes:`<p>Use &lt;mark&gt; for search result highlighting or annotation highlights. Don't use it for syntax highlighting — use &lt;code&gt; with CSS. It renders with a yellow background by default.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "time": {
+    desc:"The time element represents a specific period in time. The datetime attribute provides the machine-readable format, while the element content is for human display. Used for publication dates, event times, etc.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">time</span> <span class="ha">datetime</span>=<span class="hv">"YYYY-MM-DD"</span>&gt;human date&lt;/<span class="ht">time</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;Published on &lt;<span class="ht">time</span> <span class="ha">datetime</span>=<span class="hv">"2024-03-15"</span>&gt;March 15, 2024&lt;/<span class="ht">time</span>&gt;.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">p</span>&gt;Event starts at &lt;<span class="ht">time</span> <span class="ha">datetime</span>=<span class="hv">"2024-12-31T23:59:00"</span>&gt;11:59 PM on New Year's Eve&lt;/<span class="ht">time</span>&gt;.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[{n:"datetime",t:"string",d:"Machine-readable date/time in ISO 8601 format"}],
+    notes:`<p>The datetime attribute supports ISO 8601 formats: dates (2024-03-15), times (14:30), datetimes (2024-03-15T14:30:00), and durations (PT2H30M for 2.5 hours).</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "abbr": {
+    desc:"The abbr element represents an abbreviation or acronym. The title attribute provides the full expansion. When hovered, the browser typically shows the expansion as a tooltip.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">abbr</span> <span class="ha">title</span>=<span class="hv">"Full Expansion"</span>&gt;ABBR&lt;/<span class="ht">abbr</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;I love &lt;<span class="ht">abbr</span> <span class="ha">title</span>=<span class="hv">"HyperText Markup Language"</span>&gt;HTML&lt;/<span class="ht">abbr</span>&gt; and &lt;<span class="ht">abbr</span> <span class="ha">title</span>=<span class="hv">"Cascading Style Sheets"</span>&gt;CSS&lt;/<span class="ht">abbr</span>&gt;.&lt;/<span class="ht">p</span>&gt;`,
+    attrs:[{n:"title",t:"string",d:"The full expansion of the abbreviation (shown as tooltip)"}],
+    notes:`<p>Always define an abbreviation on first use on a page. Screen readers may or may not expand abbreviations — consider spelling them out in parentheses the first time they appear.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "cite": {
+    desc:"The cite element is used to describe a reference to a cited creative work. It must include the title of that work. Examples: books, papers, essays, poems, scores, songs, scripts, films, paintings, etc.",
+    category:"Inline Text Semantics", type:"Inline",
+    syntax:`&lt;<span class="ht">cite</span>&gt;Work Title&lt;/<span class="ht">cite</span>&gt;`,
+    example:`&lt;<span class="ht">p</span>&gt;My favorite book is &lt;<span class="ht">cite</span>&gt;The Great Gatsby&lt;/<span class="ht">cite</span>&gt; by F. Scott Fitzgerald.&lt;/<span class="ht">p</span>&gt;\n&lt;<span class="ht">blockquote</span>&gt;\n  &lt;<span class="ht">p</span>&gt;"To be or not to be..."&lt;/<span class="ht">p</span>&gt;\n  &lt;<span class="ht">cite</span>&gt;Hamlet, Act III, Scene I&lt;/<span class="ht">cite</span>&gt;\n&lt;/<span class="ht">blockquote</span>&gt;`,
+    attrs:[],
+    notes:`<p>Do not use &lt;cite&gt; for people's names — only for titles of works. It is different from the cite attribute used on &lt;blockquote&gt; and &lt;q&gt; elements.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "dl": {
+    desc:"The dl element (description list) represents a list of term-description groups. Each term is wrapped in &lt;dt&gt; and its description in &lt;dd&gt;. Used for glossaries, metadata lists, and FAQ-style content.",
+    category:"Text Content", type:"Block-level",
+    syntax:`&lt;<span class="ht">dl</span>&gt;&lt;<span class="ht">dt</span>&gt;Term&lt;/<span class="ht">dt</span>&gt;&lt;<span class="ht">dd</span>&gt;Description&lt;/<span class="ht">dd</span>&gt;&lt;/<span class="ht">dl</span>&gt;`,
+    example:`&lt;<span class="ht">dl</span>&gt;\n  &lt;<span class="ht">dt</span>&gt;HTML&lt;/<span class="ht">dt</span>&gt;\n  &lt;<span class="ht">dd</span>&gt;HyperText Markup Language - the standard for web pages.&lt;/<span class="ht">dd</span>&gt;\n\n  &lt;<span class="ht">dt</span>&gt;CSS&lt;/<span class="ht">dt</span>&gt;\n  &lt;<span class="ht">dd</span>&gt;Cascading Style Sheets - controls presentation.&lt;/<span class="ht">dd</span>&gt;\n\n  &lt;<span class="ht">dt</span>&gt;JS&lt;/<span class="ht">dt</span>&gt;\n  &lt;<span class="ht">dd</span>&gt;JavaScript - adds interactivity to web pages.&lt;/<span class="ht">dd</span>&gt;\n&lt;/<span class="ht">dl</span>&gt;`,
+    attrs:[],
+    notes:`<p>Multiple &lt;dt&gt; elements can share one &lt;dd&gt;, and one &lt;dt&gt; can have multiple &lt;dd&gt; definitions. Great for technical glossaries, API documentation, and structured metadata.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "progress": {
+    desc:"The progress element displays an indicator showing the completion progress of a task. It can be determinate (with a value) or indeterminate (without a value, showing a spinning/pulsing animation).",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">progress</span> <span class="ha">value</span>=<span class="hv">"70"</span> <span class="ha">max</span>=<span class="hv">"100"</span>&gt;&lt;/<span class="ht">progress</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Determinate (70% complete) --&gt;</span>\n&lt;<span class="ht">label</span>&gt;Upload Progress:\n  &lt;<span class="ht">progress</span> <span class="ha">value</span>=<span class="hv">"70"</span> <span class="ha">max</span>=<span class="hv">"100"</span>&gt;70%&lt;/<span class="ht">progress</span>&gt;\n&lt;/<span class="ht">label</span>&gt;\n<span class="hc">&lt;!-- Indeterminate --&gt;</span>\n&lt;<span class="ht">progress</span>&gt;Loading...&lt;/<span class="ht">progress</span>&gt;`,
+    attrs:[
+      {n:"value",t:"number",d:"Current value (omit for indeterminate state)"},
+      {n:"max",t:"number",d:"Maximum value (default: 1.0)"}
+    ],
+    notes:`<p>Style the progress bar using vendor-prefixed pseudo-elements: <code style="color:var(--accent)">::-webkit-progress-bar</code> and <code style="color:var(--accent)">::-moz-progress-bar</code> for cross-browser styling.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "meter": {
+    desc:"The meter element represents a scalar measurement within a known range, or a fractional value such as disk usage, query result relevance, amount of password strength. Unlike &lt;progress&gt;, it represents a gauge not a task.",
+    category:"Forms", type:"Inline",
+    syntax:`&lt;<span class="ht">meter</span> <span class="ha">value</span>=<span class="hv">"6"</span> <span class="ha">min</span>=<span class="hv">"0"</span> <span class="ha">max</span>=<span class="hv">"10"</span>&gt;6 out of 10&lt;/<span class="ht">meter</span>&gt;`,
+    example:`<span class="hc">&lt;!-- Disk usage --&gt;</span>\n&lt;<span class="ht">meter</span> <span class="ha">value</span>=<span class="hv">"75"</span> <span class="ha">min</span>=<span class="hv">"0"</span> <span class="ha">max</span>=<span class="hv">"100"</span> <span class="ha">low</span>=<span class="hv">"25"</span> <span class="ha">high</span>=<span class="hv">"90"</span> <span class="ha">optimum</span>=<span class="hv">"50"</span>&gt;75GB used&lt;/<span class="ht">meter</span>&gt;\n<span class="hc">&lt;!-- Password strength --&gt;</span>\n&lt;<span class="ht">meter</span> <span class="ha">value</span>=<span class="hv">"0.8"</span>&gt;Strong password&lt;/<span class="ht">meter</span>&gt;`,
+    attrs:[
+      {n:"value",t:"number",d:"Current value (required)"},
+      {n:"min",t:"number",d:"Lower bound (default: 0)"},
+      {n:"max",t:"number",d:"Upper bound (default: 1)"},
+      {n:"low",t:"number",d:"Upper boundary of 'low' range"},
+      {n:"high",t:"number",d:"Lower boundary of 'high' range"},
+      {n:"optimum",t:"number",d:"Optimal value — determines colour coding"}
+    ],
+    notes:`<p>The browser colours the meter based on the relationship between value and optimum/low/high thresholds — green for optimal, yellow for suboptimal, red for least optimal.</p>`,
+    info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}
+  },
+  "fieldset": {
+    desc:"The fieldset element groups related form controls together with a visual box. The &lt;legend&gt; element provides a caption for the group. It is crucial for grouping radio buttons and checkboxes.",
+    category:"Forms", type:"Block-level",
+    syntax:`&lt;<span class="ht">fieldset</span>&gt;&lt;<span class="ht">legend</span>&gt;Group Label&lt;/<span class="ht">legend</span>&gt;...&lt;/<span class="ht">fieldset</span>&gt;`,
+    example:`&lt;<span class="ht">fieldset</span>&gt;\n  &lt;<span class="ht">legend</span>&gt;Preferred Contact Method&lt;/<span class="ht">legend</span>&gt;\n  &lt;<span class="ht">label</span>&gt;&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"radio"</span> <span class="ha">name</span>=<span class="hv">"contact"</span> <span class="ha">value</span>=<span class="hv">"email"</span>&gt; Email&lt;/<span class="ht">label</span>&gt;\n  &lt;<span class="ht">label</span>&gt;&lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"radio"</span> <span class="ha">name</span>=<span class="hv">"contact"</span> <span class="ha">value</span>=<span class="hv">"phone"</span>&gt; Phone&lt;/<span class="ht">label</span>&gt;\n&lt;/<span class="ht">fieldset</span>&gt;`,
+    attrs:[{n:"disabled",t:"boolean",d:"Disables all form controls within the fieldset"}],
+    notes:`<p>Screen readers announce the legend when any control inside the fieldset receives focus, providing crucial context for radio button groups. Setting disabled on fieldset disables all child inputs at once.</p>`,
+    info:{display:"block",selfClose:"No",block:"Yes",inline:"No"}
+  },
+  "table":{desc:"The table element represents tabular data — information in rows and columns. Always use semantic table elements (thead, tbody, tfoot) and add captions. Never use tables for page layout.",category:"Tables",type:"Block-level",syntax:`&lt;<span class="ht">table</span>&gt;...&lt;/<span class="ht">table</span>&gt;`,example:`&lt;<span class="ht">table</span>&gt;\n  &lt;<span class="ht">thead</span>&gt;&lt;<span class="ht">tr</span>&gt;&lt;<span class="ht">th</span>&gt;Name&lt;/<span class="ht">th</span>&gt;&lt;<span class="ht">th</span>&gt;Score&lt;/<span class="ht">th</span>&gt;&lt;/<span class="ht">tr</span>&gt;&lt;/<span class="ht">thead</span>&gt;\n  &lt;<span class="ht">tbody</span>&gt;&lt;<span class="ht">tr</span>&gt;&lt;<span class="ht">td</span>&gt;Alice&lt;/<span class="ht">td</span>&gt;&lt;<span class="ht">td</span>&gt;95&lt;/<span class="ht">td</span>&gt;&lt;/<span class="ht">tr</span>&gt;&lt;/<span class="ht">tbody</span>&gt;\n&lt;/<span class="ht">table</span>&gt;`,attrs:[],notes:`<p>Add <code style="color:var(--accent)">scope="col"</code> or <code style="color:var(--accent)">scope="row"</code> to &lt;th&gt; elements for better accessibility. Use &lt;caption&gt; to describe the table.</p>`,info:{display:"table",selfClose:"No",block:"Yes",inline:"No"}},
+  "tr":{desc:"The tr element defines a table row. It contains &lt;th&gt; (header cell) or &lt;td&gt; (data cell) elements. It must be a child of &lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;, or &lt;table&gt;.",category:"Tables",type:"Table Row",syntax:`&lt;<span class="ht">tr</span>&gt;&lt;<span class="ht">td</span>&gt;...&lt;/<span class="ht">td</span>&gt;&lt;/<span class="ht">tr</span>&gt;`,example:`&lt;<span class="ht">table</span>&gt;\n  &lt;<span class="ht">tr</span>&gt;&lt;<span class="ht">th</span>&gt;Col 1&lt;/<span class="ht">th</span>&gt;&lt;<span class="ht">th</span>&gt;Col 2&lt;/<span class="ht">th</span>&gt;&lt;/<span class="ht">tr</span>&gt;\n  &lt;<span class="ht">tr</span>&gt;&lt;<span class="ht">td</span>&gt;Data 1&lt;/<span class="ht">td</span>&gt;&lt;<span class="ht">td</span>&gt;Data 2&lt;/<span class="ht">td</span>&gt;&lt;/<span class="ht">tr</span>&gt;\n&lt;/<span class="ht">table</span>&gt;`,attrs:[],notes:`<p>Each &lt;tr&gt; should contain the same number of cells, accounting for any rowspan or colspan attributes on cells.</p>`,info:{display:"table-row",selfClose:"No",block:"Yes",inline:"No"}},
+  "th":{desc:"The th element defines a header cell in a table. Header cells are bold and centered by default. The scope attribute specifies whether the header applies to a column (col), row (row), column group (colgroup), or row group (rowgroup).",category:"Tables",type:"Table Header Cell",syntax:`&lt;<span class="ht">th</span> <span class="ha">scope</span>=<span class="hv">"col"</span>&gt;Header&lt;/<span class="ht">th</span>&gt;`,example:`&lt;<span class="ht">thead</span>&gt;\n  &lt;<span class="ht">tr</span>&gt;\n    &lt;<span class="ht">th</span> <span class="ha">scope</span>=<span class="hv">"col"</span>&gt;Name&lt;/<span class="ht">th</span>&gt;\n    &lt;<span class="ht">th</span> <span class="ha">scope</span>=<span class="hv">"col"</span>&gt;Age&lt;/<span class="ht">th</span>&gt;\n  &lt;/<span class="ht">tr</span>&gt;\n&lt;/<span class="ht">thead</span>&gt;`,attrs:[{n:"scope",t:"col|row|colgroup|rowgroup",d:"Defines which cells the header relates to"},{n:"colspan",t:"number",d:"Spans the header across multiple columns"},{n:"rowspan",t:"number",d:"Spans the header across multiple rows"}],notes:`<p>Always use &lt;th&gt; with the scope attribute for accessibility — it allows screen readers to properly associate header cells with data cells.</p>`,info:{display:"table-cell",selfClose:"No",block:"No",inline:"No"}},
+  "td":{desc:"The td element defines a standard data cell in a table. It contains the actual table data. Can span multiple rows or columns using rowspan and colspan attributes.",category:"Tables",type:"Table Data Cell",syntax:`&lt;<span class="ht">td</span>&gt;Data&lt;/<span class="ht">td</span>&gt;`,example:`&lt;<span class="ht">tr</span>&gt;\n  &lt;<span class="ht">td</span>&gt;Alice&lt;/<span class="ht">td</span>&gt;\n  &lt;<span class="ht">td</span> <span class="ha">colspan</span>=<span class="hv">"2"</span>&gt;Merged Cell&lt;/<span class="ht">td</span>&gt;\n&lt;/<span class="ht">tr</span>&gt;`,attrs:[{n:"colspan",t:"number",d:"Number of columns the cell spans"},{n:"rowspan",t:"number",d:"Number of rows the cell spans"},{n:"headers",t:"string",d:"IDs of related header cells (for complex tables)"}],notes:`<p>For complex table structures, use the headers attribute referencing &lt;th id&gt; values to explicitly associate cells with headers for screen readers.</p>`,info:{display:"table-cell",selfClose:"No",block:"No",inline:"No"}},
+  "noscript":{desc:"The noscript element defines an alternate content to be displayed when the browser does not support scripting, or when scripting is disabled. It can appear in both &lt;head&gt; and &lt;body&gt;.",category:"Scripting & Templates",type:"Metadata/Flow",syntax:`&lt;<span class="ht">noscript</span>&gt;fallback content&lt;/<span class="ht">noscript</span>&gt;`,example:`&lt;<span class="ht">noscript</span>&gt;\n  &lt;<span class="ht">p</span>&gt;This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.&lt;/<span class="ht">p</span>&gt;\n&lt;/<span class="ht">noscript</span>&gt;`,attrs:[],notes:`<p>Provide meaningful fallback content in &lt;noscript&gt; for users who have JavaScript disabled. This is important for accessibility and progressive enhancement.</p>`,info:{display:"inline",selfClose:"No",block:"Both",inline:"No"}},
+  "output":{desc:"The output element represents the result of a calculation performed by a script, or the output of a user action. It is associated with form controls via the for attribute.",category:"Forms",type:"Inline",syntax:`&lt;<span class="ht">output</span> <span class="ha">for</span>=<span class="hv">"a b"</span> <span class="ha">name</span>=<span class="hv">"result"</span>&gt;0&lt;/<span class="ht">output</span>&gt;`,example:`&lt;<span class="ht">form</span> <span class="ha">oninput</span>=<span class="hv">"result.value=+a.value + +b.value"</span>&gt;\n  &lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"number"</span> <span class="ha">id</span>=<span class="hv">"a"</span> <span class="ha">value</span>=<span class="hv">"0"</span>&gt; +\n  &lt;<span class="ht">input</span> <span class="ha">type</span>=<span class="hv">"number"</span> <span class="ha">id</span>=<span class="hv">"b"</span> <span class="ha">value</span>=<span class="hv">"0"</span>&gt; =\n  &lt;<span class="ht">output</span> <span class="ha">name</span>=<span class="hv">"result"</span> <span class="ha">for</span>=<span class="hv">"a b"</span>&gt;0&lt;/<span class="ht">output</span>&gt;\n&lt;/<span class="ht">form</span>&gt;`,attrs:[{n:"for",t:"string",d:"Space-separated list of element IDs that contributed to the output"},{n:"name",t:"string",d:"Name of the element for form submission"}],notes:`<p>The &lt;output&gt; element creates a live region — screen readers announce its content when it changes. It participates in form submission when it has a name attribute.</p>`,info:{display:"inline",selfClose:"No",block:"No",inline:"Yes"}},
+  "datalist":{desc:"The datalist element contains a set of &lt;option&gt; elements that represent the permissible or suggested options available for an &lt;input&gt; element. It provides an autocomplete feature.",category:"Forms",type:"Metadata",syntax:`&lt;<span class="ht">datalist</span> <span class="ha">id</span>=<span class="hv">"suggestions"</span>&gt;...&lt;/<span class="ht">datalist</span>&gt;`,example:`&lt;<span class="ht">input</span> <span class="ha">list</span>=<span class="hv">"browsers"</span> <span class="ha">placeholder</span>=<span class="hv">"Choose a browser"</span>&gt;\n&lt;<span class="ht">datalist</span> <span class="ha">id</span>=<span class="hv">"browsers"</span>&gt;\n  &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"Chrome"</span>&gt;\n  &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"Firefox"</span>&gt;\n  &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"Safari"</span>&gt;\n  &lt;<span class="ht">option</span> <span class="ha">value</span>=<span class="hv">"Edge"</span>&gt;\n&lt;/<span class="ht">datalist</span>&gt;`,attrs:[],notes:`<p>Unlike &lt;select&gt;, &lt;datalist&gt; allows any value — the options are suggestions only. Connect it to an input using the input's list attribute matching the datalist's id.</p>`,info:{display:"none",selfClose:"No",block:"N/A",inline:"No"}},
+  "wbr":{desc:"The wbr (Word Break Opportunity) element represents a position within text where the browser may optionally break a line, though its line-breaking rules would not otherwise create a break at that location.",category:"Inline Text Semantics",type:"Void Element",void:true,syntax:`&lt;<span class="ht">wbr</span>&gt;`,example:`&lt;<span class="ht">p</span>&gt;Llanfair&lt;<span class="ht">wbr</span>&gt;pwllgwyngyll&lt;<span class="ht">wbr</span>&gt;gogery&lt;<span class="ht">wbr</span>&gt;chwyrndrobwll&lt;/<span class="ht">p</span>&gt;\n<span class="hc">&lt;!-- Long URL that should break at slashes --&gt;</span>\n&lt;<span class="ht">a</span>&gt;https://very-long-domain.com&lt;<span class="ht">wbr</span>&gt;/very/long/path/here&lt;/<span class="ht">a</span>&gt;`,attrs:[],notes:`<p>&lt;wbr&gt; does not introduce a hyphen at the break point — it's invisible. Use it in long technical terms, URLs, and compound words to improve readability on narrow screens.</p>`,info:{display:"inline",selfClose:"Yes",block:"No",inline:"Yes"}},
+  "map":{desc:"The map element is used with &lt;area&gt; elements to define an image map — a clickable image where different areas link to different destinations.",category:"Images & Multimedia",type:"Inline",syntax:`&lt;<span class="ht">map</span> <span class="ha">name</span>=<span class="hv">"mapName"</span>&gt;&lt;<span class="ht">area</span>&gt;&lt;/<span class="ht">map</span>&gt;`,example:`&lt;<span class="ht">img</span> <span class="ha">src</span>=<span class="hv">"planets.jpg"</span> <span class="ha">alt</span>=<span class="hv">"Planets"</span> <span class="ha">usemap</span>=<span class="hv">"#planetmap"</span>&gt;\n&lt;<span class="ht">map</span> <span class="ha">name</span>=<span class="hv">"planetmap"</span>&gt;\n  &lt;<span class="ht">area</span> <span class="ha">shape</span>=<span class="hv">"rect"</span> <span class="ha">coords</span>=<span class="hv">"0,0,82,126"</span> <span class="ha">href</span>=<span class="hv">"sun.html"</span> <span class="ha">alt</span>=<span class="hv">"Sun"</span>&gt;\n  &lt;<span class="ht">area</span> <span class="ha">shape</span>=<span class="hv">"circle"</span> <span class="ha">coords</span>=<span class="hv">"90,58,3"</span> <span class="ha">href</span>=<span class="hv">"mercury.html"</span> <span class="ha">alt</span>=<span class="hv">"Mercury"</span>&gt;\n&lt;/<span class="ht">map</span>&gt;`,attrs:[{n:"name",t:"string",d:"The name of the map (referenced by img usemap attribute)"}],notes:`<p>Image maps were popular in the 1990s for navigation. Today, CSS and JavaScript provide better alternatives. The map name must match the img's usemap value (without the # for name).</p>`,info:{display:"none",selfClose:"No",block:"N/A",inline:"No"}},
+};
+
+// Default data for unknown tags
+function getTagData(tag) {
+  return DB[tag] || {
+    desc:`The &lt;${tag}&gt; element is a valid HTML element. It is used in specific contexts within HTML documents.`,
+    category:"HTML Element", type:"Element",
+    syntax:`&lt;<span class="ht">${tag}</span>&gt;...&lt;/<span class="ht">${tag}</span>&gt;`,
+    example:`&lt;<span class="ht">${tag}</span>&gt;Content here&lt;/<span class="ht">${tag}</span>&gt;`,
+    attrs:[],
+    notes:`<p>Refer to the MDN Web Docs or W3C specification for the most up-to-date information about this element.</p>`,
+    info:{display:"varies",selfClose:"No",block:"varies",inline:"varies"}
+  };
+}
+
+function renderTag(tag) {
+  const d = getTagData(tag);
+  const isDeprecated = d.deprecated;
+  const isVoid = d.void;
+  let attrsHTML = '';
+  if(d.attrs && d.attrs.length) {
+    attrsHTML = `<div class="section">
+      <div class="section-title">Attributes</div>
+      <table class="attr-table">
+        <thead><tr><th>Attribute</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>${d.attrs.map(a=>`<tr><td><span class="attr-name">${a.n}</span></td><td><span class="attr-type">${a.t}</span></td><td class="attr-desc">${a.d}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  }
+  return `
+    <div class="tag-hero">
+      <div class="hero-breadcrumb">HTML Reference <span>▸ ${d.category} ▸ &lt;${tag}&gt;</span></div>
+      <div class="hero-tag-name"><span class="angle">&lt;</span><span class="tname">${tag}</span><span class="angle">&gt;</span></div>
+      <div class="hero-desc">${d.desc}</div>
+      <div class="hero-badges">
+        <span class="hbadge hb-cat">${d.category}</span>
+        <span class="hbadge hb-type">${d.type}</span>
+        ${isDeprecated ? '<span class="hbadge hb-dep">⚠ Deprecated</span>' : ''}
+        ${isVoid ? '<span class="hbadge hb-void">Self-closing</span>' : ''}
+        ${!isDeprecated ? '<span class="hbadge hb-html5">HTML5</span>' : ''}
+      </div>
+    </div>
+    <div class="tag-content">
+      <div class="section">
+        <div class="section-title">Syntax</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">HTML</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre>${d.syntax}</pre>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Example</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">HTML Example</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre>${d.example}</pre>
+        </div>
+      </div>
+      ${attrsHTML}
+      <div class="section">
+        <div class="section-title">Technical Info</div>
+        <div class="info-grid">
+          <div class="info-card"><div class="ic-label">CSS Display</div><div class="ic-val">${d.info.display}</div></div>
+          <div class="info-card"><div class="ic-label">Self Closing</div><div class="ic-val ${d.info.selfClose==='Yes'?'yes':'no'}">${d.info.selfClose}</div></div>
+          <div class="info-card"><div class="ic-label">Block Element</div><div class="ic-val ${d.info.block==='Yes'?'yes':d.info.block==='No'?'no':''}">${d.info.block}</div></div>
+          <div class="info-card"><div class="ic-label">Inline Element</div><div class="ic-val ${d.info.inline==='Yes'?'yes':d.info.inline==='No'?'no':''}">${d.info.inline}</div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Notes & Best Practices</div>
+        ${d.notes}
+      </div>
+    </div>
+  `;
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText || pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+  });
+}
+
+// Read tag from URL
+const params = new URLSearchParams(window.location.search);
+const tag = params.get('tag');
+if(tag) {
+  document.getElementById('welcome').style.display = 'none';
+  const tp = document.getElementById('tag-page');
+  tp.style.display = 'block';
+  tp.innerHTML = renderTag(tag);
+  document.title = `<${tag}> — HTML Reference`;
+}
+</script>
+</body>
+</html>

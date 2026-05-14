@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Tags Reference — Complete Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --accent: #f0a500;
+      --accent2: #e06c35;
+      --text: #c9d1d9;
+      --text-muted: #6e7681;
+      --border: #21262d;
+      --hover: #1c2128;
+      --active-bg: rgba(240,165,0,0.1);
+      --active-border: var(--accent);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; background:var(--bg); font-family:'Sora',sans-serif; overflow:hidden; }
+
+    #sidebar {
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      border-right:1px solid var(--border);
+    }
+
+    /* Search */
+    .search-wrap {
+      padding:12px 12px 8px;
+      background:var(--bg);
+      border-bottom:1px solid var(--border);
+      flex-shrink:0;
+    }
+    .search-box {
+      width:100%; padding:8px 12px;
+      background:var(--bg2); border:1px solid var(--border);
+      border-radius:7px; color:var(--text);
+      font-family:'JetBrains Mono',monospace; font-size:12px;
+      outline:none; transition:border-color 0.2s;
+    }
+    .search-box::placeholder { color:var(--text-muted); }
+    .search-box:focus { border-color:var(--accent); }
+
+    .search-stats {
+      display:flex; justify-content:space-between;
+      padding:5px 2px 0;
+      font-size:10px; font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted);
+    }
+    #tag-count { color:var(--accent); }
+
+    /* Tag list */
+    #tag-list {
+      flex:1; overflow-y:auto; padding:6px 0 16px;
+    }
+    #tag-list::-webkit-scrollbar { width:5px; }
+    #tag-list::-webkit-scrollbar-track { background:transparent; }
+    #tag-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    #tag-list::-webkit-scrollbar-thumb:hover { background:#444d56; }
+
+    /* Category */
+    .cat-header {
+      padding:10px 14px 4px;
+      font-size:9px; font-weight:700;
+      font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted); letter-spacing:2px;
+      text-transform:uppercase;
+      display:flex; align-items:center; gap:6px;
+      user-select:none; cursor:pointer;
+    }
+    .cat-header .cat-dot {
+      width:6px; height:6px; border-radius:50%;
+      flex-shrink:0;
+    }
+    .cat-header .cat-count {
+      margin-left:auto;
+      background:rgba(255,255,255,0.05);
+      padding:1px 6px; border-radius:10px; font-size:9px;
+    }
+    .cat-header.collapsed + .cat-items { display:none; }
+
+    /* Tag item */
+    .tag-item {
+      display:flex; align-items:center;
+      padding:6px 14px; cursor:pointer;
+      border-left:2px solid transparent;
+      transition:all 0.15s;
+      gap:8px;
+    }
+    .tag-item:hover {
+      background:var(--hover);
+      border-left-color:rgba(240,165,0,0.4);
+    }
+    .tag-item.active {
+      background:var(--active-bg);
+      border-left-color:var(--active-border);
+    }
+    .tag-item .tag-label {
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px; color:var(--text);
+      font-weight:600;
+    }
+    .tag-item.active .tag-label { color:var(--accent); }
+    .tag-item .tag-angle {
+      color:var(--text-muted); font-family:'JetBrains Mono',monospace;
+      font-size:11px;
+    }
+    .tag-item.active .tag-angle { color:rgba(240,165,0,0.5); }
+    .tag-item .tag-badge {
+      margin-left:auto; font-size:9px;
+      font-family:'JetBrains Mono',monospace;
+      padding:1px 5px; border-radius:4px;
+    }
+    .badge-deprecated { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.2); }
+    .badge-void { background:rgba(139,233,253,0.1); color:#8be9fd; border:1px solid rgba(139,233,253,0.15); }
+    .badge-new { background:rgba(63,185,80,0.12); color:#3fb950; border:1px solid rgba(63,185,80,0.2); }
+
+    .no-results {
+      padding:20px 14px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px; color:var(--text-muted);
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="search-wrap">
+    <input class="search-box" id="search" type="text" placeholder="🔍  Search tags..." autocomplete="off">
+    <div class="search-stats">
+      <span>HTML Tags</span>
+      <span><span id="tag-count">0</span> shown</span>
+    </div>
+  </div>
+  <div id="tag-list"></div>
+</div>
+
+<script>
+const categories = [
+  {
+    name:"Document Structure", color:"#f0a500",
+    tags:[
+      {t:"!DOCTYPE",v:true},{t:"html"},{t:"head"},{t:"body"},{t:"title"},{t:"base",v:true}
+    ]
+  },
+  {
+    name:"Metadata", color:"#e06c35",
+    tags:[
+      {t:"meta",v:true},{t:"link",v:true},{t:"style"},{t:"script"},{t:"noscript"}
+    ]
+  },
+  {
+    name:"Content Sectioning", color:"#3fb950",
+    tags:[
+      {t:"header"},{t:"nav"},{t:"main"},{t:"section"},{t:"article"},
+      {t:"aside"},{t:"footer"},{t:"address"},{t:"h1"},{t:"h2"},
+      {t:"h3"},{t:"h4"},{t:"h5"},{t:"h6"},{t:"hgroup"}
+    ]
+  },
+  {
+    name:"Text Content", color:"#58a6ff",
+    tags:[
+      {t:"p"},{t:"hr",v:true},{t:"pre"},{t:"blockquote"},{t:"ol"},{t:"ul"},
+      {t:"li"},{t:"dl"},{t:"dt"},{t:"dd"},{t:"figure"},{t:"figcaption"},
+      {t:"div"},{t:"menu"}
+    ]
+  },
+  {
+    name:"Inline Text Semantics", color:"#bc8cff",
+    tags:[
+      {t:"a"},{t:"em"},{t:"strong"},{t:"small"},{t:"s"},{t:"cite"},
+      {t:"q"},{t:"dfn"},{t:"abbr"},{t:"data"},{t:"time"},{t:"code"},
+      {t:"var"},{t:"samp"},{t:"kbd"},{t:"sub"},{t:"sup"},{t:"mark"},
+      {t:"ruby"},{t:"rt"},{t:"rp"},{t:"bdi"},{t:"bdo"},{t:"span"},
+      {t:"br",v:true},{t:"wbr",v:true},{t:"u"},{t:"i"},{t:"b"}
+    ]
+  },
+  {
+    name:"Images & Multimedia", color:"#f78166",
+    tags:[
+      {t:"img",v:true},{t:"audio"},{t:"video"},{t:"track",v:true},{t:"source",v:true},
+      {t:"picture"},{t:"map"},{t:"area",v:true},{t:"figure"},{t:"figcaption"}
+    ]
+  },
+  {
+    name:"Embedded Content", color:"#d2a8ff",
+    tags:[
+      {t:"iframe"},{t:"embed",v:true},{t:"object"},{t:"param",v:true},{t:"canvas"},
+      {t:"svg"},{t:"math"}
+    ]
+  },
+  {
+    name:"Tables", color:"#79c0ff",
+    tags:[
+      {t:"table"},{t:"caption"},{t:"colgroup"},{t:"col",v:true},{t:"thead"},
+      {t:"tbody"},{t:"tfoot"},{t:"tr"},{t:"th"},{t:"td"}
+    ]
+  },
+  {
+    name:"Forms", color:"#56d364",
+    tags:[
+      {t:"form"},{t:"label"},{t:"input",v:true},{t:"button"},{t:"select"},
+      {t:"datalist"},{t:"optgroup"},{t:"option"},{t:"textarea"},
+      {t:"output"},{t:"progress"},{t:"meter"},{t:"fieldset"},{t:"legend"}
+    ]
+  },
+  {
+    name:"Interactive Elements", color:"#ffa657",
+    tags:[
+      {t:"details"},{t:"summary"},{t:"dialog"},{t:"popover"}
+    ]
+  },
+  {
+    name:"Scripting & Templates", color:"#8be9fd",
+    tags:[
+      {t:"template"},{t:"slot"},{t:"portal"}
+    ]
+  },
+  {
+    name:"Frames (Legacy)", color:"#f85149",
+    tags:[
+      {t:"frameset",d:true},{t:"frame",d:true,v:true},{t:"noframes",d:true},{t:"iframe"}
+    ]
+  },
+  {
+    name:"Deprecated Tags", color:"#6e7681",
+    tags:[
+      {t:"acronym",d:true},{t:"applet",d:true},{t:"basefont",d:true,v:true},
+      {t:"big",d:true},{t:"blink",d:true},{t:"center",d:true},{t:"dir",d:true},
+      {t:"font",d:true},{t:"isindex",d:true,v:true},{t:"listing",d:true},
+      {t:"marquee",d:true},{t:"menuitem",d:true},{t:"nobr",d:true},
+      {t:"noembed",d:true},{t:"plaintext",d:true},{t:"rb",d:true},
+      {t:"rtc",d:true},{t:"strike",d:true},{t:"tt",d:true},{t:"xmp",d:true}
+    ]
+  }
+];
+
+// Deduplicate tags across categories for display
+const tagList = document.getElementById('tag-list');
+const searchInput = document.getElementById('search');
+const tagCountEl = document.getElementById('tag-count');
+let activeItem = null;
+
+function render(filter='') {
+  tagList.innerHTML = '';
+  const fl = filter.toLowerCase().trim();
+  let totalShown = 0;
+
+  categories.forEach(cat => {
+    const filtered = cat.tags.filter(t => t.t.toLowerCase().includes(fl));
+    if(!filtered.length) return;
+
+    const header = document.createElement('div');
+    header.className = 'cat-header';
+    header.innerHTML = `<span class="cat-dot" style="background:${cat.color}"></span>${cat.name}<span class="cat-count">${filtered.length}</span>`;
+    header.addEventListener('click', () => {
+      header.classList.toggle('collapsed');
+    });
+
+    const items = document.createElement('div');
+    items.className = 'cat-items';
+
+    filtered.forEach(tag => {
+      totalShown++;
+      const item = document.createElement('div');
+      item.className = 'tag-item';
+      item.dataset.tag = tag.t;
+      let badge = '';
+      if(tag.d) badge = '<span class="tag-badge badge-deprecated">deprecated</span>';
+      else if(tag.v) badge = '<span class="tag-badge badge-void">void</span>';
+      item.innerHTML = `<span class="tag-angle">&lt;</span><span class="tag-label">${tag.t}</span><span class="tag-angle">&gt;</span>${badge}`;
+      item.addEventListener('click', () => {
+        if(activeItem) activeItem.classList.remove('active');
+        item.classList.add('active');
+        activeItem = item;
+        parent.document.getElementById('content-frame').src = 'content.html?tag=' + encodeURIComponent(tag.t);
+      });
+      items.appendChild(item);
+    });
+
+    tagList.appendChild(header);
+    tagList.appendChild(items);
+  });
+
+  tagCountEl.textContent = totalShown;
+  if(!totalShown) {
+    tagList.innerHTML = '<div class="no-results">No tags found for "' + filter + '"</div>';
+  }
+}
+
+searchInput.addEventListener('input', () => render(searchInput.value));
+render();
+</script>
+</body>
+</html>
