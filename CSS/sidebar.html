@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #07090f;
+      --bg2:    #0e1120;
+      --bg3:    #131729;
+      --accent: #6c8bff;
+      --accent2:#a259ff;
+      --accent3:#ff6584;
+      --text:   #c8d0f0;
+      --muted:  #5a6385;
+      --border: #1a1f36;
+      --hover:  #111528;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{height:100%;background:var(--bg);font-family:'Outfit',sans-serif;overflow:hidden;}
+
+    #sidebar{height:100%;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+
+    /* ── Search bar ── */
+    .search-wrap{
+      padding:12px 12px 8px;
+      background:var(--bg);
+      border-bottom:1px solid var(--border);
+      flex-shrink:0;
+    }
+    .search-inner{
+      position:relative;
+    }
+    .search-icon{
+      position:absolute;left:10px;top:50%;transform:translateY(-50%);
+      color:var(--muted);font-size:12px;pointer-events:none;
+    }
+    .search-box{
+      width:100%;padding:8px 10px 8px 30px;
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:7px;color:var(--text);
+      font-family:'JetBrains Mono',monospace;font-size:12px;
+      outline:none;transition:border-color .2s;
+    }
+    .search-box::placeholder{color:var(--muted);}
+    .search-box:focus{border-color:var(--accent);}
+    .search-stats{
+      display:flex;justify-content:space-between;
+      padding:5px 2px 0;
+      font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);
+    }
+    #prop-count{color:var(--accent);}
+
+    /* ── Tag list ── */
+    #prop-list{flex:1;overflow-y:auto;padding:4px 0 20px;}
+    #prop-list::-webkit-scrollbar{width:5px;}
+    #prop-list::-webkit-scrollbar-track{background:transparent;}
+    #prop-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+    #prop-list::-webkit-scrollbar-thumb:hover{background:#2a3060;}
+
+    /* ── Category ── */
+    .cat-header{
+      padding:10px 14px 4px;
+      font-size:9px;font-weight:700;
+      font-family:'JetBrains Mono',monospace;
+      color:var(--muted);letter-spacing:2px;text-transform:uppercase;
+      display:flex;align-items:center;gap:7px;
+      user-select:none;cursor:pointer;
+      -webkit-user-select:none;cursor:pointer;
+    }
+    .cat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .cat-count{
+      margin-left:auto;
+      background:rgba(255,255,255,0.05);
+      padding:1px 7px;border-radius:10px;font-size:9px;
+    }
+    .cat-header.collapsed + .cat-items{display:none;}
+
+    /* ── Property item ── */
+    .prop-item{
+      display:flex;align-items:center;
+      padding:5px 14px;cursor:pointer;
+      border-left:2px solid transparent;
+      transition:all .14s;gap:7px;
+    }
+    .prop-item:hover{background:var(--hover);border-left-color:rgba(108,139,255,.4);}
+    .prop-item.active{
+      background:rgba(108,139,255,0.09);
+      border-left-color:var(--accent);
+    }
+    .prop-label{
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;color:var(--text);font-weight:600;
+      flex:1;
+    }
+    .prop-item.active .prop-label{color:var(--accent);}
+    .prop-badge{
+      font-size:9px;
+      font-family:'JetBrains Mono',monospace;
+      padding:1px 5px;border-radius:4px;
+      white-space:nowrap;
+    }
+    .badge-new{background:rgba(0,229,160,0.1);color:#00e5a0;border:1px solid rgba(0,229,160,0.2);}
+    .badge-exp{background:rgba(255,101,132,0.12);color:#ff6584;border:1px solid rgba(255,101,132,0.2);}
+    .badge-dep{background:rgba(120,120,120,0.15);color:#888;border:1px solid rgba(120,120,120,0.2);}
+
+    .no-results{
+      padding:22px 14px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:11px;color:var(--muted);text-align:center;
+    }
+  </style>
+  <title>CSS Properties Reference — Sidebar</title>
+</head>
+<body>
+<div id="sidebar">
+  <div class="search-wrap">
+    <div class="search-inner">
+      <span class="search-icon">{ }</span>
+      <input class="search-box" id="search" type="text" placeholder="Search CSS properties…" autocomplete="off">
+    </div>
+    <div class="search-stats">
+      <span>CSS Properties</span>
+      <span><span id="prop-count">0</span> shown</span>
+    </div>
+  </div>
+  <div id="prop-list"></div>
+</div>
+
+<script>
+const categories = [
+  {
+    name:"Box Model", color:"#6c8bff",
+    props:[
+      {p:"width"},{p:"height"},{p:"min-width"},{p:"max-width"},
+      {p:"min-height"},{p:"max-height"},
+      {p:"margin"},{p:"margin-top"},{p:"margin-right"},{p:"margin-bottom"},{p:"margin-left"},
+      {p:"padding"},{p:"padding-top"},{p:"padding-right"},{p:"padding-bottom"},{p:"padding-left"},
+      {p:"box-sizing"},{p:"border-radius"},{p:"box-shadow"},
+      {p:"aspect-ratio",badge:"new"},{p:"overflow"},{p:"overflow-x"},{p:"overflow-y"},
+    ]
+  },
+  {
+    name:"Borders", color:"#a259ff",
+    props:[
+      {p:"border"},{p:"border-top"},{p:"border-right"},{p:"border-bottom"},{p:"border-left"},
+      {p:"border-width"},{p:"border-style"},{p:"border-color"},
+      {p:"border-top-left-radius"},{p:"border-top-right-radius"},
+      {p:"border-bottom-left-radius"},{p:"border-bottom-right-radius"},
+      {p:"border-image"},{p:"border-collapse"},{p:"border-spacing"},
+      {p:"outline"},{p:"outline-width"},{p:"outline-style"},{p:"outline-color"},{p:"outline-offset"},
+    ]
+  },
+  {
+    name:"Typography", color:"#ff6584",
+    props:[
+      {p:"font"},{p:"font-family"},{p:"font-size"},{p:"font-weight"},{p:"font-style"},
+      {p:"font-variant"},{p:"font-stretch"},{p:"font-display"},{p:"font-kerning"},
+      {p:"line-height"},{p:"letter-spacing"},{p:"word-spacing"},
+      {p:"text-align"},{p:"text-decoration"},{p:"text-transform"},
+      {p:"text-indent"},{p:"text-shadow"},{p:"text-overflow"},
+      {p:"white-space"},{p:"word-break"},{p:"word-wrap"},{p:"overflow-wrap"},
+      {p:"vertical-align"},{p:"tab-size"},
+      {p:"hyphens"},{p:"writing-mode"},{p:"direction"},
+    ]
+  },
+  {
+    name:"Colors & Backgrounds", color:"#ffb347",
+    props:[
+      {p:"color"},{p:"opacity"},
+      {p:"background"},{p:"background-color"},{p:"background-image"},
+      {p:"background-repeat"},{p:"background-position"},{p:"background-size"},
+      {p:"background-attachment"},{p:"background-clip"},{p:"background-origin"},
+      {p:"background-blend-mode"},{p:"mix-blend-mode"},
+      {p:"filter"},{p:"backdrop-filter",badge:"new"},
+    ]
+  },
+  {
+    name:"Flexbox", color:"#00e5a0",
+    props:[
+      {p:"display (flex)"},{p:"flex"},{p:"flex-direction"},{p:"flex-wrap"},{p:"flex-flow"},
+      {p:"flex-grow"},{p:"flex-shrink"},{p:"flex-basis"},
+      {p:"justify-content"},{p:"align-items"},{p:"align-self"},{p:"align-content"},
+      {p:"order"},{p:"gap"},{p:"row-gap"},{p:"column-gap"},
+    ]
+  },
+  {
+    name:"CSS Grid", color:"#38d9f5",
+    props:[
+      {p:"display (grid)"},{p:"grid"},{p:"grid-template"},{p:"grid-template-columns"},
+      {p:"grid-template-rows"},{p:"grid-template-areas"},
+      {p:"grid-column"},{p:"grid-row"},{p:"grid-area"},
+      {p:"grid-column-start"},{p:"grid-column-end"},
+      {p:"grid-row-start"},{p:"grid-row-end"},
+      {p:"grid-auto-columns"},{p:"grid-auto-rows"},{p:"grid-auto-flow"},
+      {p:"place-items"},{p:"place-content"},{p:"place-self",badge:"new"},
+    ]
+  },
+  {
+    name:"Positioning", color:"#f7c59f",
+    props:[
+      {p:"position"},{p:"top"},{p:"right"},{p:"bottom"},{p:"left"},
+      {p:"z-index"},{p:"float"},{p:"clear"},
+      {p:"inset",badge:"new"},{p:"inset-block"},{p:"inset-inline"},
+    ]
+  },
+  {
+    name:"Display & Visibility", color:"#c0ca33",
+    props:[
+      {p:"display"},{p:"visibility"},{p:"clip"},{p:"clip-path"},
+      {p:"pointer-events"},{p:"user-select"},{p:"cursor"},
+      {p:"content-visibility",badge:"new"},{p:"resize"},
+    ]
+  },
+  {
+    name:"Transitions & Animation", color:"#ff8c69",
+    props:[
+      {p:"transition"},{p:"transition-property"},{p:"transition-duration"},
+      {p:"transition-timing-function"},{p:"transition-delay"},
+      {p:"animation"},{p:"animation-name"},{p:"animation-duration"},
+      {p:"animation-timing-function"},{p:"animation-delay"},
+      {p:"animation-iteration-count"},{p:"animation-direction"},
+      {p:"animation-fill-mode"},{p:"animation-play-state"},
+      {p:"@keyframes"},{p:"offset-path",badge:"new"},
+    ]
+  },
+  {
+    name:"Transforms", color:"#da77ff",
+    props:[
+      {p:"transform"},{p:"transform-origin"},{p:"transform-style"},
+      {p:"perspective"},{p:"perspective-origin"},
+      {p:"backface-visibility"},{p:"rotate",badge:"new"},
+      {p:"scale",badge:"new"},{p:"translate",badge:"new"},
+    ]
+  },
+  {
+    name:"Lists & Tables", color:"#79b8e8",
+    props:[
+      {p:"list-style"},{p:"list-style-type"},{p:"list-style-image"},{p:"list-style-position"},
+      {p:"counter-reset"},{p:"counter-increment"},
+      {p:"table-layout"},{p:"caption-side"},{p:"empty-cells"},
+    ]
+  },
+  {
+    name:"Columns & Multi-col", color:"#56d364",
+    props:[
+      {p:"columns"},{p:"column-count"},{p:"column-width"},
+      {p:"column-gap"},{p:"column-rule"},{p:"column-rule-width"},
+      {p:"column-rule-style"},{p:"column-rule-color"},
+      {p:"column-fill"},{p:"column-span"},
+    ]
+  },
+  {
+    name:"Scroll & Overflow", color:"#f78166",
+    props:[
+      {p:"scroll-behavior"},{p:"scroll-snap-type",badge:"new"},
+      {p:"scroll-snap-align",badge:"new"},{p:"scroll-margin",badge:"new"},
+      {p:"scroll-padding",badge:"new"},{p:"overscroll-behavior",badge:"new"},
+      {p:"scrollbar-width",badge:"new"},{p:"scrollbar-color",badge:"new"},
+    ]
+  },
+  {
+    name:"CSS Variables & Misc", color:"#d29922",
+    props:[
+      {p:"--custom-property"},{p:"var()"},{p:"calc()"},{p:"clamp()",badge:"new"},
+      {p:"min() / max()",badge:"new"},{p:"env()",badge:"new"},
+      {p:"quotes"},{p:"all"},{p:"caret-color"},{p:"appearance"},
+      {p:"will-change"},{p:"contain",badge:"new"},
+      {p:"isolation"},{p:"print-color-adjust"},
+    ]
+  },
+  {
+    name:"Pseudo & At-Rules", color:"#9e9e9e",
+    props:[
+      {p:":hover"},{p:":focus"},{p:":active"},{p:":visited"},
+      {p:":nth-child()"},{p:":not()"},{p:":is()",badge:"new"},{p:":where()",badge:"new"},
+      {p:":has()",badge:"new"},{p:"::before"},{p:"::after"},
+      {p:"::placeholder"},{p:"::selection"},
+      {p:"@media"},{p:"@supports"},{p:"@import"},{p:"@layer",badge:"new"},
+      {p:"@container",badge:"new"},
+    ]
+  },
+];
+
+const list = document.getElementById('prop-list');
+const searchInput = document.getElementById('search');
+const countEl = document.getElementById('prop-count');
+let activeItem = null;
+
+function render(filter='') {
+  list.innerHTML = '';
+  const fl = filter.toLowerCase().trim();
+  let total = 0;
+
+  categories.forEach(cat => {
+    const filtered = cat.props.filter(p => p.p.toLowerCase().includes(fl));
+    if (!filtered.length) return;
+
+    const header = document.createElement('div');
+    header.className = 'cat-header';
+    header.innerHTML = `<span class="cat-dot" style="background:${cat.color}"></span>${cat.name}<span class="cat-count">${filtered.length}</span>`;
+    header.addEventListener('click', () => header.classList.toggle('collapsed'));
+
+    const items = document.createElement('div');
+    items.className = 'cat-items';
+
+    filtered.forEach(prop => {
+      total++;
+      const item = document.createElement('div');
+      item.className = 'prop-item';
+      item.dataset.prop = prop.p;
+      let badge = '';
+      if (prop.badge === 'new') badge = '<span class="prop-badge badge-new">new</span>';
+      else if (prop.badge === 'exp') badge = '<span class="prop-badge badge-exp">exp</span>';
+      else if (prop.badge === 'dep') badge = '<span class="prop-badge badge-dep">dep</span>';
+      item.innerHTML = `<span class="prop-label">${prop.p}</span>${badge}`;
+      item.addEventListener('click', () => {
+        if (activeItem) activeItem.classList.remove('active');
+        item.classList.add('active');
+        activeItem = item;
+        parent.document.getElementById('content-frame').src =
+          'css-content.html?prop=' + encodeURIComponent(prop.p);
+      });
+      items.appendChild(item);
+    });
+
+    list.appendChild(header);
+    list.appendChild(items);
+  });
+
+  countEl.textContent = total;
+  if (!total) list.innerHTML = `<div class="no-results">No properties matching "${filter}"</div>`;
+}
+
+searchInput.addEventListener('input', () => render(searchInput.value));
+render();
+</script>
+</body>
+</html>
