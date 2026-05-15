@@ -46,13 +46,39 @@ The main page acts as a clean dashboard, while each subfolder opens independentl
 
 ## Folder Structure
 ```bash
-mern-stack/
-├── index.html
-├── README.md
-├── HTML/
-│   ├── index.html
-│   ├── windows.html
-│   ├── linux.html
-│   └── apple.html
-└── assets/
-    └── images/
+Directory structure:
+└── babamosie333-mern-stack-practise/
+    ├── README.md
+    ├── index.html
+    ├── .hintrc
+    ├── CSS/
+    │   ├── frameset.html
+    │   └── sidebar.html
+    ├── E-commerce/
+    │   ├── about.html
+    │   ├── cart.html
+    │   ├── contact.html
+    │   ├── index.html
+    │   ├── product.html
+    │   ├── products.html
+    │   ├── css/
+    │   │   └── style.css
+    │   └── js/
+    │       └── script.js
+    ├── Form/
+    │   ├── index.html
+    │   ├── script.js
+    │   └── style.css
+    ├── Frameset/
+    │   ├── frameset.html
+    │   └── sidebar.html
+    ├── HTMLPractise/
+    │   ├── apple.html
+    │   ├── index.html
+    │   ├── linux.html
+    │   ├── windows.html
+    │   └── images/
+    │       └── window.avif
+    └── JS/
+        ├── frameset.html
+        └── sidebar.html
