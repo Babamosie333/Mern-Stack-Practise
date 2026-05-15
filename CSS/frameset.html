@@ -1,143 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Properties Reference — Complete Guide</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Properties Reference</title>
   <style>
-    :root {
-      --bg-dark:   #07090f;
-      --bg-nav:    #0c0f1a;
-      --accent:    #6c8bff;
-      --accent2:   #a259ff;
-      --accent3:   #ff6584;
-      --text-light:#e8ecff;
-      --text-muted:#6e7a9a;
-      --border:    #1a1f36;
-      --glow:      0 0 28px rgba(108,139,255,0.18);
+    html,body{height:100%;margin:0}
+    body{display:flex;overflow:hidden;background:#07090f}
+    #sidebar-frame{width:320px;flex-shrink:0;height:100vh;border:0}
+    #content-frame{flex:1;height:100vh;border:0}
+    @media (max-width:900px){
+      body{flex-direction:column}
+      #sidebar-frame{width:100%;height:38vh}
+      #content-frame{width:100%;height:62vh}
     }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; background:var(--bg-dark); font-family:'Outfit',sans-serif; overflow:hidden; }
-
-    /* ── NAVBAR ── */
-    #navbar {
-      position:fixed; top:0; left:0; right:0; height:60px;
-      background:linear-gradient(90deg,#0c0f1a 0%,#0f1225 60%,#0c0f1a 100%);
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 26px; z-index:999;
-      box-shadow:0 2px 30px rgba(0,0,0,0.8);
-    }
-
-    /* Brand */
-    .nav-brand { display:flex; align-items:center; gap:13px; cursor:pointer; }
-    .nav-logo {
-      width:40px; height:40px;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      border-radius:10px; display:flex; align-items:center; justify-content:center;
-      font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700;
-      color:#fff; box-shadow:var(--glow); flex-shrink:0;
-      letter-spacing:-1px;
-    }
-    .nav-title-wrap { display:flex; flex-direction:column; line-height:1; }
-    .nav-title { font-size:16px; font-weight:700; color:var(--text-light); letter-spacing:0.2px; }
-    .nav-subtitle {
-      font-size:10px; color:var(--text-muted);
-      letter-spacing:2px; text-transform:uppercase;
-      margin-top:3px; font-family:'JetBrains Mono',monospace;
-    }
-
-    /* Center */
-    .nav-center {
-      display:flex; align-items:center; gap:10px;
-      background:rgba(108,139,255,0.05);
-      border:1px solid rgba(108,139,255,0.15);
-      border-radius:8px; padding:7px 18px;
-    }
-    .nav-center-text {
-      font-family:'JetBrains Mono',monospace;
-      font-size:12px; color:var(--text-muted);
-    }
-    .nav-center-text span { color:var(--accent); }
-
-    /* Right */
-    .nav-right { display:flex; align-items:center; gap:12px; }
-    .nav-badge {
-      padding:4px 13px; border-radius:20px;
-      font-size:10px; font-family:'JetBrains Mono',monospace;
-      font-weight:700; letter-spacing:1px; text-transform:uppercase;
-    }
-    .badge-total { background:rgba(108,139,255,0.12); color:var(--accent); border:1px solid rgba(108,139,255,0.3); }
-    .badge-ver   { background:rgba(162,89,255,0.12); color:var(--accent2); border:1px solid rgba(162,89,255,0.3); }
-    .badge-live  { background:rgba(255,101,132,0.12); color:var(--accent3); border:1px solid rgba(255,101,132,0.3); }
-    .nav-dot {
-      width:8px; height:8px; border-radius:50%;
-      background:#00e5a0; box-shadow:0 0 10px rgba(0,229,160,0.7);
-      animation:pulse 2s infinite;
-    }
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-    /* ── FRAMES ── */
-    #frame-container {
-      position:fixed; top:60px; left:0; right:0; bottom:0;
-      display:flex;
-    }
-    #sidebar-frame { width:270px; min-width:190px; border:none; flex-shrink:0; }
-    #divider {
-      width:4px; background:var(--border); cursor:col-resize;
-      transition:background .2s; flex-shrink:0; position:relative;
-    }
-    #divider:hover, #divider.drag { background:var(--accent); }
-    #divider::after {
-      content:''; position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      width:2px; height:36px; border-radius:2px;
-      background:rgba(255,255,255,0.06);
-    }
-    #content-frame { flex:1; border:none; }
   </style>
 </head>
 <body>
-
-<nav id="navbar">
-  <div class="nav-brand" onclick="document.getElementById('content-frame').src='css-content.html'">
-    <div class="nav-logo">{ }</div>
-    <div class="nav-title-wrap">
-      <span class="nav-title">CSS Reference</span>
-      <span class="nav-subtitle">Complete Property Guide</span>
-    </div>
-  </div>
-
-  <div class="nav-center">
-    <span class="nav-center-text">← Pick a property &nbsp;|&nbsp; <span>View Full Details →</span></span>
-  </div>
-
-  <div class="nav-right">
-    <span class="nav-badge badge-total">200+ Props</span>
-    <span class="nav-badge badge-ver">CSS 3</span>
-    <span class="nav-badge badge-live">+ Modern</span>
-    <div class="nav-dot" title="Live"></div>
-  </div>
-</nav>
-
-<div id="frame-container">
-  <iframe id="sidebar-frame" src="/CSS/sidebar.html" frameborder="0" scrolling="no" resize="no" title="CSS Navigation"></iframe>
-  <div id="divider"></div>
-  <iframe id="content-frame" src="/CSS/content.html" frameborder="0" title="CSS Content"></iframe>
-</div>
-
-<script>
-  const dv = document.getElementById('divider');
-  const sf = document.getElementById('sidebar-frame');
-  let drag = false;
-  dv.addEventListener('mousedown',()=>{ drag=true; dv.classList.add('drag'); document.body.style.cssText='cursor:col-resize;user-select:none'; });
-  document.addEventListener('mousemove',e=>{
-    if(!drag)return;
-    const r=document.getElementById('frame-container').getBoundingClientRect();
-    sf.style.width=Math.max(190,Math.min(460,e.clientX-r.left))+'px';
-  });
-  document.addEventListener('mouseup',()=>{ drag=false; dv.classList.remove('drag'); document.body.style.cssText=''; });
-</script>
+  <iframe id="sidebar-frame" src="sidebar.html" name="sidebar" title="Sidebar"></iframe>
+  <iframe id="content-frame" src="content.html?prop=width" name="content" title="Content"></iframe>
 </body>
 </html>

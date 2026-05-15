@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Content</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -10,927 +12,680 @@
       --bg:#07090f; --bg2:#0e1120; --bg3:#131729;
       --text:#dde2f5; --muted:#5a6385; --border:#1a1f36;
     }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    html{scroll-behavior:smooth;}
-    body{
-      background:var(--bg);color:var(--text);
-      font-family:'Outfit',sans-serif;font-size:14px;
-      line-height:1.7;min-height:100vh;
-    }
-
-    /* ──────────── WELCOME ──────────── */
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;line-height:1.7}
     #welcome{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      min-height:100vh;padding:48px;
-      background:radial-gradient(ellipse at 50% 30%,rgba(108,139,255,.07) 0%,transparent 65%);
+      min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:48px;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(108,139,255,.07) 0%,transparent 65%);
     }
-    .w-logo{
-      font-family:'JetBrains Mono',monospace;font-size:80px;font-weight:700;
-      background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      line-height:1;margin-bottom:26px;
-      filter:drop-shadow(0 0 40px rgba(108,139,255,.25));
-    }
-    .w-title{font-size:30px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.5px;}
-    .w-sub{color:var(--muted);font-size:14px;text-align:center;max-width:420px;margin-bottom:34px;line-height:1.6;}
-    .w-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:520px;width:100%;}
-    .w-stat{
-      background:var(--bg2);border:1px solid var(--border);
-      border-radius:12px;padding:16px;text-align:center;
-    }
-    .w-stat .num{
-      font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;
-      display:block;background:linear-gradient(135deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    }
-    .w-stat .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
-    .w-hint{
-      margin-top:28px;padding:12px 22px;
-      background:rgba(108,139,255,.07);border:1px solid rgba(108,139,255,.2);
-      border-radius:8px;font-family:'JetBrains Mono',monospace;
-      font-size:12px;color:var(--accent);
-    }
-
-    /* ──────────── PROPERTY PAGE ──────────── */
-    #prop-page{display:none;}
-
-    /* Hero */
-    .prop-hero{
-      background:linear-gradient(135deg,#0c0f1a 0%,#10152a 100%);
-      border-bottom:1px solid var(--border);
-      padding:32px 42px 28px;position:relative;overflow:hidden;
-    }
-    .prop-hero::before{
-      content:'';position:absolute;top:-80px;right:-80px;
-      width:300px;height:300px;
-      background:radial-gradient(circle,rgba(108,139,255,.07) 0%,transparent 70%);
-      pointer-events:none;
-    }
-    .prop-hero::after{
-      content:'';position:absolute;bottom:-50px;left:30%;
-      width:200px;height:200px;
-      background:radial-gradient(circle,rgba(162,89,255,.05) 0%,transparent 70%);
-      pointer-events:none;
-    }
-    .hero-breadcrumb{
-      font-family:'JetBrains Mono',monospace;font-size:11px;
-      color:var(--muted);margin-bottom:14px;letter-spacing:.5px;
-    }
-    .hero-breadcrumb span{color:var(--accent);}
-    .hero-prop-name{
-      font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;
-      color:var(--text);line-height:1;margin-bottom:12px;
-    }
-    .hero-prop-name .pname{color:var(--accent);}
-    .hero-prop-name .colon{color:var(--muted);font-size:30px;}
-    .hero-desc{font-size:15px;color:var(--muted);max-width:700px;line-height:1.65;margin-bottom:18px;}
-    .hero-badges{display:flex;gap:8px;flex-wrap:wrap;}
-    .hbadge{
-      padding:4px 12px;border-radius:20px;
-      font-size:10px;font-family:'JetBrains Mono',monospace;
-      font-weight:700;letter-spacing:.8px;text-transform:uppercase;
-    }
-    .hb-cat{background:rgba(108,139,255,.12);color:var(--accent);border:1px solid rgba(108,139,255,.25);}
-    .hb-ver{background:rgba(0,229,160,.1);color:var(--green);border:1px solid rgba(0,229,160,.22);}
-    .hb-new{background:rgba(56,217,245,.1);color:var(--cyan);border:1px solid rgba(56,217,245,.22);}
-    .hb-dep{background:rgba(255,101,132,.1);color:var(--accent3);border:1px solid rgba(255,101,132,.22);}
-    .hb-exp{background:rgba(255,141,105,.1);color:var(--orange);border:1px solid rgba(255,141,105,.22);}
-    .hb-inh{background:rgba(162,89,255,.1);color:var(--accent2);border:1px solid rgba(162,89,255,.22);}
-
-    /* Content */
-    .prop-content{padding:32px 42px 70px;}
-
-    /* Section */
-    .section{margin-bottom:36px;}
-    .section-title{
-      font-size:10px;font-weight:700;
-      font-family:'JetBrains Mono',monospace;
-      color:var(--muted);letter-spacing:2.5px;
-      text-transform:uppercase;margin-bottom:14px;
-      display:flex;align-items:center;gap:10px;
-    }
-    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
-    .section p{color:#9aa3c4;line-height:1.8;margin-bottom:10px;}
-    .section p:last-child{margin-bottom:0;}
-
-    /* Code block */
-    .code-block{
-      background:#060810;border:1px solid var(--border);
-      border-radius:10px;overflow:hidden;margin:8px 0;
-    }
-    .code-header{
-      background:var(--bg2);padding:8px 16px;
-      display:flex;justify-content:space-between;align-items:center;
-      border-bottom:1px solid var(--border);
-    }
-    .code-lang{
-      font-family:'JetBrains Mono',monospace;
-      font-size:10px;color:var(--muted);
-      text-transform:uppercase;letter-spacing:1.2px;
-    }
-    .code-copy{
-      font-size:10px;color:var(--muted);cursor:pointer;
-      padding:2px 8px;border:1px solid var(--border);
-      border-radius:4px;background:transparent;
-      font-family:'JetBrains Mono',monospace;transition:all .15s;
-    }
-    .code-copy:hover{color:var(--accent);border-color:var(--accent);}
-    pre{
-      padding:16px 20px;overflow-x:auto;
-      font-family:'JetBrains Mono',monospace;
-      font-size:12.5px;line-height:1.75;color:#c8d0f0;
-    }
-    pre::-webkit-scrollbar{height:4px;}
-    pre::-webkit-scrollbar-track{background:transparent;}
-    pre::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-
-    /* Syntax colors */
-    .cp{color:#6c8bff;}   /* property */
-    .cv{color:#ff8c69;}   /* value */
-    .cs{color:#56d364;}   /* selector */
-    .cc{color:#3a4060;}   /* comment */
-    .ck{color:#a259ff;}   /* keyword / at-rule */
-    .cn{color:#38d9f5;}   /* number */
-    .cq{color:#ffd580;}   /* string/quotes */
-
-    /* Values table */
-    .val-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
-    .val-table th{
-      text-align:left;padding:8px 12px;
-      font-family:'JetBrains Mono',monospace;
-      font-size:10px;color:var(--muted);
-      letter-spacing:1px;text-transform:uppercase;
-      border-bottom:1px solid var(--border);background:var(--bg2);
-    }
-    .val-table td{
-      padding:9px 12px;border-bottom:1px solid rgba(26,31,54,.7);
-      vertical-align:top;
-    }
-    .val-table tr:last-child td{border-bottom:none;}
-    .val-table tr:hover td{background:rgba(108,139,255,.03);}
-    .val-name{
-      font-family:'JetBrains Mono',monospace;
-      color:var(--cyan);font-size:12px;font-weight:600;white-space:nowrap;
-    }
-    .val-default{
-      font-family:'JetBrains Mono',monospace;
-      font-size:10px;color:var(--yellow);
-      padding:1px 6px;background:rgba(255,213,128,.07);
-      border-radius:4px;border:1px solid rgba(255,213,128,.15);
-    }
-    .val-desc{color:var(--muted);font-size:13px;}
-
-    /* Info grid */
-    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-    .info-card{
-      background:var(--bg2);border:1px solid var(--border);
-      border-radius:10px;padding:14px;
-    }
-    .ic-label{
-      font-size:9px;font-family:'JetBrains Mono',monospace;
-      color:var(--muted);text-transform:uppercase;
-      letter-spacing:1.5px;margin-bottom:6px;
-    }
-    .ic-val{font-size:13px;font-weight:600;color:var(--text);}
-    .ic-val.yes{color:var(--green);}
-    .ic-val.no{color:var(--accent3);}
-
-    /* Browser support bar */
-    .browser-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-    .browser-pill{
-      display:flex;align-items:center;gap:5px;
-      padding:4px 10px;border-radius:20px;
-      font-size:11px;font-family:'JetBrains Mono',monospace;
-    }
-    .bp-yes{background:rgba(0,229,160,.1);color:var(--green);border:1px solid rgba(0,229,160,.2);}
-    .bp-partial{background:rgba(255,213,128,.08);color:var(--yellow);border:1px solid rgba(255,213,128,.18);}
-    .bp-no{background:rgba(255,101,132,.08);color:var(--accent3);border:1px solid rgba(255,101,132,.18);}
-
-    /* Note */
-    .note{
-      padding:12px 16px;border-radius:8px;
-      border-left:3px solid;margin:10px 0;
-      font-size:13px;line-height:1.6;
-    }
-    .note-info{background:rgba(108,139,255,.07);border-color:var(--accent);color:#9aabff;}
-    .note-warn{background:rgba(255,101,132,.07);border-color:var(--accent3);color:#ff9aaa;}
-    .note-tip {background:rgba(0,229,160,.07);border-color:var(--green);color:#6effd8;}
-    .note strong{font-weight:700;}
-    code{
-      font-family:'JetBrains Mono',monospace;font-size:11.5px;
-      color:var(--accent);background:rgba(108,139,255,.1);
-      padding:1px 5px;border-radius:4px;
-    }
-
-    /* Live demo */
-    .live-demo{
-      border:1px solid var(--border);border-radius:10px;overflow:hidden;
-    }
-    .demo-header{
-      background:var(--bg2);padding:8px 16px;
-      display:flex;align-items:center;gap:6px;
-      border-bottom:1px solid var(--border);
-    }
-    .demo-dot{width:10px;height:10px;border-radius:50%;}
-    .demo-header span{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-left:4px;}
-    .demo-body{padding:20px;background:#0a0d1a;}
+    .logo{font-family:'JetBrains Mono',monospace;font-size:80px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:22px;filter:drop-shadow(0 0 40px rgba(108,139,255,.25))}
+    .title{font-size:30px;font-weight:700;margin-bottom:10px}
+    .sub{color:var(--muted);max-width:520px}
+    #page{display:none}
+    .hero{padding:30px 42px 28px;background:linear-gradient(135deg,#0c0f1a 0%,#10152a 100%);border-bottom:1px solid var(--border)}
+    .crumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px}
+    .crumb span{color:var(--accent)}
+    .name{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:700;margin-bottom:10px;line-height:1}
+    .name .p{color:var(--accent)}
+    .name .c{color:var(--muted);font-size:30px}
+    .desc{color:var(--muted);max-width:760px;font-size:15px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .b{padding:4px 12px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+    .cat{background:rgba(108,139,255,.12);color:var(--accent);border:1px solid rgba(108,139,255,.25)}
+    .ver{background:rgba(0,229,160,.1);color:var(--green);border:1px solid rgba(0,229,160,.22)}
+    .ani{background:rgba(56,217,245,.1);color:var(--cyan);border:1px solid rgba(56,217,245,.22)}
+    .inh{background:rgba(162,89,255,.1);color:var(--accent2);border:1px solid rgba(162,89,255,.22)}
+    .sta{background:rgba(255,101,132,.1);color:var(--accent3);border:1px solid rgba(255,101,132,.22)}
+    .content{padding:32px 42px 70px}
+    .section{margin-bottom:34px}
+    .st{display:flex;align-items:center;gap:10px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px}
+    .st::after{content:'';flex:1;height:1px;background:var(--border)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+    .lab{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+    .val{font-size:13px;font-weight:600}
+    .val.y{color:var(--green)} .val.n{color:var(--accent3)}
+    .block{background:#060810;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+    .head{padding:8px 16px;background:var(--bg2);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase}
+    pre{padding:16px 20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.75;color:#c8d0f0}
+    .cs{color:#56d364}.cp{color:#6c8bff}.cv{color:#ff8c69}.cc{color:#3a4060}.cq{color:#ffd580}
+    .table{width:100%;border-collapse:collapse;font-size:13px}
+    .table th{text-align:left;padding:8px 12px;background:var(--bg2);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+    .table td{padding:9px 12px;border-bottom:1px solid rgba(26,31,54,.7);vertical-align:top}
+    .vname{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:12px;font-weight:600}
+    .default{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--yellow);padding:1px 6px;background:rgba(255,213,128,.07);border-radius:4px;border:1px solid rgba(255,213,128,.15);margin-left:6px}
+    .desc2{color:var(--muted)}
+    .pill-wrap{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid var(--border)}
+    .yes{background:rgba(0,229,160,.1);color:var(--green);border-color:rgba(0,229,160,.2)}
+    .partial{background:rgba(255,213,128,.08);color:var(--yellow);border-color:rgba(255,213,128,.18)}
+    .no{background:rgba(255,101,132,.08);color:var(--accent3);border-color:rgba(255,101,132,.18)}
+    .note{padding:12px 16px;border-radius:8px;border-left:3px solid;margin:10px 0;font-size:13px;line-height:1.6}
+    .info{background:rgba(108,139,255,.07);border-color:var(--accent);color:#9aabff}
+    .tip{background:rgba(0,229,160,.07);border-color:var(--green);color:#6effd8}
+    code{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--accent);background:rgba(108,139,255,.1);padding:1px 5px;border-radius:4px}
   </style>
 </head>
 <body>
-
-<!-- WELCOME -->
-<div id="welcome">
-  <div class="w-logo">{ }</div>
-  <div class="w-title">CSS Properties Reference</div>
-  <div class="w-sub">A complete guide to every CSS property — select one from the sidebar to explore its syntax, values, browser support, and examples.</div>
-  <div class="w-stats">
-    <div class="w-stat"><span class="num">200+</span><span class="lbl">Properties</span></div>
-    <div class="w-stat"><span class="num">15</span><span class="lbl">Categories</span></div>
-    <div class="w-stat"><span class="num">CSS3</span><span class="lbl">Standard</span></div>
-    <div class="w-stat"><span class="num">2025</span><span class="lbl">Up to Date</span></div>
+  <div id="welcome">
+    <div class="logo">{ }</div>
+    <div class="title">CSS Properties Reference</div>
+    <div class="sub">Select a property from the sidebar to view its syntax, values, examples, and browser support.</div>
   </div>
-  <div class="w-hint">← Click any property in the sidebar to begin</div>
-</div>
 
-<!-- PROP PAGE -->
-<div id="prop-page"></div>
+  <div id="page">
+    <div class="hero">
+      <div class="crumb">CSS / <span id="cat">Box Model</span> / <span id="slug">width</span></div>
+      <div class="name"><span class="p" id="prop">width</span><span class="c">:</span></div>
+      <div class="desc" id="desc"></div>
+      <div class="badges" id="badges"></div>
+    </div>
 
-<script>
-const DB = {
-  "width":{
-    desc:"Sets the width of an element's content area. By default it applies to the content box only. With <code>box-sizing: border-box</code> it includes padding and border. Accepts length values, percentages, keyword values, or intrinsic sizing keywords.",
-    category:"Box Model",version:"CSS1",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">width</span>: <span class="cv">300px</span>;\n  <span class="cp">width</span>: <span class="cv">50%</span>;\n  <span class="cp">width</span>: <span class="cv">auto</span>;\n  <span class="cp">width</span>: <span class="cv">max-content</span>;\n  <span class="cp">width</span>: <span class="cv">min-content</span>;\n  <span class="cp">width</span>: <span class="cv">fit-content</span>;\n}`,
-    example:`<span class="cs">.container</span> {\n  <span class="cp">width</span>: <span class="cv">800px</span>;\n  <span class="cp">max-width</span>: <span class="cv">100%</span>;   <span class="cc">/* Responsive: never overflow */</span>\n}\n<span class="cs">.fluid</span> {\n  <span class="cp">width</span>: <span class="cv">50%</span>;      <span class="cc">/* Half of parent */</span>\n}\n<span class="cs">.intrinsic</span> {\n  <span class="cp">width</span>: <span class="cv">fit-content</span>;  <span class="cc">/* Shrinks to content */</span>\n}`,
-    values:[
-      {v:"auto",d:"Browser calculates width (default for block = full parent width)"},
-      {v:"<length>",d:"Explicit size: px, em, rem, vw, ch, etc."},
-      {v:"<percentage>",d:"Percentage of the containing block's width"},
-      {v:"min-content",d:"Width of the smallest content possible without overflow"},
-      {v:"max-content",d:"Width required to fit all content on one line"},
-      {v:"fit-content",d:"Uses available space but never more than max-content"},
-      {v:"inherit",d:"Inherits width from parent element"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<p>Always combine <code>width: 100%</code> with <code>max-width</code> for responsive layouts. Use <code>box-sizing: border-box</code> globally to make width calculations more intuitive.</p>
-<div class="note note-tip"><strong>Tip:</strong> For fluid layouts prefer percentage or viewport units over fixed pixels. CSS Grid and Flexbox usually handle sizing better than manual widths.</div>`
-  },
-  "height":{
-    desc:"Sets the height of an element. Unlike width, percentage heights require a definite height on the parent element to work. In modern CSS, use <code>min-height: 100vh</code> or <code>height: 100dvh</code> (dynamic viewport height) for full-page sections.",
-    category:"Box Model",version:"CSS1",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">height</span>: <span class="cv">200px</span>;\n  <span class="cp">height</span>: <span class="cv">50vh</span>;\n  <span class="cp">height</span>: <span class="cv">auto</span>;\n  <span class="cp">height</span>: <span class="cv">100dvh</span>; <span class="cc">/* Modern: dynamic viewport */</span>\n}`,
-    example:`<span class="cs">.full-page</span> {\n  <span class="cp">height</span>: <span class="cv">100vh</span>;\n  <span class="cp">min-height</span>: <span class="cv">100dvh</span>; <span class="cc">/* Better mobile support */</span>\n}\n<span class="cs">.card</span> {\n  <span class="cp">height</span>: <span class="cv">auto</span>; <span class="cc">/* Grows with content */</span>\n  <span class="cp">min-height</span>: <span class="cv">200px</span>;\n}`,
-    values:[
-      {v:"auto",d:"Element height is determined by its content (default)"},
-      {v:"<length>",d:"Fixed height in px, em, rem, vh, etc."},
-      {v:"<percentage>",d:"Percentage of parent's height (parent must have defined height)"},
-      {v:"min-content / max-content / fit-content",d:"Intrinsic sizing keywords"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<p>Setting <code>height: 100%</code> on a child requires the parent to have a defined height. A common pattern is <code>html, body { height: 100% }</code> to enable percentage heights throughout.</p>`
-  },
-  "margin":{
-    desc:"Sets the margin area on all four sides of an element — the space outside the border. Margins are transparent (show the parent's background). Adjacent vertical margins of block elements collapse into one (the larger of the two).",
-    category:"Box Model",version:"CSS1",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">margin</span>: <span class="cv">10px</span>;              <span class="cc">/* all sides */</span>\n  <span class="cp">margin</span>: <span class="cv">10px 20px</span>;         <span class="cc">/* top/bottom left/right */</span>\n  <span class="cp">margin</span>: <span class="cv">10px 20px 30px</span>;    <span class="cc">/* top left/right bottom */</span>\n  <span class="cp">margin</span>: <span class="cv">5px 10px 15px 20px</span>; <span class="cc">/* top right bottom left */</span>\n  <span class="cp">margin</span>: <span class="cv">auto</span>;             <span class="cc">/* center horizontally */</span>\n}`,
-    example:`<span class="cs">.centered</span> {\n  <span class="cp">width</span>: <span class="cv">600px</span>;\n  <span class="cp">margin</span>: <span class="cv">0 auto</span>; <span class="cc">/* classic centering */</span>\n}\n<span class="cs">.spaced</span> {\n  <span class="cp">margin-block</span>: <span class="cv">2rem</span>; <span class="cc">/* modern logical property */</span>\n  <span class="cp">margin-inline</span>: <span class="cv">auto</span>;\n}`,
-    values:[
-      {v:"<length>",d:"Fixed margin: px, em, rem, vw"},
-      {v:"<percentage>",d:"Percentage of the containing block's WIDTH (even for top/bottom)"},
-      {v:"auto",d:"Browser calculates — horizontal auto centers block elements"},
-      {v:"negative values",d:"Negative margins pull element outside its box (powerful but tricky)"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<p><strong>Margin collapse</strong>: vertical margins between adjacent blocks collapse to the larger value. This doesn't happen with flex/grid children, or elements with overflow other than visible.</p>
-<div class="note note-tip"><strong>Modern tip:</strong> Use <code>margin-block</code> and <code>margin-inline</code> (logical properties) for better internationalization support.</div>`
-  },
-  "padding":{
-    desc:"Sets the padding area on all four sides — the space between the content and the border. Unlike margin, padding is affected by the element's background. Padding cannot be negative.",
-    category:"Box Model",version:"CSS1",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">padding</span>: <span class="cv">20px</span>;             <span class="cc">/* all sides */</span>\n  <span class="cp">padding</span>: <span class="cv">10px 20px</span>;        <span class="cc">/* v h */</span>\n  <span class="cp">padding</span>: <span class="cv">10px 20px 30px 40px</span>; <span class="cc">/* T R B L */</span>\n  <span class="cp">padding-block</span>: <span class="cv">1rem</span>;     <span class="cc">/* logical: top + bottom */</span>\n  <span class="cp">padding-inline</span>: <span class="cv">1.5rem</span>;  <span class="cc">/* logical: left + right */</span>\n}`,
-    example:`<span class="cs">.card</span> {\n  <span class="cp">padding</span>: <span class="cv">24px 32px</span>;\n  <span class="cp">background</span>: <span class="cv">#fff</span>;\n  <span class="cp">border-radius</span>: <span class="cv">12px</span>;\n}\n<span class="cs">.button</span> {\n  <span class="cp">padding</span>: <span class="cv">10px 24px</span>;\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n}`,
-    values:[
-      {v:"<length>",d:"Fixed padding: px, em, rem"},
-      {v:"<percentage>",d:"Percentage of containing block's WIDTH (all sides, including top/bottom)"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<p>Padding percentages (even top/bottom) are relative to the containing block's <em>width</em> — this enables the well-known aspect-ratio hack: <code>padding-top: 56.25%</code> for 16:9.</p>`
-  },
-  "box-sizing":{
-    desc:"Defines how the total width and height of an element is calculated. The most important CSS reset: setting it to <code>border-box</code> globally makes layout math intuitive — the declared width/height includes padding and border.",
-    category:"Box Model",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cc">/* Global reset (best practice) */</span>\n<span class="cs">*</span>, <span class="cs">*::before</span>, <span class="cs">*::after</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n}`,
-    example:`<span class="cc">/* Without border-box: actual width = 200+20+20+2+2 = 244px */</span>\n<span class="cs">.bad</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">content-box</span>; <span class="cc">/* default */</span>\n  <span class="cp">width</span>: <span class="cv">200px</span>; <span class="cp">padding</span>: <span class="cv">20px</span>; <span class="cp">border</span>: <span class="cv">2px solid</span>;\n}\n<span class="cc">/* With border-box: actual width = 200px exactly */</span>\n<span class="cs">.good</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n  <span class="cp">width</span>: <span class="cv">200px</span>; <span class="cp">padding</span>: <span class="cv">20px</span>; <span class="cp">border</span>: <span class="cv">2px solid</span>;\n}`,
-    values:[
-      {v:"content-box",d:"Default: width/height apply to content only. Padding and border add to total size.",isDefault:true},
-      {v:"border-box",d:"Width/height include content, padding, and border. Recommended for all projects."},
-    ],
-    browser:{chrome:"10",firefox:"29",safari:"5.1",edge:"12",ie:"8"},
-    notes:`<div class="note note-tip"><strong>Best practice:</strong> Apply <code>box-sizing: border-box</code> universally via the universal selector. This is included in all modern CSS frameworks (Bootstrap, Tailwind, etc.).</div>`
-  },
-  "border-radius":{
-    desc:"Rounds the corners of an element's border box. Accepts 1–4 values for individual corners. Each corner can have two radii (horizontal and vertical) separated by a slash for elliptical curves.",
-    category:"Box Model",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">border-radius</span>: <span class="cv">12px</span>;           <span class="cc">/* all corners */</span>\n  <span class="cp">border-radius</span>: <span class="cv">10px 20px</span>;      <span class="cc">/* TL/BR  TR/BL */</span>\n  <span class="cp">border-radius</span>: <span class="cv">50%</span>;             <span class="cc">/* circle/ellipse */</span>\n  <span class="cp">border-radius</span>: <span class="cv">10px 20px 30px 40px</span>; <span class="cc">/* each corner */</span>\n  <span class="cp">border-radius</span>: <span class="cv">50% / 30%</span>;      <span class="cc">/* elliptical */</span>\n}`,
-    example:`<span class="cs">.card</span>    { <span class="cp">border-radius</span>: <span class="cv">16px</span>; }\n<span class="cs">.circle</span>  { <span class="cp">border-radius</span>: <span class="cv">50%</span>; <span class="cp">width</span>:<span class="cv">100px</span>; <span class="cp">height</span>:<span class="cv">100px</span>; }\n<span class="cs">.pill</span>    { <span class="cp">border-radius</span>: <span class="cv">9999px</span>; }\n<span class="cs">.leaf</span>    { <span class="cp">border-radius</span>: <span class="cv">0 50% 50% 50%</span>; }`,
-    values:[
-      {v:"<length>",d:"Corner radius in px, em, rem"},
-      {v:"<percentage>",d:"Percentage of the element's width (or height for vertical radius)"},
-      {v:"50%",d:"Creates a circle (with equal width/height) or ellipse"},
-    ],
-    browser:{chrome:"4",firefox:"4",safari:"5",edge:"12",ie:"9"},
-    notes:`<p>Individual corner properties: <code>border-top-left-radius</code>, <code>border-top-right-radius</code>, <code>border-bottom-right-radius</code>, <code>border-bottom-left-radius</code>.</p>`
-  },
-  "box-shadow":{
-    desc:"Applies one or more shadows to an element. Each shadow is defined by offset, blur, spread, and color values. Multiple shadows can be comma-separated. Use <code>inset</code> keyword for inner shadows.",
-    category:"Box Model",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">box-shadow</span>: <span class="cv">h-offset v-offset blur spread color</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">2px 4px 8px rgba(0,0,0,.3)</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">inset 0 2px 4px rgba(0,0,0,.2)</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">0 1px 3px rgba(0,0,0,.1), 0 4px 16px rgba(0,0,0,.15)</span>;\n}`,
-    example:`<span class="cc">/* Elevation levels */</span>\n<span class="cs">.elevation-1</span> { <span class="cp">box-shadow</span>: <span class="cv">0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)</span>; }\n<span class="cs">.elevation-3</span> { <span class="cp">box-shadow</span>: <span class="cv">0 10px 30px rgba(0,0,0,0.19), 0 6px 10px rgba(0,0,0,0.23)</span>; }\n<span class="cs">.glow</span>        { <span class="cp">box-shadow</span>: <span class="cv">0 0 20px rgba(108,139,255,0.5)</span>; }\n<span class="cs">.inner</span>       { <span class="cp">box-shadow</span>: <span class="cv">inset 0 2px 6px rgba(0,0,0,0.3)</span>; }`,
-    values:[
-      {v:"h-offset v-offset",d:"Required. Horizontal and vertical offset in px"},
-      {v:"blur",d:"Optional. Blur radius — higher = softer shadow"},
-      {v:"spread",d:"Optional. Positive expands, negative shrinks the shadow"},
-      {v:"color",d:"Shadow color — use rgba() for transparency"},
-      {v:"inset",d:"Optional keyword: shadow inside the element"},
-      {v:"none",d:"No shadow (default)"},
-    ],
-    browser:{chrome:"10",firefox:"4",safari:"5.1",edge:"12",ie:"9"},
-    notes:`<div class="note note-tip"><strong>Performance:</strong> box-shadow is GPU-composited and cheap to animate. Prefer it over filter:drop-shadow for rectangular elements.</div>`
-  },
-  "display":{
-    desc:"Specifies the display rendering mode of an element — it controls how the element generates boxes and participates in layout. The most fundamental CSS property, affecting flow, flex, grid, or none rendering.",
-    category:"Display & Visibility",version:"CSS1",inherited:false,animatable:false,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">display</span>: <span class="cv">block</span>;\n  <span class="cp">display</span>: <span class="cv">inline</span>;\n  <span class="cp">display</span>: <span class="cv">inline-block</span>;\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">display</span>: <span class="cv">inline-flex</span>;\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">display</span>: <span class="cv">inline-grid</span>;\n  <span class="cp">display</span>: <span class="cv">none</span>;\n  <span class="cp">display</span>: <span class="cv">contents</span>;\n}`,
-    example:`<span class="cs">.flex-container</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">gap</span>: <span class="cv">1rem</span>;\n}\n<span class="cs">.grid-layout</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n}\n<span class="cs">.hidden</span> { <span class="cp">display</span>: <span class="cv">none</span>; } <span class="cc">/* removed from layout */</span>`,
-    values:[
-      {v:"block",d:"Full-width block, stacks vertically, accepts width/height"},
-      {v:"inline",d:"Flows with text, ignores width/height/vertical margins"},
-      {v:"inline-block",d:"Inline flow but accepts box model properties"},
-      {v:"flex",d:"Block-level flex container"},
-      {v:"inline-flex",d:"Inline-level flex container"},
-      {v:"grid",d:"Block-level grid container"},
-      {v:"inline-grid",d:"Inline-level grid container"},
-      {v:"none",d:"Element is completely removed from the layout tree"},
-      {v:"contents",d:"Element itself generates no box — only its children are rendered"},
-      {v:"table / table-cell",d:"Mimics HTML table rendering"},
-      {v:"list-item",d:"Renders like an <li> with a list marker"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<div class="note note-info"><strong>none vs visibility:hidden:</strong> <code>display:none</code> removes the element from layout entirely (no space). <code>visibility:hidden</code> hides it but preserves the space.</div>`
-  },
-  "position":{
-    desc:"Specifies how an element is positioned in the document. The top, right, bottom, and left properties determine the final location of positioned elements. Changing position can take an element out of the normal document flow.",
-    category:"Positioning",version:"CSS2",inherited:false,animatable:false,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">position</span>: <span class="cv">static</span>;    <span class="cc">/* default */</span>\n  <span class="cp">position</span>: <span class="cv">relative</span>;  <span class="cc">/* offsets from normal position */</span>\n  <span class="cp">position</span>: <span class="cv">absolute</span>;  <span class="cc">/* removed from flow, positioned to nearest ancestor */</span>\n  <span class="cp">position</span>: <span class="cv">fixed</span>;     <span class="cc">/* relative to viewport */</span>\n  <span class="cp">position</span>: <span class="cv">sticky</span>;    <span class="cc">/* relative until scroll threshold */</span>\n}`,
-    example:`<span class="cc">/* Sticky header */</span>\n<span class="cs">header</span> {\n  <span class="cp">position</span>: <span class="cv">sticky</span>;\n  <span class="cp">top</span>: <span class="cv">0</span>;\n  <span class="cp">z-index</span>: <span class="cv">100</span>;\n}\n<span class="cc">/* Centered overlay */</span>\n<span class="cs">.overlay</span> {\n  <span class="cp">position</span>: <span class="cv">absolute</span>;\n  <span class="cp">top</span>: <span class="cv">50%</span>; <span class="cp">left</span>: <span class="cv">50%</span>;\n  <span class="cp">transform</span>: <span class="cv">translate(-50%, -50%)</span>;\n}`,
-    values:[
-      {v:"static",d:"Default. Positioned according to normal document flow. top/left/etc. have no effect.",isDefault:true},
-      {v:"relative",d:"Positioned relative to its normal position. Other elements still occupy its original space."},
-      {v:"absolute",d:"Removed from flow, positioned relative to nearest non-static ancestor."},
-      {v:"fixed",d:"Removed from flow, positioned relative to the viewport. Stays while scrolling."},
-      {v:"sticky",d:"Toggles between relative and fixed — sticks when scrolling past threshold."},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<div class="note note-info"><strong>Stacking context:</strong> position + z-index create new stacking contexts. position:sticky requires a scrollable parent and a defined top/bottom/left/right threshold.</div>`
-  },
-  "flexbox":null,
-  "display (flex)":{
-    desc:"Enables Flexbox layout on a container. Child elements become flex items and are arranged along the main axis. Flexbox is one-dimensional — it handles layout in a row or a column at a time.",
-    category:"Flexbox",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.container</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">flex-direction</span>: <span class="cv">row</span>;          <span class="cc">/* main axis direction */</span>\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>; <span class="cc">/* main axis alignment */</span>\n  <span class="cp">align-items</span>: <span class="cv">center</span>;          <span class="cc">/* cross axis alignment */</span>\n  <span class="cp">flex-wrap</span>: <span class="cv">wrap</span>;              <span class="cc">/* wrap to new line */</span>\n  <span class="cp">gap</span>: <span class="cv">16px</span>;                   <span class="cc">/* gutter between items */</span>\n}`,
-    example:`<span class="cc">/* Navbar pattern */</span>\n<span class="cs">nav</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;\n  <span class="cp">gap</span>: <span class="cv">1rem</span>;\n  <span class="cp">padding</span>: <span class="cv">0 2rem</span>;\n}\n<span class="cc">/* Card grid with wrap */</span>\n<span class="cs">.cards</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">flex-wrap</span>: <span class="cv">wrap</span>;\n  <span class="cp">gap</span>: <span class="cv">20px</span>;\n}\n<span class="cs">.card</span> { <span class="cp">flex</span>: <span class="cv">1 1 280px</span>; } <span class="cc">/* min 280px, grows equally */</span>`,
-    values:[
-      {v:"flex-direction: row",d:"Main axis is horizontal (left to right, default)"},
-      {v:"flex-direction: column",d:"Main axis is vertical (top to bottom)"},
-      {v:"justify-content",d:"Aligns items along main axis: flex-start, flex-end, center, space-between, space-around, space-evenly"},
-      {v:"align-items",d:"Aligns items on cross axis: stretch (default), flex-start, flex-end, center, baseline"},
-      {v:"flex-wrap",d:"nowrap (default), wrap, wrap-reverse"},
-      {v:"gap",d:"Space between flex items — cleaner than margins"},
-    ],
-    browser:{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"},
-    notes:`<div class="note note-tip"><strong>Shorthand:</strong> <code>flex: 1</code> = <code>flex-grow: 1; flex-shrink: 1; flex-basis: 0%</code>. Use <code>flex: 1 1 auto</code> for items that grow and shrink from their natural size.</div>`
-  },
-  "display (grid)":{
-    desc:"Enables CSS Grid layout on a container. CSS Grid is two-dimensional — it handles both rows and columns simultaneously. It's the most powerful layout system in CSS, replacing the need for floats and complex flexbox nesting.",
-    category:"CSS Grid",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.grid</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n  <span class="cp">grid-template-rows</span>: <span class="cv">auto</span>;\n  <span class="cp">gap</span>: <span class="cv">24px</span>;\n}`,
-    example:`<span class="cc">/* 3-column responsive grid */</span>\n<span class="cs">.layout</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(auto-fit, minmax(280px, 1fr))</span>;\n  <span class="cp">gap</span>: <span class="cv">2rem</span>;\n}\n<span class="cc">/* Named areas */</span>\n<span class="cs">.page</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-areas</span>:\n    <span class="cq">"header header"</span>\n    <span class="cq">"sidebar main"</span>\n    <span class="cq">"footer footer"</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">240px 1fr</span>;\n}`,
-    values:[
-      {v:"grid-template-columns",d:"Defines column track sizes: px, %, fr, minmax(), repeat()"},
-      {v:"grid-template-rows",d:"Defines row track sizes"},
-      {v:"fr unit",d:"Fractional unit — distributes remaining space proportionally"},
-      {v:"repeat()",d:"Repeats track definition: repeat(3, 1fr) = 3 equal columns"},
-      {v:"minmax(min, max)",d:"Track size between min and max — great for responsive"},
-      {v:"auto-fit / auto-fill",d:"Automatically creates as many tracks as fit in the container"},
-      {v:"gap",d:"Gutter between rows and columns"},
-    ],
-    browser:{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"},
-    notes:`<div class="note note-tip"><strong>Magic line:</strong> <code>grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))</code> creates a fully responsive grid with no media queries.</div>`
-  },
-  "color":{
-    desc:"Sets the foreground color of an element's text content and text decorations. Also sets the value of <code>currentColor</code>, which is used by border, outline, and SVG fill/stroke when set to <code>currentColor</code>.",
-    category:"Colors & Backgrounds",version:"CSS1",inherited:true,animatable:true,
-    syntax:`<span class="cs">p</span> {\n  <span class="cp">color</span>: <span class="cv">red</span>;\n  <span class="cp">color</span>: <span class="cv">#e06c75</span>;\n  <span class="cp">color</span>: <span class="cv">rgb(224, 108, 117)</span>;\n  <span class="cp">color</span>: <span class="cv">rgba(224, 108, 117, 0.8)</span>;\n  <span class="cp">color</span>: <span class="cv">hsl(355, 65%, 65%)</span>;\n  <span class="cp">color</span>: <span class="cv">oklch(0.65 0.2 20)</span>; <span class="cc">/* modern */</span>\n}`,
-    example:`<span class="cs">body</span>    { <span class="cp">color</span>: <span class="cv">#333</span>; }         <span class="cc">/* base text */</span>\n<span class="cs">a</span>       { <span class="cp">color</span>: <span class="cv">#0070f3</span>; }     <span class="cc">/* link color */</span>\n<span class="cs">a:hover</span> { <span class="cp">color</span>: <span class="cv">#0050c0</span>; }     <span class="cc">/* darker on hover */</span>\n<span class="cs">.muted</span>  { <span class="cp">color</span>: <span class="cv">rgb(100 100 100 / 70%)</span>; }`,
-    values:[
-      {v:"named colors",d:"140+ keywords: red, blue, tomato, cornflowerblue, etc."},
-      {v:"#rrggbb / #rgb",d:"Hex notation — most common"},
-      {v:"rgb() / rgba()",d:"RGB with optional alpha channel"},
-      {v:"hsl() / hsla()",d:"Hue-Saturation-Lightness — easier for designers"},
-      {v:"oklch() / oklab()",d:"Modern perceptually uniform color spaces (CSS Color Level 4)"},
-      {v:"currentColor",d:"Inherits the element's color value — useful for SVG"},
-      {v:"transparent",d:"Fully transparent (same as rgba(0,0,0,0))"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<div class="note note-tip"><strong>Modern tip:</strong> Use <code>oklch()</code> for more consistent, perceptually-uniform colors across a palette. It's supported in all modern browsers.</div>`
-  },
-  "background":{
-    desc:"A shorthand property for setting background-color, background-image, background-repeat, background-position, background-size, background-attachment, background-clip, and background-origin in a single declaration.",
-    category:"Colors & Backgrounds",version:"CSS1",inherited:false,animatable:true,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">background</span>: <span class="cv">color image repeat position/size</span>;\n  <span class="cp">background</span>: <span class="cv">#f5f5f5</span>;\n  <span class="cp">background</span>: <span class="cv">url('bg.jpg') no-repeat center/cover</span>;\n  <span class="cp">background</span>: <span class="cv">linear-gradient(135deg, #667eea, #764ba2)</span>;\n}`,
-    example:`<span class="cs">.hero</span> {\n  <span class="cp">background</span>: <span class="cv">url('hero.jpg') no-repeat center/cover</span>;\n  <span class="cp">background-color</span>: <span class="cv">#222</span>; <span class="cc">/* fallback */</span>\n}\n<span class="cs">.gradient</span> {\n  <span class="cp">background</span>: <span class="cv">linear-gradient(135deg,\n    hsl(220,80%,60%),\n    hsl(280,80%,60%))</span>;\n}\n<span class="cs">.layered</span> {\n  <span class="cp">background</span>:\n    <span class="cv">url('overlay.png') center/cover</span>,\n    <span class="cv">linear-gradient(#000, #444)</span>;\n}`,
-    values:[
-      {v:"background-color",d:"Solid fill color behind image layers"},
-      {v:"background-image",d:"url(), linear-gradient(), radial-gradient(), conic-gradient()"},
-      {v:"background-repeat",d:"repeat (default), no-repeat, repeat-x, repeat-y, round, space"},
-      {v:"background-position",d:"center, top right, 50% 50%, px values"},
-      {v:"background-size",d:"cover (fill, may crop), contain (fit, may show gaps), px/% values"},
-      {v:"background-attachment",d:"scroll (default), fixed (parallax-like), local"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<p>Multiple backgrounds can be layered (comma-separated). The first listed background is on top. Only the bottom-most layer can have a background-color.</p>`
-  },
-  "font-family":{
-    desc:"Specifies a prioritized list of one or more font family names and/or generic family names. The browser uses the first available font in the list. Generic families (serif, sans-serif, monospace) are fallbacks.",
-    category:"Typography",version:"CSS1",inherited:true,animatable:false,
-    syntax:`<span class="cs">body</span> {\n  <span class="cp">font-family</span>: <span class="cv">'Inter', 'Segoe UI', Arial, sans-serif</span>;\n  <span class="cp">font-family</span>: <span class="cv">'Georgia', 'Times New Roman', serif</span>;\n  <span class="cp">font-family</span>: <span class="cv">'JetBrains Mono', Consolas, monospace</span>;\n  <span class="cp">font-family</span>: <span class="cv">system-ui</span>; <span class="cc">/* OS default UI font */</span>\n}`,
-    example:`<span class="cc">/* Import Google Font */</span>\n<span class="ck">@import</span> <span class="cq">url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap')</span>;\n\n<span class="cs">:root</span> {\n  <span class="cp">--font-sans</span>: <span class="cv">'Inter', system-ui, sans-serif</span>;\n  <span class="cp">--font-mono</span>: <span class="cv">'JetBrains Mono', monospace</span>;\n}\n<span class="cs">body</span>  { <span class="cp">font-family</span>: <span class="cv">var(--font-sans)</span>; }\n<span class="cs">code</span>  { <span class="cp">font-family</span>: <span class="cv">var(--font-mono)</span>; }`,
-    values:[
-      {v:"'Font Name'",d:"Specific font face. Quote names containing spaces."},
-      {v:"serif",d:"Generic: fonts with serifs (Times New Roman, Georgia)"},
-      {v:"sans-serif",d:"Generic: fonts without serifs (Arial, Helvetica)"},
-      {v:"monospace",d:"Generic: fixed-width fonts (Courier, Consolas)"},
-      {v:"cursive",d:"Generic: script/handwriting-style fonts"},
-      {v:"fantasy",d:"Generic: decorative fonts"},
-      {v:"system-ui",d:"The platform's default UI font"},
-      {v:"math",d:"Optimized for math rendering"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<p>Always end with a generic font family as the last fallback. Use <code>@font-face</code> to self-host fonts for better privacy and performance. Variable fonts (one file, multiple weights) are the modern approach.</p>`
-  },
-  "font-size":{
-    desc:"Sets the size of the font. Relative units (em, rem) scale with parent or root font size, making them essential for accessible, scalable typography. The browser default is typically 16px.",
-    category:"Typography",version:"CSS1",inherited:true,animatable:true,
-    syntax:`<span class="cs">p</span> {\n  <span class="cp">font-size</span>: <span class="cv">16px</span>;    <span class="cc">/* absolute */</span>\n  <span class="cp">font-size</span>: <span class="cv">1rem</span>;    <span class="cc">/* relative to root (html) */</span>\n  <span class="cp">font-size</span>: <span class="cv">1.2em</span>;   <span class="cc">/* relative to parent */</span>\n  <span class="cp">font-size</span>: <span class="cv">clamp(1rem, 2.5vw, 2rem)</span>; <span class="cc">/* fluid */</span>\n}`,
-    example:`<span class="cs">html</span>  { <span class="cp">font-size</span>: <span class="cv">16px</span>; }  <span class="cc">/* root = 1rem */</span>\n<span class="cs">h1</span>    { <span class="cp">font-size</span>: <span class="cv">2.5rem</span>; }  <span class="cc">/* 40px */</span>\n<span class="cs">h2</span>    { <span class="cp">font-size</span>: <span class="cv">2rem</span>; }    <span class="cc">/* 32px */</span>\n<span class="cs">p</span>     { <span class="cp">font-size</span>: <span class="cv">1rem</span>; }    <span class="cc">/* 16px */</span>\n<span class="cs">small</span> { <span class="cp">font-size</span>: <span class="cv">0.875rem</span>; } <span class="cc">/* 14px */</span>\n<span class="cc">/* Fluid: min 1rem, ideal 3vw, max 3rem */</span>\n<span class="cs">.hero-text</span> { <span class="cp">font-size</span>: <span class="cv">clamp(1rem, 3vw, 3rem)</span>; }`,
-    values:[
-      {v:"px",d:"Absolute pixels — good for precision but not accessible scaling"},
-      {v:"rem",d:"Relative to root (html) font size — best for global consistency"},
-      {v:"em",d:"Relative to parent font size — can compound when nested"},
-      {v:"vw / vh",d:"Viewport-relative — great for fluid display typography"},
-      {v:"clamp(min, ideal, max)",d:"Fluid scaling between min and max values"},
-      {v:"xx-small … xx-large",d:"Absolute keywords (rarely used)"},
-      {v:"smaller / larger",d:"Relative to parent"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<div class="note note-tip"><strong>Accessibility:</strong> Never set <code>font-size</code> on html in px for typography. Use rem on html so users can scale text in browser settings. px on html blocks user font scaling.</div>`
-  },
-  "font-weight":{
-    desc:"Sets the weight (or boldness) of the font. With variable fonts, any value from 1–1000 is supported for ultra-fine control.",
-    category:"Typography",version:"CSS1",inherited:true,animatable:true,
-    syntax:`<span class="cs">p</span> {\n  <span class="cp">font-weight</span>: <span class="cv">normal</span>;   <span class="cc">/* = 400 */</span>\n  <span class="cp">font-weight</span>: <span class="cv">bold</span>;     <span class="cc">/* = 700 */</span>\n  <span class="cp">font-weight</span>: <span class="cv">300</span>;     <span class="cc">/* light */</span>\n  <span class="cp">font-weight</span>: <span class="cv">600</span>;     <span class="cc">/* semibold */</span>\n  <span class="cp">font-weight</span>: <span class="cv">900</span>;     <span class="cc">/* black */</span>\n}`,
-    example:`<span class="cs">h1</span> { <span class="cp">font-weight</span>: <span class="cv">700</span>; }\n<span class="cs">h2</span> { <span class="cp">font-weight</span>: <span class="cv">600</span>; }\n<span class="cs">p</span>  { <span class="cp">font-weight</span>: <span class="cv">400</span>; }\n<span class="cs">.light</span> { <span class="cp">font-weight</span>: <span class="cv">300</span>; }`,
-    values:[
-      {v:"100",d:"Thin"},
-      {v:"200",d:"Extra Light"},
-      {v:"300",d:"Light"},
-      {v:"400 / normal",d:"Regular (default)",isDefault:true},
-      {v:"500",d:"Medium"},
-      {v:"600",d:"Semi Bold"},
-      {v:"700 / bold",d:"Bold"},
-      {v:"800",d:"Extra Bold"},
-      {v:"900",d:"Black"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<p>If the font doesn't support a specific weight, the browser uses the closest available weight. Variable fonts support any integer value from 1–1000.</p>`
-  },
-  "transform":{
-    desc:"Applies a 2D or 3D transformation to an element — translating, rotating, scaling, or skewing without affecting the document flow. Transformed elements create a new stacking context.",
-    category:"Transforms",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">transform</span>: <span class="cv">translateX(50px)</span>;\n  <span class="cp">transform</span>: <span class="cv">rotate(45deg)</span>;\n  <span class="cp">transform</span>: <span class="cv">scale(1.5)</span>;\n  <span class="cp">transform</span>: <span class="cv">skewX(20deg)</span>;\n  <span class="cp">transform</span>: <span class="cv">translate(-50%, -50%) rotate(45deg)</span>;\n}`,
-    example:`<span class="cc">/* Center absolutely positioned element */</span>\n<span class="cs">.centered</span> {\n  <span class="cp">position</span>: <span class="cv">absolute</span>;\n  <span class="cp">top</span>: <span class="cv">50%</span>; <span class="cp">left</span>: <span class="cv">50%</span>;\n  <span class="cp">transform</span>: <span class="cv">translate(-50%, -50%)</span>;\n}\n<span class="cc">/* Hover lift effect */</span>\n<span class="cs">.card:hover</span> {\n  <span class="cp">transform</span>: <span class="cv">translateY(-4px) scale(1.02)</span>;\n}\n<span class="cc">/* 3D rotation */</span>\n<span class="cs">.flip</span> {\n  <span class="cp">transform</span>: <span class="cv">perspective(600px) rotateY(180deg)</span>;\n}`,
-    values:[
-      {v:"translate(x, y)",d:"Moves element without affecting document flow"},
-      {v:"rotate(angle)",d:"Rotates around the transform-origin point"},
-      {v:"scale(x, y)",d:"Scales element; 1 is normal, 2 is double size"},
-      {v:"skewX/Y(angle)",d:"Skews along axis"},
-      {v:"matrix()",d:"6-parameter 2D transformation matrix"},
-      {v:"perspective()",d:"Sets perspective depth for 3D transforms"},
-      {v:"rotateX/Y/Z()",d:"3D rotations around axes"},
-      {v:"translateZ() / translate3d()",d:"3D translations — enables GPU compositing"},
-    ],
-    browser:{chrome:"36",firefox:"16",safari:"9",edge:"12",ie:"10"},
-    notes:`<div class="note note-tip"><strong>GPU tip:</strong> Use <code>transform: translateZ(0)</code> or <code>will-change: transform</code> to promote an element to its own GPU layer for smoother animations.</div>`
-  },
-  "transition":{
-    desc:"A shorthand for transition-property, transition-duration, transition-timing-function, and transition-delay. Creates smooth animated changes between CSS property states triggered by state changes like :hover.",
-    category:"Transitions & Animation",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">transition</span>: <span class="cv">property duration timing-function delay</span>;\n  <span class="cp">transition</span>: <span class="cv">all 0.3s ease</span>;\n  <span class="cp">transition</span>: <span class="cv">opacity 0.2s ease, transform 0.3s ease-out</span>;\n}`,
-    example:`<span class="cs">.button</span> {\n  <span class="cp">background</span>: <span class="cv">#6c8bff</span>;\n  <span class="cp">transform</span>: <span class="cv">scale(1)</span>;\n  <span class="cp">transition</span>: <span class="cv">background 0.2s ease, transform 0.2s ease</span>;\n}\n<span class="cs">.button:hover</span> {\n  <span class="cp">background</span>: <span class="cv">#4a6fe8</span>;\n  <span class="cp">transform</span>: <span class="cv">scale(1.04)</span>;\n}\n<span class="cs">.card</span> {\n  <span class="cp">transition</span>: <span class="cv">box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1)</span>;\n}`,
-    values:[
-      {v:"property",d:"Which property to animate: all, opacity, transform, color, etc."},
-      {v:"duration",d:"How long the transition takes: 0.3s, 300ms"},
-      {v:"timing-function",d:"ease (default), linear, ease-in, ease-out, ease-in-out, cubic-bezier(), steps()"},
-      {v:"delay",d:"Wait time before the transition starts"},
-    ],
-    browser:{chrome:"26",firefox:"16",safari:"9",edge:"12",ie:"10"},
-    notes:`<div class="note note-warn"><strong>Performance:</strong> Only transition <code>opacity</code> and <code>transform</code> for smooth 60fps animations. Transitioning width, height, top, or left triggers layout recalculation (expensive).</div>`
-  },
-  "animation":{
-    desc:"Shorthand for all animation sub-properties. Works with @keyframes to define multi-step animations. Unlike transitions, animations play automatically and can loop, reverse, and have fine-grained control.",
-    category:"Transitions & Animation",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">animation</span>: <span class="cv">name duration timing-function delay iteration-count direction fill-mode</span>;\n  <span class="cp">animation</span>: <span class="cv">spin 2s linear infinite</span>;\n  <span class="cp">animation</span>: <span class="cv">fadeIn 0.5s ease forwards</span>;\n}`,
-    example:`<span class="ck">@keyframes</span> <span class="cs">fadeIn</span> {\n  <span class="cs">from</span> { <span class="cp">opacity</span>: <span class="cv">0</span>; <span class="cp">transform</span>: <span class="cv">translateY(20px)</span>; }\n  <span class="cs">to</span>   { <span class="cp">opacity</span>: <span class="cv">1</span>; <span class="cp">transform</span>: <span class="cv">translateY(0)</span>; }\n}\n<span class="ck">@keyframes</span> <span class="cs">spin</span> {\n  <span class="cs">to</span> { <span class="cp">transform</span>: <span class="cv">rotate(360deg)</span>; }\n}\n<span class="cs">.appear</span>  { <span class="cp">animation</span>: <span class="cv">fadeIn 0.6s ease both</span>; }\n<span class="cs">.spinner</span> { <span class="cp">animation</span>: <span class="cv">spin 1s linear infinite</span>; }`,
-    values:[
-      {v:"animation-name",d:"References an @keyframes rule"},
-      {v:"animation-duration",d:"How long one cycle lasts"},
-      {v:"animation-timing-function",d:"Speed curve (same as transition timing)"},
-      {v:"animation-delay",d:"Wait before starting"},
-      {v:"animation-iteration-count",d:"Number of cycles: 1, 3, infinite"},
-      {v:"animation-direction",d:"normal, reverse, alternate, alternate-reverse"},
-      {v:"animation-fill-mode",d:"none, forwards (keep end state), backwards (apply start state during delay), both"},
-      {v:"animation-play-state",d:"running (default) or paused"},
-    ],
-    browser:{chrome:"43",firefox:"16",safari:"9",edge:"12",ie:"10"},
-    notes:`<p>Multiple animations can be applied comma-separated. The <code>@keyframes</code> rule must be in the same stylesheet or higher specificity cascade layer.</p>`
-  },
-  "grid-template-columns":{
-    desc:"Defines the column tracks of a grid container. Accepts track sizes, the fr unit (fractional remaining space), minmax(), repeat(), and auto-fill/auto-fit for responsive grids without media queries.",
-    category:"CSS Grid",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.grid</span> {\n  <span class="cp">grid-template-columns</span>: <span class="cv">200px 1fr 2fr</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(auto-fit, minmax(200px, 1fr))</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">[start] 250px [main-start] 1fr [end]</span>;\n}`,
-    example:`<span class="cc">/* Holy Grail Layout */</span>\n<span class="cs">.holy-grail</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">200px 1fr 200px</span>;\n  <span class="cp">grid-template-rows</span>: <span class="cv">auto 1fr auto</span>;\n  <span class="cp">min-height</span>: <span class="cv">100vh</span>;\n}\n<span class="cc">/* Responsive cards — no media queries */</span>\n<span class="cs">.cards</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(auto-fit, minmax(250px, 1fr))</span>;\n  <span class="cp">gap</span>: <span class="cv">1.5rem</span>;\n}`,
-    values:[
-      {v:"px / em / rem / %",d:"Fixed track sizes"},
-      {v:"fr",d:"Fraction of remaining space — 1fr 2fr means 1:2 ratio"},
-      {v:"auto",d:"Track is sized based on content"},
-      {v:"minmax(min, max)",d:"Track is at least min and at most max"},
-      {v:"repeat(n, size)",d:"Repeats track definition n times"},
-      {v:"auto-fill",d:"Fills row with as many tracks as possible (may have empty tracks)"},
-      {v:"auto-fit",d:"Like auto-fill but collapses empty tracks (preferred for responsive)"},
-    ],
-    browser:{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"},
-    notes:`<div class="note note-tip"><strong>Most useful pattern:</strong> <code>repeat(auto-fit, minmax(min, 1fr))</code> creates a fully responsive grid that collapses from multi-column to single-column automatically.</div>`
-  },
-  "justify-content":{
-    desc:"Aligns flex or grid items along the main axis (horizontal in flex-direction: row). Controls how space is distributed when items don't fill the container completely.",
-    category:"Flexbox",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.container</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">justify-content</span>: <span class="cv">flex-start</span>;\n  <span class="cp">justify-content</span>: <span class="cv">center</span>;\n  <span class="cp">justify-content</span>: <span class="cv">flex-end</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-around</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-evenly</span>;\n}`,
-    example:`<span class="cc">/* Navigation bar */</span>\n<span class="cs">nav</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n}\n<span class="cc">/* Centered hero content */</span>\n<span class="cs">.hero</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">flex-direction</span>: <span class="cv">column</span>;\n  <span class="cp">justify-content</span>: <span class="cv">center</span>;\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n  <span class="cp">min-height</span>: <span class="cv">100vh</span>;\n}`,
-    values:[
-      {v:"flex-start",d:"Items packed at the start of the main axis (default)",isDefault:true},
-      {v:"flex-end",d:"Items packed at the end of the main axis"},
-      {v:"center",d:"Items centered along the main axis"},
-      {v:"space-between",d:"First item at start, last at end, equal space between others"},
-      {v:"space-around",d:"Equal space around each item (half-space at edges)"},
-      {v:"space-evenly",d:"Equal space between all items including edges"},
-      {v:"start / end",d:"Grid-only alignment relative to container start/end"},
-    ],
-    browser:{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"},
-    notes:`<p>In CSS Grid, <code>justify-content</code> aligns columns within the grid container when the grid is smaller than the container.</p>`
-  },
-  "align-items":{
-    desc:"Aligns flex or grid items along the cross axis (vertical in flex-direction: row). This is one of the most-used flexbox properties for vertical centering.",
-    category:"Flexbox",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">.container</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">align-items</span>: <span class="cv">stretch</span>;    <span class="cc">/* default */</span>\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n  <span class="cp">align-items</span>: <span class="cv">flex-start</span>;\n  <span class="cp">align-items</span>: <span class="cv">flex-end</span>;\n  <span class="cp">align-items</span>: <span class="cv">baseline</span>;\n}`,
-    example:`<span class="cc">/* Perfect vertical + horizontal centering */</span>\n<span class="cs">.center-all</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">justify-content</span>: <span class="cv">center</span>;\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n  <span class="cp">min-height</span>: <span class="cv">100vh</span>;\n}`,
-    values:[
-      {v:"stretch",d:"Items stretch to fill the cross axis (default)",isDefault:true},
-      {v:"flex-start",d:"Items aligned to start of cross axis"},
-      {v:"flex-end",d:"Items aligned to end of cross axis"},
-      {v:"center",d:"Items centered on cross axis"},
-      {v:"baseline",d:"Items aligned along their text baseline"},
-    ],
-    browser:{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"},
-    notes:`<div class="note note-tip"><strong>Centering trick:</strong> <code>display:flex; align-items:center; justify-content:center</code> is the modern, cleanest way to center anything in its container.</div>`
-  },
-  "gap":{
-    desc:"Sets the gap (gutter) between flex/grid items and rows/columns. A cleaner alternative to margins between items because it doesn't add space on the outer edges.",
-    category:"Flexbox",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.container</span> {\n  <span class="cp">gap</span>: <span class="cv">20px</span>;          <span class="cc">/* row and column */</span>\n  <span class="cp">gap</span>: <span class="cv">16px 24px</span>;     <span class="cc">/* row column */</span>\n  <span class="cp">row-gap</span>: <span class="cv">16px</span>;\n  <span class="cp">column-gap</span>: <span class="cv">24px</span>;\n}`,
-    example:`<span class="cs">.grid</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n  <span class="cp">gap</span>: <span class="cv">2rem</span>;\n}\n<span class="cs">.flex-nav</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">gap</span>: <span class="cv">12px</span>; <span class="cc">/* no last-child margin hacks needed */</span>\n}`,
-    values:[
-      {v:"<length>",d:"Fixed gap size in px, rem, em"},
-      {v:"<percentage>",d:"Percentage of container size"},
-    ],
-    browser:{chrome:"66",firefox:"61",safari:"12",edge:"16",ie:"No"},
-    notes:`<p><code>gap</code> was originally grid-gap and was expanded to work with flexbox in 2021. All major browsers now support it in flex containers. It's the preferred way to space flex/grid items.</p>`
-  },
-  "z-index":{
-    desc:"Controls the stacking order of positioned elements (position other than static). Higher values appear in front of lower values. Only works on elements with a position value and creates a new stacking context.",
-    category:"Positioning",version:"CSS2",inherited:false,animatable:true,
-    syntax:`<span class="cs">.modal</span>  { <span class="cp">z-index</span>: <span class="cv">1000</span>; }\n<span class="cs">.nav</span>    { <span class="cp">z-index</span>: <span class="cv">100</span>;  }\n<span class="cs">.tooltip</span>{ <span class="cp">z-index</span>: <span class="cv">500</span>;  }\n<span class="cs">.back</span>   { <span class="cp">z-index</span>: <span class="cv">-1</span>;   } <span class="cc">/* behind parent */</span>`,
-    example:`<span class="cs">.dropdown</span> {\n  <span class="cp">position</span>: <span class="cv">relative</span>;\n  <span class="cp">z-index</span>: <span class="cv">10</span>;\n}\n<span class="cs">.modal-overlay</span> {\n  <span class="cp">position</span>: <span class="cv">fixed</span>;\n  <span class="cp">inset</span>: <span class="cv">0</span>;\n  <span class="cp">z-index</span>: <span class="cv">1000</span>;\n  <span class="cp">background</span>: <span class="cv">rgba(0,0,0,0.5)</span>;\n}`,
-    values:[
-      {v:"auto",d:"Default. Element participates in current stacking context without creating a new one.",isDefault:true},
-      {v:"<integer>",d:"Any integer — positive or negative. Higher = in front."},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<div class="note note-warn"><strong>Stacking contexts:</strong> transform, opacity<1, filter, will-change, and isolation:isolate all create new stacking contexts — this can unexpectedly "reset" z-index wars.</div>`
-  },
-  "overflow":{
-    desc:"Sets what happens when content is too large for an element's block formatting context. Controls clipping, scrolling, or visibility of overflowing content.",
-    category:"Box Model",version:"CSS2",inherited:false,animatable:false,
-    syntax:`<span class="cs">.box</span> {\n  <span class="cp">overflow</span>: <span class="cv">visible</span>; <span class="cc">/* default */</span>\n  <span class="cp">overflow</span>: <span class="cv">hidden</span>;\n  <span class="cp">overflow</span>: <span class="cv">scroll</span>;\n  <span class="cp">overflow</span>: <span class="cv">auto</span>;\n  <span class="cp">overflow-x</span>: <span class="cv">hidden</span>;\n  <span class="cp">overflow-y</span>: <span class="cv">auto</span>;\n}`,
-    example:`<span class="cs">.card</span>       { <span class="cp">overflow</span>: <span class="cv">hidden</span>; <span class="cp">border-radius</span>: <span class="cv">12px</span>; } <span class="cc">/* clip children */</span>\n<span class="cs">.scroll-box</span> { <span class="cp">overflow-y</span>: <span class="cv">auto</span>; <span class="cp">max-height</span>: <span class="cv">400px</span>; }\n<span class="cs">.no-wrap</span>    { <span class="cp">overflow-x</span>: <span class="cv">auto</span>; <span class="cp">white-space</span>: <span class="cv">nowrap</span>; }`,
-    values:[
-      {v:"visible",d:"Default. Content overflows and is visible outside the box.",isDefault:true},
-      {v:"hidden",d:"Content is clipped. No scrollbars. No scroll possible."},
-      {v:"scroll",d:"Always shows scrollbars (even if unnecessary)"},
-      {v:"auto",d:"Shows scrollbars only when needed (recommended)"},
-      {v:"clip",d:"Like hidden but also disables programmatic scrolling"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<div class="note note-info"><strong>overflow:hidden</strong> creates a new block formatting context — this clears floats inside and clips border-radius on children. Very commonly used pattern.</div>`
-  },
-  "opacity":{
-    desc:"Sets the opacity level for an element. A value from 0.0 (fully transparent) to 1.0 (fully opaque). Unlike rgba() on color/background, opacity affects the entire element including its children.",
-    category:"Colors & Backgrounds",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">opacity</span>: <span class="cv">1</span>;    <span class="cc">/* fully visible */</span>\n  <span class="cp">opacity</span>: <span class="cv">0.5</span>;  <span class="cc">/* 50% transparent */</span>\n  <span class="cp">opacity</span>: <span class="cv">0</span>;    <span class="cc">/* invisible (still in layout) */</span>\n}`,
-    example:`<span class="cs">.overlay</span>        { <span class="cp">opacity</span>: <span class="cv">0.7</span>; }\n<span class="cs">.ghost</span>          { <span class="cp">opacity</span>: <span class="cv">0</span>; } <span class="cc">/* hidden but interactive */</span>\n<span class="cs">.fade-in</span>        { <span class="cp">opacity</span>: <span class="cv">0</span>; <span class="cp">animation</span>: <span class="cv">fadeIn 0.5s forwards</span>; }\n<span class="cs">.hover-fade:hover</span> { <span class="cp">opacity</span>: <span class="cv">0.8</span>; <span class="cp">transition</span>: <span class="cv">opacity 0.2s</span>; }`,
-    values:[
-      {v:"0",d:"Fully transparent"},
-      {v:"0.5",d:"50% opacity"},
-      {v:"1",d:"Fully opaque (default)",isDefault:true},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"9"},
-    notes:`<div class="note note-info"><strong>opacity vs alpha:</strong> opacity affects the entire element and children. To make only the background transparent, use <code>background: rgba(0,0,0,0.5)</code> instead.</div>`
-  },
-  "--custom-property":{
-    desc:"CSS Custom Properties (CSS Variables) allow you to store values in named variables and reuse them throughout a stylesheet. They are defined with a double-dash prefix and accessed via <code>var()</code>. They cascade and are inherited like normal CSS properties.",
-    category:"CSS Variables & Misc",version:"CSS4",inherited:true,animatable:true,
-    syntax:`<span class="cc">/* Define */</span>\n<span class="cs">:root</span> {\n  <span class="cp">--color-primary</span>: <span class="cv">#6c8bff</span>;\n  <span class="cp">--spacing-md</span>: <span class="cv">1rem</span>;\n  <span class="cp">--font-sans</span>: <span class="cv">'Inter', sans-serif</span>;\n}\n<span class="cc">/* Use */</span>\n<span class="cs">.button</span> {\n  <span class="cp">color</span>: <span class="cv">var(--color-primary)</span>;\n  <span class="cp">padding</span>: <span class="cv">var(--spacing-md)</span>;\n  <span class="cp">font-family</span>: <span class="cv">var(--font-sans)</span>;\n}`,
-    example:`<span class="cs">:root</span> {\n  <span class="cp">--bg</span>: <span class="cv">#fff</span>; <span class="cp">--text</span>: <span class="cv">#111</span>;\n}\n<span class="cs">[data-theme="dark"]</span> {\n  <span class="cp">--bg</span>: <span class="cv">#111</span>; <span class="cp">--text</span>: <span class="cv">#fff</span>;\n}\n<span class="cs">body</span> {\n  <span class="cp">background</span>: <span class="cv">var(--bg)</span>;\n  <span class="cp">color</span>: <span class="cv">var(--text)</span>;\n  <span class="cp">transition</span>: <span class="cv">background 0.3s, color 0.3s</span>;\n}\n<span class="cc">/* Fallback value */</span>\n<span class="cs">p</span> { <span class="cp">color</span>: <span class="cv">var(--text-color, #333)</span>; }`,
-    values:[
-      {v:"var(--name)",d:"Access a custom property value"},
-      {v:"var(--name, fallback)",d:"With fallback if property is not defined"},
-      {v:":root scope",d:"Globally available custom properties"},
-      {v:"local scope",d:"Defined inside a selector — only available to that element and descendants"},
-    ],
-    browser:{chrome:"49",firefox:"31",safari:"9.1",edge:"15",ie:"No"},
-    notes:`<div class="note note-tip"><strong>Dark mode tip:</strong> CSS variables are the cleanest way to implement theming. Redefine variables in a [data-theme] or @media (prefers-color-scheme: dark) and every component updates automatically.</div>`
-  },
-  "@keyframes":{
-    desc:"The @keyframes rule defines the animation sequence by specifying styles at various points during the animation. You define from/to or percentage steps (0%, 50%, 100%) with any CSS properties.",
-    category:"Transitions & Animation",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="ck">@keyframes</span> <span class="cs">animationName</span> {\n  <span class="cs">from</span> { <span class="cc">/* start styles */</span> }\n  <span class="cs">to</span>   { <span class="cc">/* end styles */</span> }\n}\n<span class="ck">@keyframes</span> <span class="cs">animationName</span> {\n  <span class="cn">0%</span>   { <span class="cc">/* start */</span> }\n  <span class="cn">50%</span>  { <span class="cc">/* midpoint */</span> }\n  <span class="cn">100%</span> { <span class="cc">/* end */</span> }\n}`,
-    example:`<span class="ck">@keyframes</span> <span class="cs">slideInLeft</span> {\n  <span class="cs">from</span> {\n    <span class="cp">opacity</span>: <span class="cv">0</span>;\n    <span class="cp">transform</span>: <span class="cv">translateX(-60px)</span>;\n  }\n  <span class="cs">to</span> {\n    <span class="cp">opacity</span>: <span class="cv">1</span>;\n    <span class="cp">transform</span>: <span class="cv">translateX(0)</span>;\n  }\n}\n<span class="ck">@keyframes</span> <span class="cs">pulse</span> {\n  <span class="cn">0%</span>, <span class="cn">100%</span> { <span class="cp">transform</span>: <span class="cv">scale(1)</span>; }\n  <span class="cn">50%</span>      { <span class="cp">transform</span>: <span class="cv">scale(1.05)</span>; }\n}\n<span class="cs">.card</span> { <span class="cp">animation</span>: <span class="cv">slideInLeft 0.5s ease both</span>; }\n<span class="cs">.ping</span> { <span class="cp">animation</span>: <span class="cv">pulse 2s infinite</span>; }`,
-    values:[
-      {v:"from",d:"Equivalent to 0% — the animation start state"},
-      {v:"to",d:"Equivalent to 100% — the animation end state"},
-      {v:"0%–100%",d:"Percentage waypoints in the animation timeline"},
-    ],
-    browser:{chrome:"43",firefox:"16",safari:"9",edge:"12",ie:"10"},
-    notes:`<p>Multiple percentage values can share the same styles: <code>0%, 100% { ... }</code>. For best performance, only animate <code>transform</code> and <code>opacity</code>.</p>`
-  },
-  "filter":{
-    desc:"Applies graphical effects such as blur, brightness, contrast, grayscale, hue rotation, invert, opacity, saturate, and sepia to an element. Similar to image filters in photo editors. Applied before the element is composited.",
-    category:"Colors & Backgrounds",version:"CSS3",inherited:false,animatable:true,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">filter</span>: <span class="cv">blur(4px)</span>;\n  <span class="cp">filter</span>: <span class="cv">brightness(1.5)</span>;\n  <span class="cp">filter</span>: <span class="cv">grayscale(100%)</span>;\n  <span class="cp">filter</span>: <span class="cv">drop-shadow(2px 4px 8px #000)</span>;\n  <span class="cp">filter</span>: <span class="cv">blur(2px) brightness(0.8) contrast(1.2)</span>;\n}`,
-    example:`<span class="cs">img:hover</span>   { <span class="cp">filter</span>: <span class="cv">brightness(1.1) saturate(1.2)</span>; }\n<span class="cs">.grayscale</span>  { <span class="cp">filter</span>: <span class="cv">grayscale(1)</span>; <span class="cp">transition</span>: <span class="cv">filter 0.3s</span>; }\n<span class="cs">.dark-glass</span> { <span class="cp">filter</span>: <span class="cv">blur(10px)</span>; }\n<span class="cs">.icon-shadow</span>{ <span class="cp">filter</span>: <span class="cv">drop-shadow(0 4px 8px rgba(0,0,0,.4))</span>; }`,
-    values:[
-      {v:"blur(radius)",d:"Gaussian blur in px"},
-      {v:"brightness(n)",d:"0=black, 1=normal, 2=double brightness"},
-      {v:"contrast(n)",d:"0=grey, 1=normal, 2=double contrast"},
-      {v:"grayscale(n)",d:"0–1 or 0%–100%"},
-      {v:"hue-rotate(deg)",d:"Shifts colors around the hue wheel"},
-      {v:"invert(n)",d:"Inverts colors (1 = full inversion)"},
-      {v:"saturate(n)",d:"0=greyscale, 1=normal, >1 super-saturated"},
-      {v:"sepia(n)",d:"Applies sepia tone (0–1)"},
-      {v:"drop-shadow(x y blur color)",d:"Shadow following the element's alpha mask (works on PNGs/SVGs)"},
-    ],
-    browser:{chrome:"53",firefox:"35",safari:"9.1",edge:"12",ie:"No"},
-    notes:`<div class="note note-tip"><strong>vs box-shadow:</strong> drop-shadow() follows the element's actual shape (including transparent areas), while box-shadow always follows the box model rectangle.</div>`
-  },
-  "clamp()":{
-    desc:"A CSS math function that clamps a value between a minimum and maximum, with a preferred middle value. Perfect for fluid typography and spacing that scales with the viewport without requiring media queries.",
-    category:"CSS Variables & Misc",version:"CSS4",inherited:false,animatable:true,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">font-size</span>: <span class="cv">clamp(min, preferred, max)</span>;\n  <span class="cp">font-size</span>: <span class="cv">clamp(1rem, 2.5vw, 3rem)</span>;\n  <span class="cp">width</span>: <span class="cv">clamp(300px, 50%, 800px)</span>;\n  <span class="cp">padding</span>: <span class="cv">clamp(1rem, 5vw, 3rem)</span>;\n}`,
-    example:`<span class="cc">/* Fluid heading: min 1.5rem, scales with viewport, max 4rem */</span>\n<span class="cs">h1</span> {\n  <span class="cp">font-size</span>: <span class="cv">clamp(1.5rem, 5vw, 4rem)</span>;\n}\n<span class="cc">/* Fluid container padding */</span>\n<span class="cs">.container</span> {\n  <span class="cp">padding-inline</span>: <span class="cv">clamp(1rem, 5%, 4rem)</span>;\n  <span class="cp">max-width</span>: <span class="cv">clamp(320px, 90%, 1200px)</span>;\n}`,
-    values:[
-      {v:"clamp(min, ideal, max)",d:"Returns ideal if within min–max range, otherwise clamps to min or max"},
-      {v:"min(a, b)",d:"Returns the smallest of the given values"},
-      {v:"max(a, b)",d:"Returns the largest of the given values"},
-    ],
-    browser:{chrome:"79",firefox:"75",safari:"13.1",edge:"79",ie:"No"},
-    notes:`<div class="note note-tip"><strong>Fluid type scale:</strong> Combine clamp with calc and vw: <code>clamp(1rem, 0.5rem + 2vw, 2rem)</code>. The vw part makes it fluid, the min/max prevents it from going too small or large.</div>`
-  },
-  "scroll-behavior":{
-    desc:"Specifies the scrolling behavior for a scrolling box when scrolling is triggered by the navigation or CSSOM scrolling APIs. Makes anchor links smoothly animate instead of jumping.",
-    category:"Scroll & Overflow",version:"CSS3",inherited:false,animatable:false,
-    syntax:`<span class="cs">html</span> {\n  <span class="cp">scroll-behavior</span>: <span class="cv">smooth</span>;\n}\n<span class="cs">.scroll-container</span> {\n  <span class="cp">overflow-y</span>: <span class="cv">auto</span>;\n  <span class="cp">scroll-behavior</span>: <span class="cv">smooth</span>;\n}`,
-    example:`<span class="cc">/* Apply to html for site-wide smooth scrolling */</span>\n<span class="cs">html</span> {\n  <span class="cp">scroll-behavior</span>: <span class="cv">smooth</span>;\n}\n<span class="cc">/* Respect user's reduced-motion preference */</span>\n<span class="ck">@media</span> (prefers-reduced-motion: reduce) {\n  <span class="cs">html</span> { <span class="cp">scroll-behavior</span>: <span class="cv">auto</span>; }\n}`,
-    values:[
-      {v:"auto",d:"Immediate scrolling (default)",isDefault:true},
-      {v:"smooth",d:"Animates scrolling to the target position"},
-    ],
-    browser:{chrome:"61",firefox:"36",safari:"15.4",edge:"79",ie:"No"},
-    notes:`<div class="note note-warn"><strong>Accessibility:</strong> Always pair smooth scrolling with <code>@media (prefers-reduced-motion: reduce)</code> to respect users who have vestibular disorders that make motion uncomfortable.</div>`
-  },
-  "@media":{
-    desc:"The @media CSS at-rule applies a group of CSS rules only when specific conditions (media queries) match. Essential for responsive design — applying different styles based on screen size, color scheme, device type, or user preferences.",
-    category:"Pseudo & At-Rules",version:"CSS2",inherited:false,animatable:false,
-    syntax:`<span class="ck">@media</span> <span class="cs">screen and (min-width: 768px)</span> { }\n<span class="ck">@media</span> <span class="cs">(prefers-color-scheme: dark)</span> { }\n<span class="ck">@media</span> <span class="cs">(prefers-reduced-motion: reduce)</span> { }\n<span class="ck">@media</span> <span class="cs">print</span> { }`,
-    example:`<span class="cc">/* Mobile-first approach */</span>\n<span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">1fr</span>; }\n\n<span class="ck">@media</span> <span class="cs">(min-width: 768px)</span> {\n  <span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">repeat(2, 1fr)</span>; }\n}\n<span class="ck">@media</span> <span class="cs">(min-width: 1024px)</span> {\n  <span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>; }\n}\n<span class="cc">/* Dark mode */</span>\n<span class="ck">@media</span> <span class="cs">(prefers-color-scheme: dark)</span> {\n  <span class="cs">body</span> { <span class="cp">background</span>: <span class="cv">#111</span>; <span class="cp">color</span>: <span class="cv">#f0f0f0</span>; }\n}`,
-    values:[
-      {v:"screen",d:"Applies to color screens"},
-      {v:"print",d:"Applies when printing"},
-      {v:"min-width / max-width",d:"Viewport width conditions for responsive breakpoints"},
-      {v:"prefers-color-scheme",d:"dark or light — user's OS theme preference"},
-      {v:"prefers-reduced-motion",d:"reduce — user prefers less animation"},
-      {v:"orientation",d:"portrait or landscape"},
-      {v:"hover",d:"hover — device supports hover (non-touch); none — touch devices"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"9"},
-    notes:`<div class="note note-tip"><strong>Mobile-first:</strong> Write base styles for mobile, then use min-width queries to add complexity for larger screens. This results in less CSS overall and better performance on mobile.</div>`
-  },
-  ":hover":{
-    desc:"The :hover CSS pseudo-class matches when the user interacts with an element with a pointing device, but hasn't necessarily activated it. Applied when a mouse cursor is positioned over an element.",
-    category:"Pseudo & At-Rules",version:"CSS1",inherited:false,animatable:false,
-    syntax:`<span class="cs">a:hover</span>      { <span class="cp">color</span>: <span class="cv">blue</span>; }\n<span class="cs">.btn:hover</span>  { <span class="cp">background</span>: <span class="cv">#0050c0</span>; }\n<span class="cs">.card:hover</span> { <span class="cp">transform</span>: <span class="cv">translateY(-4px)</span>; }`,
-    example:`<span class="cs">.button</span> {\n  <span class="cp">background</span>: <span class="cv">#6c8bff</span>;\n  <span class="cp">transition</span>: <span class="cv">all 0.2s ease</span>;\n}\n<span class="cs">.button:hover</span> {\n  <span class="cp">background</span>: <span class="cv">#4a6fe8</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">0 4px 16px rgba(108,139,255,.4)</span>;\n  <span class="cp">transform</span>: <span class="cv">translateY(-2px)</span>;\n}`,
-    values:[],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<div class="note note-warn"><strong>Touch devices:</strong> :hover doesn't work reliably on touch screens. Use @media (hover: hover) to apply hover styles only on devices that support it.</div>`
-  },
-  ":focus":{
-    desc:"The :focus pseudo-class represents an element that has received focus — usually triggered by clicking, tapping, or tabbing into it. Critical for keyboard accessibility.",
-    category:"Pseudo & At-Rules",version:"CSS1",inherited:false,animatable:false,
-    syntax:`<span class="cs">input:focus</span>  { <span class="cp">outline</span>: <span class="cv">2px solid blue</span>; }\n<span class="cs">button:focus</span> { <span class="cp">box-shadow</span>: <span class="cv">0 0 0 3px rgba(108,139,255,.5)</span>; }\n<span class="cs">:focus-visible</span>{ <span class="cp">outline</span>: <span class="cv">2px solid var(--accent)</span>; }`,
-    example:`<span class="cs">input:focus</span> {\n  <span class="cp">outline</span>: <span class="cv">none</span>;\n  <span class="cp">border-color</span>: <span class="cv">#6c8bff</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">0 0 0 3px rgba(108,139,255,0.3)</span>;\n}\n<span class="cc">/* Modern: only show focus ring when navigating via keyboard */</span>\n<span class="cs">:focus:not(:focus-visible)</span> { <span class="cp">outline</span>: <span class="cv">none</span>; }\n<span class="cs">:focus-visible</span> { <span class="cp">outline</span>: <span class="cv">2px solid #6c8bff</span>; <span class="cp">outline-offset</span>: <span class="cv">2px</span>; }`,
-    values:[],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"8"},
-    notes:`<div class="note note-warn"><strong>Never remove outline without replacement!</strong> Removing focus styles (outline:none) without providing an alternative breaks keyboard navigation for millions of users. Use :focus-visible for modern, smarter focus indicators.</div>`
-  },
-  "::before":{
-    desc:"The ::before pseudo-element creates a virtual first child of the matched element. Combined with the content property, it's used to insert cosmetic content before an element without changing the HTML.",
-    category:"Pseudo & At-Rules",version:"CSS2",inherited:false,animatable:false,
-    syntax:`<span class="cs">.element::before</span> {\n  <span class="cp">content</span>: <span class="cv">''</span>;    <span class="cc">/* required */</span>\n  <span class="cp">display</span>: <span class="cv">block</span>;\n  <span class="cc">/* additional styles */</span>\n}`,
-    example:`<span class="cc">/* Decorative bullet */</span>\n<span class="cs">li::before</span> {\n  <span class="cp">content</span>: <span class="cv">'→'</span>;\n  <span class="cp">margin-right</span>: <span class="cv">8px</span>;\n  <span class="cp">color</span>: <span class="cv">#6c8bff</span>;\n}\n<span class="cc">/* Overlay effect */</span>\n<span class="cs">.hero::before</span> {\n  <span class="cp">content</span>: <span class="cv">''</span>;\n  <span class="cp">position</span>: <span class="cv">absolute</span>;\n  <span class="cp">inset</span>: <span class="cv">0</span>;\n  <span class="cp">background</span>: <span class="cv">rgba(0,0,0,0.4)</span>;\n}\n<span class="cc">/* Required fields */</span>\n<span class="cs">label.required::after</span> {\n  <span class="cp">content</span>: <span class="cv">' *'</span>;\n  <span class="cp">color</span>: <span class="cv">red</span>;\n}`,
-    values:[
-      {v:"content: ''",d:"Empty string — common for decorative uses"},
-      {v:"content: 'text'",d:"Inserts literal text"},
-      {v:"content: attr(data-*)",d:"Inserts value from HTML attribute"},
-      {v:"content: counter(name)",d:"Inserts a CSS counter value"},
-    ],
-    browser:{chrome:"4",firefox:"3.5",safari:"3.1",edge:"12",ie:"8"},
-    notes:`<p>Pseudo-elements created with ::before/::after are not in the DOM and cannot be selected by JavaScript. They must have a content property (even if empty) to render.</p>`
-  },
-  "text-decoration":{
-    desc:"Shorthand for text-decoration-line, text-decoration-color, text-decoration-style, and text-decoration-thickness. Commonly used to add or remove underlines, overlines, and strikethroughs.",
-    category:"Typography",version:"CSS1",inherited:true,animatable:false,
-    syntax:`<span class="cs">a</span> {\n  <span class="cp">text-decoration</span>: <span class="cv">underline</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">none</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">underline dotted red 2px</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">line-through</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">overline</span>;\n}`,
-    example:`<span class="cs">a</span>              { <span class="cp">text-decoration</span>: <span class="cv">none</span>; }\n<span class="cs">a:hover</span>        { <span class="cp">text-decoration</span>: <span class="cv">underline</span>; }\n<span class="cs">.strikethrough</span> { <span class="cp">text-decoration</span>: <span class="cv">line-through</span>; }\n<span class="cs">.fancy-link</span>    { <span class="cp">text-decoration</span>: <span class="cv">underline wavy #6c8bff 2px</span>; }`,
-    values:[
-      {v:"none",d:"No decoration"},
-      {v:"underline",d:"Line below the text"},
-      {v:"overline",d:"Line above the text"},
-      {v:"line-through",d:"Line through the middle (strikethrough)"},
-      {v:"dotted / dashed / wavy / solid / double",d:"Line style options"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
-    notes:`<p>Use <code>text-underline-offset</code> to control the distance of the underline from text, and <code>text-decoration-skip-ink</code> to prevent the underline from overlapping descenders (g, p, y).</p>`
-  },
-  "cursor":{
-    desc:"Sets the type of cursor to be shown when the user hovers over the element. Communicates interactivity and affordances to users.",
-    category:"Display & Visibility",version:"CSS2",inherited:true,animatable:false,
-    syntax:`<span class="cs">.el</span> {\n  <span class="cp">cursor</span>: <span class="cv">pointer</span>;\n  <span class="cp">cursor</span>: <span class="cv">default</span>;\n  <span class="cp">cursor</span>: <span class="cv">not-allowed</span>;\n  <span class="cp">cursor</span>: <span class="cv">grab</span>;\n  <span class="cp">cursor</span>: <span class="cv">url('cursor.png'), auto</span>;\n}`,
-    example:`<span class="cs">button</span>           { <span class="cp">cursor</span>: <span class="cv">pointer</span>; }\n<span class="cs">button:disabled</span>  { <span class="cp">cursor</span>: <span class="cv">not-allowed</span>; }\n<span class="cs">.draggable</span>       { <span class="cp">cursor</span>: <span class="cv">grab</span>; }\n<span class="cs">.draggable:active</span>{ <span class="cp">cursor</span>: <span class="cv">grabbing</span>; }\n<span class="cs">.resizable</span>       { <span class="cp">cursor</span>: <span class="cv">col-resize</span>; }`,
-    values:[
-      {v:"default",d:"Standard arrow cursor"},
-      {v:"pointer",d:"Hand cursor — indicates a clickable element"},
-      {v:"text",d:"I-beam — indicates selectable text"},
-      {v:"not-allowed",d:"Circle with line — element is disabled"},
-      {v:"grab / grabbing",d:"Hand cursor for drag interactions"},
-      {v:"crosshair",d:"Precise selection (drawing, crop tools)"},
-      {v:"wait / progress",d:"Loading indicators"},
-      {v:"zoom-in / zoom-out",d:"Indicates zoom interaction"},
-      {v:"col-resize / row-resize",d:"Resize handles"},
-      {v:"none",d:"Hides the cursor"},
-    ],
-    browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
-    notes:`<p>Always use <code>cursor: pointer</code> on clickable elements like buttons and links to reinforce affordance. Never use pointer on non-interactive elements.</p>`
-  },
-};
-
-function getBrowserDots(b) {
-  const browsers = [
-    {name:'Chrome', v:b.chrome},
-    {name:'Firefox', v:b.firefox},
-    {name:'Safari', v:b.safari},
-    {name:'Edge', v:b.edge},
-    {name:'IE', v:b.ie},
-  ];
-  return browsers.map(br => {
-    const cls = br.v === 'No' ? 'bp-no' : (br.v === 'Partial' ? 'bp-partial' : 'bp-yes');
-    const icon = br.v === 'No' ? '✕' : (br.v === 'Partial' ? '~' : '✓');
-    return `<span class="browser-pill ${cls}">${icon} ${br.name} ${br.v !== 'No' && br.v !== 'Partial' ? br.v+'+' : ''}</span>`;
-  }).join('');
-}
-
-function renderProp(prop) {
-  const d = DB[prop];
-  if (!d) {
-    return `
-      <div class="prop-hero">
-        <div class="hero-breadcrumb">CSS Reference <span>▸ ${prop}</span></div>
-        <div class="hero-prop-name"><span class="pname">${prop}</span></div>
-        <div class="hero-desc">A valid CSS property. Refer to MDN Web Docs for detailed documentation.</div>
-        <div class="hero-badges"><span class="hbadge hb-cat">CSS</span></div>
+    <div class="content">
+      <div class="section">
+        <div class="st">Overview</div>
+        <div class="grid" id="overview"></div>
       </div>
-      <div class="prop-content">
-        <div class="section"><p>Select another property from the sidebar, or visit <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(prop)}" target="_blank" style="color:var(--accent)">MDN Web Docs</a> for full documentation.</p></div>
-      </div>`;
-  }
 
-  let valuesHTML = '';
-  if (d.values && d.values.length) {
-    valuesHTML = `<div class="section">
-      <div class="section-title">Accepted Values</div>
-      <table class="val-table">
-        <thead><tr><th>Value</th><th>Description</th></tr></thead>
-        <tbody>${d.values.map(v=>`<tr>
-          <td><span class="val-name">${v.v}</span>${v.isDefault?' <span class="val-default">default</span>':''}</td>
-          <td class="val-desc">${v.d}</td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>`;
-  }
+      <div class="section">
+        <div class="st">Syntax</div>
+        <div class="block"><div class="head">CSS</div><pre id="syntax"></pre></div>
+      </div>
 
-  return `
-    <div class="prop-hero">
-      <div class="hero-breadcrumb">CSS Reference <span>▸ ${d.category} ▸ ${prop}</span></div>
-      <div class="hero-prop-name"><span class="pname">${prop}</span><span class="colon">: …;</span></div>
-      <div class="hero-desc">${d.desc}</div>
-      <div class="hero-badges">
-        <span class="hbadge hb-cat">${d.category}</span>
-        <span class="hbadge hb-ver">${d.version}</span>
-        ${d.inherited ? '<span class="hbadge hb-inh">Inherited</span>' : ''}
-        ${d.animatable ? '<span class="hbadge hb-new">Animatable</span>' : ''}
+      <div class="section">
+        <div class="st">Values</div>
+        <div class="block">
+          <table class="table">
+            <thead><tr><th>Value</th><th>Description</th></tr></thead>
+            <tbody id="values"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="st">Example</div>
+        <div class="block"><div class="head">CSS</div><pre id="example"></pre></div>
+      </div>
+
+      <div class="section">
+        <div class="st">Browser Support</div>
+        <div class="pill-wrap" id="browser"></div>
+      </div>
+
+      <div class="section">
+        <div class="st">Notes</div>
+        <div id="notes"></div>
       </div>
     </div>
-    <div class="prop-content">
-      <div class="section">
-        <div class="section-title">Syntax</div>
-        <div class="code-block">
-          <div class="code-header"><span class="code-lang">CSS</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-          <pre>${d.syntax}</pre>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-title">Example</div>
-        <div class="code-block">
-          <div class="code-header"><span class="code-lang">CSS Example</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-          <pre>${d.example}</pre>
-        </div>
-      </div>
-      ${valuesHTML}
-      <div class="section">
-        <div class="section-title">Technical Info</div>
-        <div class="info-grid">
-          <div class="info-card"><div class="ic-label">CSS Version</div><div class="ic-val">${d.version}</div></div>
-          <div class="info-card"><div class="ic-label">Inherited</div><div class="ic-val ${d.inherited?'yes':'no'}">${d.inherited ? 'Yes' : 'No'}</div></div>
-          <div class="info-card"><div class="ic-label">Animatable</div><div class="ic-val ${d.animatable?'yes':'no'}">${d.animatable ? 'Yes' : 'No'}</div></div>
-        </div>
-      </div>
-      ${d.browser ? `<div class="section">
-        <div class="section-title">Browser Support</div>
-        <div class="browser-row">${getBrowserDots(d.browser)}</div>
-      </div>` : ''}
-      <div class="section">
-        <div class="section-title">Notes & Best Practices</div>
-        ${d.notes}
-      </div>
-    </div>`;
-}
+  </div>
 
-function copyCode(btn) {
-  const text = btn.closest('.code-block').querySelector('pre').innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied!';
-    btn.style.color = 'var(--green)';
-    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
-  });
-}
+  <script>
+    const DB = {
+      "width":{
+        desc:"Sets the width of an element's content area. By default it applies to the content box only. With <code>box-sizing: border-box</code> it includes padding and border.",
+        category:"Box Model", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">width</span>: <span class="cv">300px</span>;\n  <span class="cp">width</span>: <span class="cv">50%</span>;\n  <span class="cp">width</span>: <span class="cv">auto</span>;\n  <span class="cp">width</span>: <span class="cv">fit-content</span>;\n}`,
+        example:`<span class="cs">.container</span> {\n  <span class="cp">width</span>: <span class="cv">800px</span>;\n  <span class="cp">max-width</span>: <span class="cv">100%</span>;\n}`,
+        values:[{v:"auto",d:"Browser calculates width."},{v:"<length>",d:"Fixed size such as px, em, rem, vw."},{v:"<percentage>",d:"Percentage of containing block width."},{v:"min-content",d:"Smallest possible width without overflow."},{v:"max-content",d:"Width needed to fit all content on one line."},{v:"fit-content",d:"Uses available space but not more than max-content."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use <code>max-width: 100%</code> with fixed widths for responsive layouts.</p>`
+      },
+      "height":{
+        desc:"Sets the height of an element. Percentage heights work only when the parent has a definite height.",
+        category:"Box Model", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">height</span>: <span class="cv">200px</span>;\n  <span class="cp">height</span>: <span class="cv">50vh</span>;\n  <span class="cp">height</span>: <span class="cv">auto</span>;\n}`,
+        example:`<span class="cs">.full-page</span> {\n  <span class="cp">min-height</span>: <span class="cv">100dvh</span>;\n}`,
+        values:[{v:"auto",d:"Height determined by content."},{v:"<length>",d:"Fixed size in px, rem, vh, etc."},{v:"<percentage>",d:"Percentage of parent's height."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Use <code>100dvh</code> for mobile-friendly full screen sections.</p>`
+      },
+      "margin":{
+        desc:"Sets outside spacing around an element. Adjacent vertical margins can collapse into one margin.",
+        category:"Box Model", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">margin</span>: <span class="cv">10px</span>;\n  <span class="cp">margin</span>: <span class="cv">10px 20px</span>;\n  <span class="cp">margin</span>: <span class="cv">0 auto</span>;\n}`,
+        example:`<span class="cs">.center</span> {\n  <span class="cp">width</span>: <span class="cv">600px</span>;\n  <span class="cp">margin</span>: <span class="cv">0 auto</span>;\n}`,
+        values:[{v:"<length>",d:"Fixed spacing such as px, rem."},{v:"<percentage>",d:"Relative to containing block width."},{v:"auto",d:"Centers block elements horizontally."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use logical properties like <code>margin-inline</code> when possible.</p>`
+      },
+      "padding":{
+        desc:"Sets inner spacing between content and border. Padding adds space inside the element and cannot be negative.",
+        category:"Box Model", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">padding</span>: <span class="cv">20px</span>;\n  <span class="cp">padding</span>: <span class="cv">10px 20px</span>;\n}`,
+        example:`<span class="cs">.card</span> {\n  <span class="cp">padding</span>: <span class="cv">24px 32px</span>;\n}`,
+        values:[{v:"<length>",d:"Fixed inner spacing."},{v:"<percentage>",d:"Relative to containing block width."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Padding percentages are based on width, even for top and bottom.</p>`
+      },
+      "box-sizing":{
+        desc:"Defines how width and height are calculated. With <code>border-box</code>, padding and border are included in the declared size.",
+        category:"Box Model", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">*::before</span>, <span class="cs">*::after</span>, <span class="cs">*</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n}`,
+        example:`<span class="cs">.box</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n  <span class="cp">width</span>: <span class="cv">200px</span>;\n  <span class="cp">padding</span>: <span class="cv">20px</span>;\n}`,
+        values:[{v:"content-box",d:"Default. Size applies only to content.",isDefault:true},{v:"border-box",d:"Size includes content, padding, and border."}],
+        browser:{chrome:"10",firefox:"29",safari:"5.1",edge:"12",ie:"8"},
+        notes:`<p class="note tip"><strong>Best practice:</strong> Set <code>box-sizing: border-box</code> globally.</p>`
+      },
+      "border-radius":{
+        desc:"Rounds the corners of an element. You can set a single radius or use slash syntax for elliptical corners.",
+        category:"Box Model", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">border-radius</span>: <span class="cv">12px</span>;\n  <span class="cp">border-radius</span>: <span class="cv">50%</span>;\n  <span class="cp">border-radius</span>: <span class="cv">50% / 30%</span>;\n}`,
+        example:`<span class="cs">.pill</span> { <span class="cp">border-radius</span>: <span class="cv">9999px</span>; }\n<span class="cs">.circle</span> { <span class="cp">border-radius</span>: <span class="cv">50%</span>; }`,
+        values:[{v:"<length>",d:"Radius in px, rem, em."},{v:"<percentage>",d:"Relative to element dimensions."}],
+        browser:{chrome:"4",firefox:"4",safari:"5",edge:"12",ie:"9"},
+        notes:`<p class="note info"><strong>Note:</strong> Each corner can be set independently using corner-specific properties.</p>`
+      },
+      "box-shadow":{
+        desc:"Applies shadows to elements. Multiple shadows can be comma-separated and inner shadows use the <code>inset</code> keyword.",
+        category:"Box Model", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">box-shadow</span>: <span class="cv">2px 4px 12px rgba(0,0,0,.25)</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">inset 0 2px 4px rgba(0,0,0,.2)</span>;\n}`,
+        example:`<span class="cs">.card</span> {\n  <span class="cp">box-shadow</span>: <span class="cv">0 10px 30px rgba(0,0,0,.2)</span>;\n}`,
+        values:[{v:"h-offset v-offset",d:"Required shadow offset."},{v:"blur",d:"Softness of the shadow."},{v:"spread",d:"Shadow size expansion or shrink."},{v:"color",d:"Shadow color, often rgba()."},{v:"inset",d:"Creates inner shadow."}],
+        browser:{chrome:"10",firefox:"4",safari:"5.1",edge:"12",ie:"9"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use subtle shadows for depth without overpowering the design.</p>`
+      },
+      "display":{
+        desc:"Controls how an element generates boxes and participates in layout.",
+        category:"Display & Visibility", version:"CSS1", inherited:false, animatable:false,
+        syntax:`<span class="cs">.el</span> {\n  <span class="cp">display</span>: <span class="cv">block</span>;\n  <span class="cp">display</span>: <span class="cv">inline-block</span>;\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">display</span>: <span class="cv">none</span>;\n}`,
+        example:`<span class="cs">.hidden</span> { <span class="cp">display</span>: <span class="cv">none</span>; }`,
+        values:[{v:"block",d:"Starts on new line and can take width/height."},{v:"inline",d:"Flows with text."},{v:"inline-block",d:"Inline but accepts box model sizes."},{v:"flex",d:"Flex container."},{v:"grid",d:"Grid container."},{v:"none",d:"Removed from layout."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> <code>display:none</code> removes the element from layout entirely.</p>`
+      },
+      "visibility":{
+        desc:"Hides an element without removing its space from layout.",
+        category:"Display & Visibility", version:"CSS2", inherited:false, animatable:true,
+        syntax:`<span class="cs">.hidden</span> {\n  <span class="cp">visibility</span>: <span class="cv">hidden</span>;\n}`,
+        example:`<span class="cs">.tooltip</span> {\n  <span class="cp">visibility</span>: <span class="cv">hidden</span>;\n}\n<span class="cs">.tooltip.active</span> {\n  <span class="cp">visibility</span>: <span class="cv">visible</span>;\n}`,
+        values:[{v:"visible",d:"Element is visible."},{v:"hidden",d:"Element is hidden but space remains."},{v:"collapse",d:"Table rows/columns special behavior."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Compare with <code>display:none</code>, which removes layout space.</p>`
+      },
+      "opacity":{
+        desc:"Controls the transparency of an element.",
+        category:"Display & Visibility", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.fade</span> {\n  <span class="cp">opacity</span>: <span class="cv">0.5</span>;\n}`,
+        example:`<span class="cs">.overlay</span> {\n  <span class="cp">opacity</span>: <span class="cv">0.75</span>;\n}`,
+        values:[{v:"0",d:"Fully transparent."},{v:"1",d:"Fully opaque."},{v:"<number>",d:"Any value between 0 and 1."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Opacity affects the element and all its children.</p>`
+      },
+      "position":{
+        desc:"Specifies how an element is positioned in the document flow.",
+        category:"Positioning", version:"CSS2", inherited:false, animatable:false,
+        syntax:`<span class="cs">.el</span> {\n  <span class="cp">position</span>: <span class="cv">static</span>;\n  <span class="cp">position</span>: <span class="cv">relative</span>;\n  <span class="cp">position</span>: <span class="cv">absolute</span>;\n  <span class="cp">position</span>: <span class="cv">fixed</span>;\n  <span class="cp">position</span>: <span class="cv">sticky</span>;\n}`,
+        example:`<span class="cs">header</span> {\n  <span class="cp">position</span>: <span class="cv">sticky</span>;\n  <span class="cp">top</span>: <span class="cv">0</span>;\n}`,
+        values:[{v:"static",d:"Default document flow."},{v:"relative",d:"Offsets from its normal position."},{v:"absolute",d:"Removed from flow and positioned against ancestor."},{v:"fixed",d:"Fixed relative to viewport."},{v:"sticky",d:"Acts relative until a scroll threshold."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Sticky positioning needs a threshold such as <code>top: 0</code>.</p>`
+      },
+      "top":{"desc":"Sets the top offset for positioned elements.","category":"Positioning","version":"CSS2","inherited":false,"animatable":true,"syntax":`<span class="cs">.box</span>{<span class="cp">top</span>:<span class="cv">20px</span>;}`, "example":`<span class="cs">.overlay</span>{<span class="cp">top</span>:<span class="cv">50%</span>;}`, "values":[{v:"<length>",d:"Distance from top edge."},{v:"<percentage>",d:"Percentage of containing block."},{v:"auto",d:"Browser determines value."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Works only on positioned elements.</p>`},
+      "right":{"desc":"Sets the right offset for positioned elements.","category":"Positioning","version":"CSS2","inherited":false,"animatable":true,"syntax":`<span class="cs">.box</span>{<span class="cp">right</span>:<span class="cv">0</span>;}`, "example":`<span class="cs">.panel</span>{<span class="cp">right</span>:<span class="cv">24px</span>;}`, "values":[{v:"<length>",d:"Distance from right edge."},{v:"<percentage>",d:"Percentage of containing block."},{v:"auto",d:"Browser determines value."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Works only on positioned elements.</p>`},
+      "bottom":{"desc":"Sets the bottom offset for positioned elements.","category":"Positioning","version":"CSS2","inherited":false,"animatable":true,"syntax":`<span class="cs">.box</span>{<span class="cp">bottom</span>:<span class="cv">0</span>;}`, "example":`<span class="cs">.toast</span>{<span class="cp">bottom</span>:<span class="cv">16px</span>;}`, "values":[{v:"<length>",d:"Distance from bottom edge."},{v:"<percentage>",d:"Percentage of containing block."},{v:"auto",d:"Browser determines value."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Works only on positioned elements.</p>`},
+      "left":{"desc":"Sets the left offset for positioned elements.","category":"Positioning","version":"CSS2","inherited":false,"animatable":true,"syntax":`<span class="cs">.box</span>{<span class="cp">left</span>:<span class="cv">0</span>;}`, "example":`<span class="cs">.drawer</span>{<span class="cp">left</span>:<span class="cv">-100%</span>;}`, "values":[{v:"<length>",d:"Distance from left edge."},{v:"<percentage>",d:"Percentage of containing block."},{v:"auto",d:"Browser determines value."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Works only on positioned elements.</p>`},
+      "z-index":{"desc":"Controls stacking order of positioned elements.","category":"Positioning","version":"CSS2","inherited":false,"animatable":true,"syntax":`<span class="cs">.modal</span>{<span class="cp">z-index</span>:<span class="cv">1000</span>;}`, "example":`<span class="cs">.popup</span>{<span class="cp">position</span>:<span class="cv">relative</span>;<span class="cp">z-index</span>:<span class="cv">10</span>;}`, "values":[{v:"auto",d:"Default stacking order."},{v:"<integer>",d:"Higher values appear above lower ones."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note tip"><strong>Tip:</strong> z-index works with positioned elements and stacking contexts.</p>`},
+      "float":{"desc":"Floats an element left or right so content wraps around it.","category":"Positioning","version":"CSS1","inherited":false,"animatable":false,"syntax":`<span class="cs">img</span>{<span class="cp">float</span>:<span class="cv">left</span>;}`, "example":`<span class="cs">.avatar</span>{<span class="cp">float</span>:<span class="cv">right</span>;}`, "values":[{v:"left",d:"Floats left."},{v:"right",d:"Floats right."},{v:"none",d:"No float."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Modern layouts usually prefer flexbox or grid over float.</p>`},
+      "clear":{"desc":"Prevents floating elements from affecting an element.","category":"Positioning","version":"CSS1","inherited":false,"animatable":false,"syntax":`<span class="cs">.clear</span>{<span class="cp">clear</span>:<span class="cv">both</span>;}`, "example":`<span class="cs">footer</span>{<span class="cp">clear</span>:<span class="cv">both</span>;}`, "values":[{v:"left",d:"Clears left floats."},{v:"right",d:"Clears right floats."},{v:"both",d:"Clears both sides."},{v:"none",d:"No clearing."}], "browser":{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"}, "notes":`<p class="note info"><strong>Note:</strong> Used mainly with older float-based layouts.</p>`},
+      "flex":{"desc":"Shorthand for flex-grow, flex-shrink, and flex-basis.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">flex</span>:<span class="cv">1 1 0%</span>;}`, "example":`<span class="cs">.item</span>{<span class="cp">flex</span>:<span class="cv">1</span>;}`, "values":[{v:"none",d:"0 0 auto."},{v:"auto",d:"1 1 auto."},{v:"<grow> <shrink> <basis>",d:"Full shorthand."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note info"><strong>Note:</strong> <code>flex: 1</code> is common for equal distribution.</p>`},
+      "flex-direction":{"desc":"Sets the direction of the main axis in a flex container.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.container</span>{<span class="cp">flex-direction</span>:<span class="cv">row</span>;}`, "example":`<span class="cs">.stack</span>{<span class="cp">flex-direction</span>:<span class="cv">column</span>;}`, "values":[{v:"row",d:"Left to right."},{v:"row-reverse",d:"Right to left."},{v:"column",d:"Top to bottom."},{v:"column-reverse",d:"Bottom to top."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note tip"><strong>Tip:</strong> Changes the main axis direction.</p>`},
+      "flex-wrap":{"desc":"Controls whether flex items wrap onto multiple lines.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.container</span>{<span class="cp">flex-wrap</span>:<span class="cv">wrap</span>;}`, "example":`<span class="cs">.cards</span>{<span class="cp">flex-wrap</span>:<span class="cv">wrap</span>;}`, "values":[{v:"nowrap",d:"Single line."},{v:"wrap",d:"Multiple lines if needed."},{v:"wrap-reverse",d:"Wrap in reverse."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note info"><strong>Note:</strong> Use with <code>gap</code> for cleaner spacing.</p>`},
+      "justify-content":{"desc":"Aligns flex items along the main axis.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.container</span>{<span class="cp">justify-content</span>:<span class="cv">space-between</span>;}`, "example":`<span class="cs">nav</span>{<span class="cp">justify-content</span>:<span class="cv">space-between</span>;}`, "values":[{v:"flex-start",d:"Start of main axis."},{v:"center",d:"Center items."},{v:"space-between",d:"Spread with space between items."},{v:"space-around",d:"Equal space around items."},{v:"space-evenly",d:"Equal space between and around."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note tip"><strong>Tip:</strong> Great for navigation bars and toolbars.</p>`},
+      "align-items":{"desc":"Aligns flex items along the cross axis.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.container</span>{<span class="cp">align-items</span>:<span class="cv">center</span>;}`, "example":`<span class="cs">.row</span>{<span class="cp">align-items</span>:<span class="cv">center</span>;}`, "values":[{v:"stretch",d:"Default stretching."},{v:"flex-start",d:"Start of cross axis."},{v:"flex-end",d:"End of cross axis."},{v:"center",d:"Center along cross axis."},{v:"baseline",d:"Align baselines."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note info"><strong>Note:</strong> Commonly used together with <code>justify-content</code>.</p>`},
+      "align-self":{"desc":"Overrides align-items for an individual flex item.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">align-self</span>:<span class="cv">flex-end</span>;}`, "example":`<span class="cs">.special</span>{<span class="cp">align-self</span>:<span class="cv">center</span>;}`, "values":[{v:"auto",d:"Uses align-items value."},{v:"stretch",d:"Stretch item."},{v:"center",d:"Center item."},{v:"flex-start",d:"Start on cross axis."},{v:"flex-end",d:"End on cross axis."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note info"><strong>Note:</strong> Applies to a single flex item.</p>`},
+      "align-content":{"desc":"Aligns rows of flex items when there is extra cross-axis space.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.container</span>{<span class="cp">align-content</span>:<span class="cv">space-between</span>;}`, "example":`<span class="cs">.wrap</span>{<span class="cp">align-content</span>:<span class="cv">center</span>;}`, "values":[{v:"stretch",d:"Default stretch."},{v:"center",d:"Center rows."},{v:"space-between",d:"Spread rows."},{v:"space-around",d:"Space around rows."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note info"><strong>Note:</strong> Only relevant when wrapping creates multiple lines.</p>`},
+      "order":{"desc":"Sets the visual order of flex items.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":true,"syntax":`<span class="cs">.item</span>{<span class="cp">order</span>:<span class="cv">2</span>;}`, "example":`<span class="cs">.first</span>{<span class="cp">order</span>:<span class="cv">-1</span>;}`, "values":[{v:"0",d:"Default order."},{v:"<integer>",d:"Higher value means later placement."}], "browser":{chrome:"29",firefox:"28",safari:"9",edge:"12",ie:"11"}, "notes":`<p class="note tip"><strong>Tip:</strong> Use carefully because visual order affects accessibility.</p>`},
+      "gap":{"desc":"Controls spacing between items in flexbox or grid.","category":"Flexbox","version":"CSS3","inherited":false,"animatable":true,"syntax":`<span class="cs">.container</span>{<span class="cp">gap</span>:<span class="cv">16px</span>;}`, "example":`<span class="cs">.cards</span>{<span class="cp">gap</span>:<span class="cv">20px</span>;}`, "values":[{v:"<length>",d:"Space between rows and columns."},{v:"normal",d:"Browser default."}], "browser":{chrome:"84",firefox:"63",safari:"14",edge:"84",ie:"No"}, "notes":`<p class="note tip"><strong>Tip:</strong> Prefer <code>gap</code> over margins for layout spacing.</p>`},
+      "grid-template-columns":{"desc":"Defines column sizes in a grid container.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.grid</span>{<span class="cp">grid-template-columns</span>:<span class="cv">repeat(3, 1fr)</span>;}`, "example":`<span class="cs">.layout</span>{<span class="cp">grid-template-columns</span>:<span class="cv">240px 1fr</span>;}`, "values":[{v:"<track-list>",d:"One or more column tracks."},{v:"repeat()",d:"Repeat track pattern."},{v:"minmax()",d:"Min and max track size."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note tip"><strong>Tip:</strong> Use <code>repeat(auto-fit, minmax(250px, 1fr))</code> for responsive columns.</p>`},
+      "grid-template-rows":{"desc":"Defines row sizes in a grid container.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.grid</span>{<span class="cp">grid-template-rows</span>:<span class="cv">auto 1fr auto</span>;}`, "example":`<span class="cs">.page</span>{<span class="cp">grid-template-rows</span>:<span class="cv">80px 1fr 60px</span>;}`, "values":[{v:"<track-list>",d:"One or more row tracks."},{v:"auto",d:"Browser sizes track to content."},{v:"minmax()",d:"Limits row size."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Rows can be fixed, flexible, or content-based.</p>`},
+      "grid-template-areas":{"desc":"Names areas in a grid layout for easy placement.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.page</span>{<span class="cp">grid-template-areas</span>:<span class="cq">"header header"</span> <span class="cq">"sidebar main"</span> <span class="cq">"footer footer"</span>;}`, "example":`<span class="cs">.layout</span>{<span class="cp">grid-template-areas</span>:<span class="cq">"nav nav"</span> <span class="cq">"aside content"</span>;}`, "values":[{v:"<string>",d:"Quoted area names."},{v:"none",d:"No named areas."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Combine with <code>grid-area</code>.</p>`},
+      "grid-column":{"desc":"Sets a grid item’s column placement.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">grid-column</span>:<span class="cv">1 / 3</span>;}`, "example":`<span class="cs">.hero</span>{<span class="cp">grid-column</span>:<span class="cv">1 / -1</span>;}`, "values":[{v:"<start> / <end>",d:"Start and end line."},{v:"span n",d:"Span n tracks."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Controls horizontal grid placement.</p>`},
+      "grid-row":{"desc":"Sets a grid item’s row placement.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">grid-row</span>:<span class="cv">1 / 2</span>;}`, "example":`<span class="cs">.banner</span>{<span class="cp">grid-row</span>:<span class="cv">1 / span 2</span>;}`, "values":[{v:"<start> / <end>",d:"Start and end line."},{v:"span n",d:"Span n tracks."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Controls vertical grid placement.</p>`},
+      "grid-area":{"desc":"A shorthand for grid-row-start, grid-column-start, grid-row-end, and grid-column-end.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">grid-area</span>:<span class="cv">header</span>;}`, "example":`<span class="cs">.sidebar</span>{<span class="cp">grid-area</span>:<span class="cv">sidebar</span>;}`, "values":[{v:"<name>",d:"Named area."},{v:"<row-start> / <column-start> / <row-end> / <column-end>",d:"Longhand form."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note tip"><strong>Tip:</strong> Works neatly with <code>grid-template-areas</code>.</p>`},
+      "grid-auto-flow":{"desc":"Controls how auto-placed items are inserted into the grid.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.grid</span>{<span class="cp">grid-auto-flow</span>:<span class="cv">row</span>;}`, "example":`<span class="cs">.grid</span>{<span class="cp">grid-auto-flow</span>:<span class="cv">row dense</span>;}`, "values":[{v:"row",d:"Place items by rows."},{v:"column",d:"Place items by columns."},{v:"dense",d:"Fill gaps more aggressively."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Dense packing may change visual order.</p>`},
+      "place-items":{"desc":"Shorthand for align-items and justify-items.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.grid</span>{<span class="cp">place-items</span>:<span class="cv">center</span>;}`, "example":`<span class="cs">.box</span>{<span class="cp">place-items</span>:<span class="cv">start center</span>;}`, "values":[{v:"center",d:"Centers both axes."},{v:"start",d:"Align to start."},{v:"end",d:"Align to end."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note tip"><strong>Tip:</strong> Great for centering content in grid.</p>`},
+      "place-content":{"desc":"Shorthand for align-content and justify-content in grid.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.grid</span>{<span class="cp">place-content</span>:<span class="cv">space-between center</span>;}`, "example":`<span class="cs">.grid</span>{<span class="cp">place-content</span>:<span class="cv">center</span>;}`, "values":[{v:"center",d:"Centers the grid tracks."},{v:"space-between",d:"Distributes space between tracks."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note info"><strong>Note:</strong> Affects the overall track alignment.</p>`},
+      "place-self":{"desc":"Shorthand for align-self and justify-self for one grid item.","category":"Grid","version":"CSS3","inherited":false,"animatable":false,"syntax":`<span class="cs">.item</span>{<span class="cp">place-self</span>:<span class="cv">center end</span>;}`, "example":`<span class="cs">.hero</span>{<span class="cp">place-self</span>:<span class="cv">center</span>;}`, "values":[{v:"center",d:"Centers one item."},{v:"start",d:"Align to start."},{v:"end",d:"Align to end."}], "browser":{chrome:"57",firefox:"52",safari:"10.1",edge:"16",ie:"Partial"}, "notes":`<p class="note tip"><strong>Tip:</strong> Use for individual grid item alignment.</p>`},
+      "color":{
+        desc:"Sets the foreground color of text and related decorations.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">p</span> {\n  <span class="cp">color</span>: <span class="cv">#333</span>;\n  <span class="cp">color</span>: <span class="cv">rgb(224,108,117)</span>;\n  <span class="cp">color</span>: <span class="cv">hsl(355,65%,65%)</span>;\n}`,
+        example:`<span class="cs">a</span> { <span class="cp">color</span>: <span class="cv">#0070f3</span>; }`,
+        values:[{v:"named colors",d:"Keyword colors like red or blue."},{v:"#rrggbb",d:"Hex notation."},{v:"rgb()/rgba()",d:"RGB with alpha channel."},{v:"hsl()/hsla()",d:"Hue, saturation, lightness."},{v:"currentColor",d:"Uses element color value."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use semantic color values for themes and accessibility.</p>`
+      },
+      "background":{
+        desc:"Shorthand for background color, image, repeat, position, size, attachment, clip, and origin.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span> {\n  <span class="cp">background</span>: <span class="cv">#222</span>;\n  <span class="cp">background</span>: <span class="cv">url('img.jpg') no-repeat center/cover</span>;\n}`,
+        example:`<span class="cs">.hero</span> {\n  <span class="cp">background</span>: <span class="cv">linear-gradient(135deg, #667eea, #764ba2)</span>;\n}`,
+        values:[{v:"background-color",d:"Solid fill color."},{v:"background-image",d:"Image or gradient."},{v:"background-repeat",d:"Repeat behavior."},{v:"background-position",d:"Image position."},{v:"background-size",d:"Cover or contain."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Multiple backgrounds are allowed and layered from top to bottom.</p>`
+      },
+      "background-color":{
+        desc:"Sets a solid background color for an element.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">background-color</span>:<span class="cv">#111827</span>;}`,
+        example:`<span class="cs">.panel</span>{<span class="cp">background-color</span>:<span class="cv">rgba(255,255,255,.06)</span>;}`,
+        values:[{v:"<color>",d:"Any valid CSS color."},{v:"transparent",d:"Fully transparent."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use contrast-friendly colors for readable UI.</p>`
+      },
+      "background-image":{
+        desc:"Specifies one or more background images or gradients.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:false, animatable:false,
+        syntax:`<span class="cs">.hero</span>{<span class="cp">background-image</span>:<span class="cv">url('bg.jpg')</span>;}`,
+        example:`<span class="cs">.hero</span>{<span class="cp">background-image</span>:<span class="cv">linear-gradient(135deg,#667eea,#764ba2)</span>;}`,
+        values:[{v:"url()",d:"Image file."},{v:"linear-gradient()",d:"Linear gradient."},{v:"radial-gradient()",d:"Radial gradient."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Gradients are generated by the browser.</p>`
+      },
+      "background-size":{
+        desc:"Controls the size of background images.",
+        category:"Colors & Backgrounds", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.hero</span>{<span class="cp">background-size</span>:<span class="cv">cover</span>;}`,
+        example:`<span class="cs">.hero</span>{<span class="cp">background-size</span>:<span class="cv">cover</span>;}`,
+        values:[{v:"auto",d:"Original size."},{v:"cover",d:"Fill area and crop if needed."},{v:"contain",d:"Fit entire image inside."}],
+        browser:{chrome:"1",firefox:"1",safari:"3.1",edge:"12",ie:"9"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use <code>cover</code> for hero sections.</p>`
+      },
+      "background-position":{
+        desc:"Sets the position of background images.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.hero</span>{<span class="cp">background-position</span>:<span class="cv">center center</span>;}`,
+        example:`<span class="cs">.hero</span>{<span class="cp">background-position</span>:<span class="cv">top right</span>;}`,
+        values:[{v:"center",d:"Center image."},{v:"top",d:"Align top."},{v:"bottom",d:"Align bottom."},{v:"left/right",d:"Align horizontally."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> You can use px, %, keywords, or combinations.</p>`
+      },
+      "background-repeat":{
+        desc:"Determines whether and how backgrounds repeat.",
+        category:"Colors & Backgrounds", version:"CSS1", inherited:false, animatable:false,
+        syntax:`<span class="cs">.tile</span>{<span class="cp">background-repeat</span>:<span class="cv">no-repeat</span>;}`,
+        example:`<span class="cs">.pattern</span>{<span class="cp">background-repeat</span>:<span class="cv">repeat-x</span>;}`,
+        values:[{v:"repeat",d:"Repeat both directions."},{v:"no-repeat",d:"No repetition."},{v:"repeat-x",d:"Repeat horizontally."},{v:"repeat-y",d:"Repeat vertically."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Useful for patterns and sprite sheets.</p>`
+      },
+      "font":{
+        desc:"A shorthand for font-style, font-variant, font-weight, font-size, line-height, and font-family.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:false,
+        syntax:`<span class="cs">p</span>{<span class="cp">font</span>:<span class="cv">16px/1.6 'Outfit', sans-serif</span>;}`,
+        example:`<span class="cs">body</span>{<span class="cp">font</span>:<span class="cv">400 16px/1.6 'Outfit', sans-serif</span>;}`,
+        values:[{v:"font-style",d:"Style of text."},{v:"font-weight",d:"Weight of glyphs."},{v:"font-size",d:"Size of text."},{v:"line-height",d:"Line height."},{v:"font-family",d:"Font family list."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use shorthand carefully because it resets several font properties.</p>`
+      },
+      "font-family":{
+        desc:"Specifies the font family for text.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:false,
+        syntax:`<span class="cs">body</span>{<span class="cp">font-family</span>:<span class="cv">'Inter', sans-serif</span>;}`,
+        example:`<span class="cs">code</span>{<span class="cp">font-family</span>:<span class="cv">'JetBrains Mono', monospace</span>;}`,
+        values:[{v:"family-name",d:"A specific font name."},{v:"generic-family",d:"Fallback like serif or sans-serif."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Always include fallback fonts.</p>`
+      },
+      "font-size":{
+        desc:"Sets the size of text.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">p</span>{<span class="cp">font-size</span>:<span class="cv">16px</span>;}`,
+        example:`<span class="cs">h1</span>{<span class="cp">font-size</span>:<span class="cv">clamp(2rem, 5vw, 4rem)</span>;}`,
+        values:[{v:"<length>",d:"px, rem, em, etc."},{v:"<percentage>",d:"Relative size."},{v:"larger/smaller",d:"Relative keywords."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Prefer <code>rem</code> or <code>clamp()</code> for responsive typography.</p>`
+      },
+      "font-weight":{
+        desc:"Sets the thickness of the font.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">p</span>{<span class="cp">font-weight</span>:<span class="cv">600</span>;}`,
+        example:`<span class="cs">strong</span>{<span class="cp">font-weight</span>:<span class="cv">700</span>;}`,
+        values:[{v:"normal",d:"Equivalent to 400."},{v:"bold",d:"Equivalent to 700."},{v:"100-900",d:"Numeric weights."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Available weights depend on the font file.</p>`
+      },
+      "font-style":{
+        desc:"Specifies whether text is normal, italic, or oblique.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:false,
+        syntax:`<span class="cs">em</span>{<span class="cp">font-style</span>:<span class="cv">italic</span>;}`,
+        example:`<span class="cs">.quote</span>{<span class="cp">font-style</span>:<span class="cv">italic</span>;}`,
+        values:[{v:"normal",d:"Regular style."},{v:"italic",d:"Italic style."},{v:"oblique",d:"Slanted style."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Italic and oblique are not always identical.</p>`
+      },
+      "line-height":{
+        desc:"Controls the vertical spacing between lines of text.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">p</span>{<span class="cp">line-height</span>:<span class="cv">1.6</span>;}`,
+        example:`<span class="cs">body</span>{<span class="cp">line-height</span>:<span class="cv">1.7</span>;}`,
+        values:[{v:"normal",d:"Browser default."},{v:"<number>",d:"Unitless multiplier."},{v:"<length>",d:"Fixed line height."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Unitless values scale better across font sizes.</p>`
+      },
+      "letter-spacing":{
+        desc:"Adjusts the space between characters.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">h1</span>{<span class="cp">letter-spacing</span>:<span class="cv">0.02em</span>;}`,
+        example:`<span class="cs">.logo</span>{<span class="cp">letter-spacing</span>:<span class="cv">1px</span>;}`,
+        values:[{v:"normal",d:"Default spacing."},{v:"<length>",d:"Positive or negative spacing."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Use small values for readability.</p>`
+      },
+      "text-align":{
+        desc:"Aligns inline content within a block.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:false,
+        syntax:`<span class="cs">p</span>{<span class="cp">text-align</span>:<span class="cv">center</span>;}`,
+        example:`<span class="cs">.hero</span>{<span class="cp">text-align</span>:<span class="cv">center</span>;}`,
+        values:[{v:"left",d:"Align left."},{v:"right",d:"Align right."},{v:"center",d:"Center content."},{v:"justify",d:"Fully justify text."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Inherited by children.</p>`
+      },
+      "text-decoration":{
+        desc:"Adds decorative lines to text.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:true,
+        syntax:`<span class="cs">a</span>{<span class="cp">text-decoration</span>:<span class="cv">underline</span>;}`,
+        example:`<span class="cs">.link</span>{<span class="cp">text-decoration</span>:<span class="cv">none</span>;}`,
+        values:[{v:"none",d:"No decoration."},{v:"underline",d:"Underline text."},{v:"line-through",d:"Strike through."},{v:"overline",d:"Line above text."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use <code>text-decoration-thickness</code> for finer control.</p>`
+      },
+      "text-transform":{
+        desc:"Controls capitalization of text.",
+        category:"Typography", version:"CSS1", inherited:true, animatable:false,
+        syntax:`<span class="cs">.title</span>{<span class="cp">text-transform</span>:<span class="cv">uppercase</span>;}`,
+        example:`<span class="cs">.badge</span>{<span class="cp">text-transform</span>:<span class="cv">uppercase</span>;}`,
+        values:[{v:"none",d:"No change."},{v:"uppercase",d:"All caps."},{v:"lowercase",d:"All lowercase."},{v:"capitalize",d:"Capitalize each word."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Use only when it improves readability or style.</p>`
+      },
+      "text-shadow":{
+        desc:"Adds shadow to text.",
+        category:"Typography", version:"CSS3", inherited:true, animatable:true,
+        syntax:`<span class="cs">h1</span>{<span class="cp">text-shadow</span>:<span class="cv">0 2px 6px rgba(0,0,0,.25)</span>;}`,
+        example:`<span class="cs">.hero-title</span>{<span class="cp">text-shadow</span>:<span class="cv">0 4px 20px rgba(0,0,0,.35)</span>;}`,
+        values:[{v:"offset-x offset-y blur color",d:"Standard shadow components."}],
+        browser:{chrome:"1",firefox:"3.5",safari:"1",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Keep shadows subtle for legibility.</p>`
+      },
+      "border":{
+        desc:"A shorthand for border width, style, and color.",
+        category:"Borders", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">border</span>:<span class="cv">1px solid #334</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">border</span>:<span class="cv">1px solid rgba(255,255,255,.1)</span>;}`,
+        values:[{v:"border-width",d:"Thickness."},{v:"border-style",d:"Solid, dashed, etc."},{v:"border-color",d:"Border color."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> If border-style is missing, the border may not display.</p>`
+      },
+      "border-width":{
+        desc:"Sets the thickness of an element’s border.",
+        category:"Borders", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">border-width</span>:<span class="cv">2px</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">border-width</span>:<span class="cv">1px 2px</span>;}`,
+        values:[{v:"thin",d:"Thin border."},{v:"medium",d:"Medium border."},{v:"thick",d:"Thick border."},{v:"<length>",d:"Custom width."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Used with border-style and border-color.</p>`
+      },
+      "border-style":{
+        desc:"Defines the style of the border line.",
+        category:"Borders", version:"CSS1", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">border-style</span>:<span class="cv">solid</span>;}`,
+        example:`<span class="cs">.dashed</span>{<span class="cp">border-style</span>:<span class="cv">dashed</span>;}`,
+        values:[{v:"none",d:"No border."},{v:"solid",d:"Solid line."},{v:"dashed",d:"Dashed line."},{v:"dotted",d:"Dotted line."},{v:"double",d:"Double line."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note info"><strong>Note:</strong> Border style must not be <code>none</code> for visible border.</p>`
+      },
+      "border-color":{
+        desc:"Sets the color of an element’s border.",
+        category:"Borders", version:"CSS1", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">border-color</span>:<span class="cv">#334</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">border-color</span>:<span class="cv">rgba(255,255,255,.12)</span>;}`,
+        values:[{v:"<color>",d:"Any valid CSS color."},{v:"transparent",d:"Invisible border."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"3"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use neutral border colors for subtle separation.</p>`
+      },
+      "outline":{
+        desc:"Draws a line around an element outside the border area.",
+        category:"Borders", version:"CSS2", inherited:false, animatable:true,
+        syntax:`<span class="cs">button:focus</span>{<span class="cp">outline</span>:<span class="cv">2px solid #6c8bff</span>;}`,
+        example:`<span class="cs">.focus-ring</span>{<span class="cp">outline</span>:<span class="cv">2px solid #00e5a0</span>;}`,
+        values:[{v:"none",d:"No outline."},{v:"solid",d:"Solid outline."},{v:"dashed",d:"Dashed outline."},{v:"dotted",d:"Dotted outline."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Preserve focus outlines for accessibility.</p>`
+      },
+      "outline-offset":{
+        desc:"Sets the space between the outline and the border edge.",
+        category:"Borders", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">button</span>{<span class="cp">outline-offset</span>:<span class="cv">4px</span>;}`,
+        example:`<span class="cs">.focus-ring</span>{<span class="cp">outline-offset</span>:<span class="cv">3px</span>;}`,
+        values:[{v:"<length>",d:"Distance from border."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"9"},
+        notes:`<p class="note info"><strong>Note:</strong> Useful for accessible focus styles.</p>`
+      },
+      "transition":{
+        desc:"A shorthand for transition properties.",
+        category:"Transitions", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.card</span>{<span class="cp">transition</span>:<span class="cv">all .2s ease</span>;}`,
+        example:`<span class="cs">.btn</span>{<span class="cp">transition</span>:<span class="cv">transform .2s ease, box-shadow .2s ease</span>;}`,
+        values:[{v:"transition-property",d:"Which property changes."},{v:"transition-duration",d:"How long the change takes."},{v:"transition-timing-function",d:"Speed curve."},{v:"transition-delay",d:"Wait before starting."}],
+        browser:{chrome:"1",firefox:"4",safari:"3.1",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Animate transform and opacity for smoother effects.</p>`
+      },
+      "transition-property":{
+        desc:"Specifies which property or properties transition.",
+        category:"Transitions", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.card</span>{<span class="cp">transition-property</span>:<span class="cv">transform</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">transition-property</span>:<span class="cv">transform, box-shadow</span>;}`,
+        values:[{v:"none",d:"No transition."},{v:"all",d:"All animatable properties."},{v:"<property>",d:"Specific property."}],
+        browser:{chrome:"1",firefox:"4",safari:"3.1",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Use specific properties when possible for performance.</p>`
+      },
+      "transition-duration":{
+        desc:"Sets how long a transition takes.",
+        category:"Transitions", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.btn</span>{<span class="cp">transition-duration</span>:<span class="cv">200ms</span>;}`,
+        example:`<span class="cs">.btn</span>{<span class="cp">transition-duration</span>:<span class="cv">.2s</span>;}`,
+        values:[{v:"<time>",d:"Seconds or milliseconds."}],
+        browser:{chrome:"1",firefox:"4",safari:"3.1",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Short durations feel snappier in UI.</p>`
+      },
+      "transition-timing-function":{
+        desc:"Defines the speed curve of a transition.",
+        category:"Transitions", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.btn</span>{<span class="cp">transition-timing-function</span>:<span class="cv">ease</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">transition-timing-function</span>:<span class="cv">cubic-bezier(.2,.8,.2,1)</span>;}`,
+        values:[{v:"ease",d:"Default smooth curve."},{v:"linear",d:"Constant speed."},{v:"ease-in",d:"Starts slowly."},{v:"ease-out",d:"Ends slowly."}],
+        browser:{chrome:"1",firefox:"4",safari:"3.1",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Custom cubic-bezier curves can feel more natural.</p>`
+      },
+      "transition-delay":{
+        desc:"Delays the start of a transition.",
+        category:"Transitions", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.btn</span>{<span class="cp">transition-delay</span>:<span class="cv">100ms</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">transition-delay</span>:<span class="cv">.1s</span>;}`,
+        values:[{v:"<time>",d:"Delay before transition starts."}],
+        browser:{chrome:"1",firefox:"4",safari:"3.1",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Often set to 0 for immediate feedback.</p>`
+      },
+      "animation":{
+        desc:"A shorthand for animation properties.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation</span>:<span class="cv">fadeIn .5s ease forwards</span>;}`,
+        example:`<span class="cs">.logo</span>{<span class="cp">animation</span>:<span class="cv">spin 2s linear infinite</span>;}`,
+        values:[{v:"animation-name",d:"Name of keyframes."},{v:"animation-duration",d:"Duration."},{v:"animation-timing-function",d:"Speed curve."},{v:"animation-iteration-count",d:"Repeat count."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Keep motion subtle and purposeful.</p>`
+      },
+      "animation-name":{
+        desc:"Names the @keyframes animation to use.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">@keyframes</span> <span class="cs">fadeIn</span> { ... }\n<span class="cs">.box</span>{<span class="cp">animation-name</span>:<span class="cv">fadeIn</span>;}`,
+        example:`<span class="cs">.logo</span>{<span class="cp">animation-name</span>:<span class="cv">spin</span>;}`,
+        values:[{v:"<identifier>",d:"Keyframes name."},{v:"none",d:"No animation."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Must match the <code>@keyframes</code> name exactly.</p>`
+      },
+      "animation-duration":{
+        desc:"Sets the time an animation takes to complete one cycle.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-duration</span>:<span class="cv">1s</span>;}`,
+        example:`<span class="cs">.loader</span>{<span class="cp">animation-duration</span>:<span class="cv">2s</span>;}`,
+        values:[{v:"<time>",d:"Seconds or milliseconds."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Shorter durations feel more responsive.</p>`
+      },
+      "animation-timing-function":{
+        desc:"Controls the pacing of keyframe animation.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-timing-function</span>:<span class="cv">ease-in-out</span>;}`,
+        example:`<span class="cs">.loader</span>{<span class="cp">animation-timing-function</span>:<span class="cv">linear</span>;}`,
+        values:[{v:"linear",d:"Constant speed."},{v:"ease",d:"Default curve."},{v:"ease-in",d:"Start slow."},{v:"ease-out",d:"End slow."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use linear for loaders/spinners.</p>`
+      },
+      "animation-delay":{
+        desc:"Delays the start of an animation.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-delay</span>:<span class="cv">200ms</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">animation-delay</span>:<span class="cv">.2s</span>;}`,
+        values:[{v:"<time>",d:"Delay before animation starts."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Useful for staggered entrance effects.</p>`
+      },
+      "animation-iteration-count":{
+        desc:"Sets how many times an animation should repeat.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-iteration-count</span>:<span class="cv">infinite</span>;}`,
+        example:`<span class="cs">.loader</span>{<span class="cp">animation-iteration-count</span>:<span class="cv">infinite</span>;}`,
+        values:[{v:"1",d:"Once."},{v:"<number>",d:"Repeat count."},{v:"infinite",d:"Repeat forever."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Avoid infinite loops on important content.</p>`
+      },
+      "animation-direction":{
+        desc:"Defines whether the animation runs forward, backward, or alternates.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-direction</span>:<span class="cv">alternate</span>;}`,
+        example:`<span class="cs">.loader</span>{<span class="cp">animation-direction</span>:<span class="cv">alternate</span>;}`,
+        values:[{v:"normal",d:"Forward."},{v:"reverse",d:"Backward."},{v:"alternate",d:"Alternates direction."},{v:"alternate-reverse",d:"Alternates starting reverse."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Alternate makes motion feel more dynamic.</p>`
+      },
+      "animation-fill-mode":{
+        desc:"Specifies styles before and after animation runs.",
+        category:"Animations", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">animation-fill-mode</span>:<span class="cv">forwards</span>;}`,
+        example:`<span class="cs">.card</span>{<span class="cp">animation-fill-mode</span>:<span class="cv">both</span>;}`,
+        values:[{v:"none",d:"No fill styles."},{v:"forwards",d:"Keep last keyframe."},{v:"backwards",d:"Apply first keyframe before start."},{v:"both",d:"Both forwards and backwards."}],
+        browser:{chrome:"1",firefox:"5",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use <code>forwards</code> for entrance animations.</p>`
+      },
+      "transform":{
+        desc:"Applies 2D/3D transforms to an element.",
+        category:"Transforms", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">transform</span>:<span class="cv">translateY(-4px) scale(1.02)</span>;}`,
+        example:`<span class="cs">.card:hover</span>{<span class="cp">transform</span>:<span class="cv">translateY(-4px)</span>;}`,
+        values:[{v:"translate()",d:"Move element."},{v:"scale()",d:"Resize element."},{v:"rotate()",d:"Rotate element."},{v:"skew()",d:"Skew element."}],
+        browser:{chrome:"1",firefox:"3.5",safari:"3.1",edge:"12",ie:"9"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Transform is performant for hover and motion effects.</p>`
+      },
+      "transform-origin":{
+        desc:"Sets the point around which a transform occurs.",
+        category:"Transforms", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.box</span>{<span class="cp">transform-origin</span>:<span class="cv">center center</span>;}`,
+        example:`<span class="cs">.spinner</span>{<span class="cp">transform-origin</span>:<span class="cv">center</span>;}`,
+        values:[{v:"center",d:"Default center point."},{v:"top left",d:"Top left corner."},{v:"<length> <length>",d:"Custom origin."}],
+        browser:{chrome:"1",firefox:"3.5",safari:"3.1",edge:"12",ie:"9"},
+        notes:`<p class="note info"><strong>Note:</strong> Important for rotate and scale effects.</p>`
+      },
+      "perspective":{
+        desc:"Adds depth to 3D transformed children.",
+        category:"Transforms", version:"CSS3", inherited:false, animatable:true,
+        syntax:`<span class="cs">.scene</span>{<span class="cp">perspective</span>:<span class="cv">800px</span>;}`,
+        example:`<span class="cs">.scene</span>{<span class="cp">perspective</span>:<span class="cv">1000px</span>;}`,
+        values:[{v:"none",d:"No perspective."},{v:"<length>",d:"Distance to viewer."}],
+        browser:{chrome:"12",firefox:"10",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Lower values create stronger depth effect.</p>`
+      },
+      "backface-visibility":{
+        desc:"Controls whether the backside of a 3D-transformed element is visible.",
+        category:"Transforms", version:"CSS3", inherited:false, animatable:false,
+        syntax:`<span class="cs">.card</span>{<span class="cp">backface-visibility</span>:<span class="cv">hidden</span>;}`,
+        example:`<span class="cs">.flip-face</span>{<span class="cp">backface-visibility</span>:<span class="cv">hidden</span>;}`,
+        values:[{v:"visible",d:"Back face visible."},{v:"hidden",d:"Back face hidden."}],
+        browser:{chrome:"12",firefox:"10",safari:"4",edge:"12",ie:"10"},
+        notes:`<p class="note info"><strong>Note:</strong> Used in card flip animations.</p>`
+      },
+      "overflow":{
+        desc:"Controls what happens when content overflows an element.",
+        category:"Overflow", version:"CSS1", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">overflow</span>:<span class="cv">auto</span>;}`,
+        example:`<span class="cs">.panel</span>{<span class="cp">overflow</span>:<span class="cv">hidden</span>;}`,
+        values:[{v:"visible",d:"Overflow visible."},{v:"hidden",d:"Clip overflow."},{v:"scroll",d:"Always show scrollbars."},{v:"auto",d:"Scroll when needed."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Hidden overflow is often used for clipping content.</p>`
+      },
+      "overflow-x":{
+        desc:"Controls horizontal overflow behavior.",
+        category:"Overflow", version:"CSS2", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">overflow-x</span>:<span class="cv">auto</span>;}`,
+        example:`<span class="cs">.table-wrap</span>{<span class="cp">overflow-x</span>:<span class="cv">auto</span>;}`,
+        values:[{v:"visible",d:"Visible."},{v:"hidden",d:"Hidden."},{v:"scroll",d:"Scroll horizontally."},{v:"auto",d:"Needed scroll."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Use for tables and horizontal content.</p>`
+      },
+      "overflow-y":{
+        desc:"Controls vertical overflow behavior.",
+        category:"Overflow", version:"CSS2", inherited:false, animatable:false,
+        syntax:`<span class="cs">.box</span>{<span class="cp">overflow-y</span>:<span class="cv">scroll</span>;}`,
+        example:`<span class="cs">.sidebar</span>{<span class="cp">overflow-y</span>:<span class="cv">auto</span>;}`,
+        values:[{v:"visible",d:"Visible."},{v:"hidden",d:"Hidden."},{v:"scroll",d:"Scroll vertically."},{v:"auto",d:"Needed scroll."}],
+        browser:{chrome:"1",firefox:"1",safari:"1",edge:"12",ie:"4"},
+        notes:`<p class="note info"><strong>Note:</strong> Useful for sidebars and modals.</p>`
+      },
+      "scroll-behavior":{
+        desc:"Specifies smooth or instant scrolling for an element.",
+        category:"Overflow", version:"CSSOM", inherited:false, animatable:false,
+        syntax:`<span class="cs">html</span>{<span class="cp">scroll-behavior</span>:<span class="cv">smooth</span>;}`,
+        example:`<span class="cs">html</span>{<span class="cp">scroll-behavior</span>:<span class="cv">smooth</span>;}`,
+        values:[{v:"auto",d:"Default instant scroll."},{v:"smooth",d:"Smooth scrolling."}],
+        browser:{chrome:"61",firefox:"36",safari:"15.4",edge:"79",ie:"No"},
+        notes:`<p class="note tip"><strong>Tip:</strong> Great for anchor link navigation.</p>`
+      }
+    };
 
-const params = new URLSearchParams(window.location.search);
-const prop = params.get('prop');
-if (prop) {
-  document.getElementById('welcome').style.display = 'none';
-  const pp = document.getElementById('prop-page');
-  pp.style.display = 'block';
-  pp.innerHTML = renderProp(prop);
-  document.title = `${prop} — CSS Reference`;
-}
-</script>
+    function load(){
+      const p = new URLSearchParams(location.search).get('prop') || 'width';
+      const d = DB[p];
+      if(!d){
+        document.getElementById('welcome').style.display = 'block';
+        document.getElementById('page').style.display = 'none';
+        return;
+      }
+      document.getElementById('welcome').style.display = 'none';
+      document.getElementById('page').style.display = 'block';
+      document.getElementById('cat').textContent = d.category;
+      document.getElementById('slug').textContent = p;
+      document.getElementById('prop').textContent = p;
+      document.getElementById('desc').innerHTML = d.desc;
+      document.getElementById('syntax').innerHTML = d.syntax;
+      document.getElementById('example').innerHTML = d.example;
+      document.getElementById('notes').innerHTML = d.notes || '';
+      document.getElementById('badges').innerHTML = `
+        <span class="b cat">${d.category}</span>
+        <span class="b ver">${d.version}</span>
+        <span class="b ${d.animatable ? 'ani' : 'sta'}">${d.animatable ? 'animatable' : 'static'}</span>
+        <span class="b ${d.inherited ? 'inh' : 'sta'}">${d.inherited ? 'inherited' : 'not inherited'}</span>
+      `;
+      document.getElementById('overview').innerHTML = `
+        <div class="card"><div class="lab">Category</div><div class="val">${d.category}</div></div>
+        <div class="card"><div class="lab">Version</div><div class="val">${d.version}</div></div>
+        <div class="card"><div class="lab">Inherited</div><div class="val ${d.inherited ? 'y' : 'n'}">${d.inherited ? 'Yes' : 'No'}</div></div>
+      `;
+      document.getElementById('values').innerHTML = (d.values || []).map(v => `<tr><td><span class="vname">${v.v}</span>${v.isDefault ? '<span class="default">default</span>' : ''}</td><td class="desc2">${v.d}</td></tr>`).join('');
+      document.getElementById('browser').innerHTML = Object.entries(d.browser || {}).map(([k,v]) => `<div class="pill ${v==='Partial'?'partial':(v==='No'?'no':'yes')}"><span>${k}</span><strong>${v}</strong></div>`).join('');
+    }
+    load();
+  </script>
 </body>
 </html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript Reference</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1117;
+      --bg2:#161b22;
+      --bg3:#1c2128;
+      --text:#e6edf3;
+      --text-muted:#8b949e;
+      --border:#30363d;
+      --accent:#f0db4f;
+      --accent2:#4e5cfb;
+      --blue:#58a6ff;
+      --green:#3fb950;
+      --red:#f85149;
+      --purple:#bc8cff;
+      --cyan:#8be9fd;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;overflow:auto}
+    body{scroll-behavior:smooth}
+    .welcome{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:40px;
+      background:radial-gradient(ellipse at 50% 40%, rgba(240,219,79,0.06) 0%, transparent 65%);
+    }
+    .welcome-icon{
+      font-family:'JetBrains Mono',monospace;
+      font-size:72px;
+      font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1;
+      margin-bottom:24px;
+      filter:drop-shadow(0 0 30px rgba(240,219,79,0.3));
+    }
+    .welcome-title{font-size:28px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-0.5px}
+    .welcome-sub{color:var(--text-muted);font-size:14px;text-align:center;max-width:420px;margin-bottom:32px;line-height:1.7}
+    .welcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:520px;width:100%}
+    .welcome-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+    .wc-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--accent);display:block}
+    .wc-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+    .welcome-hint{margin-top:28px;padding:12px 20px;background:rgba(240,219,79,0.07);border:1px solid rgba(240,219,79,0.2);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)}
+    .tag-page{display:none;padding:0}
+    .tag-hero{
+      background:linear-gradient(135deg,#0d1117 0%,#131922 100%);
+      border-bottom:1px solid var(--border);
+      padding:32px 40px 28px;
+      position:relative;
+      overflow:hidden;
+    }
+    .tag-hero:before{
+      content:'';
+      position:absolute;
+      top:-60px;
+      right:-60px;
+      width:250px;
+      height:250px;
+      background:radial-gradient(circle, rgba(240,219,79,0.08) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .hero-breadcrumb{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:12px;letter-spacing:0.5px}
+    .hero-breadcrumb span{color:var(--accent)}
+    .hero-tag-name{font-family:'JetBrains Mono',monospace;font-size:40px;font-weight:700;color:var(--text);line-height:1;margin-bottom:10px}
+    .hero-tag-name .angle{color:rgba(240,219,79,0.4);font-size:32px}
+    .hero-tag-name .tname{color:var(--accent)}
+    .hero-desc{font-size:15px;color:var(--text-muted);max-width:760px;line-height:1.6;margin-bottom:16px}
+    .hero-badges{display:flex;gap:8px;flex-wrap:wrap}
+    .hbadge{
+      padding:4px 11px;border-radius:20px;font-size:10px;
+      font-family:'JetBrains Mono',monospace;font-weight:600;
+      letter-spacing:0.8px;text-transform:uppercase;
+    }
+    .hb-cat{background:rgba(88,166,255,0.12);color:var(--blue);border:1px solid rgba(88,166,255,0.25)}
+    .hb-type{background:rgba(63,185,80,0.12);color:var(--green);border:1px solid rgba(63,185,80,0.25)}
+    .hb-es{background:rgba(78,92,251,0.12);color:var(--accent2);border:1px solid rgba(78,92,251,0.25)}
+    .tag-content{padding:32px 40px 60px;max-width:1100px}
+    .section{margin-bottom:36px}
+    .section-title{
+      font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;
+      margin-bottom:14px;display:flex;align-items:center;gap:10px
+    }
+    .section-title:after{content:'';flex:1;height:1px;background:var(--border)}
+    .section p{color:#b0bec5;line-height:1.8;margin-bottom:10px}
+    .section p:last-child{margin-bottom:0}
+    .code-block{background:#0d1117;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:8px 0}
+    .code-header{background:var(--bg2);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+    .code-lang{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+    .code-copy{font-size:10px;color:var(--text-muted);cursor:pointer;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:transparent;font-family:'JetBrains Mono',monospace;transition:all .15s}
+    .code-copy:hover{color:var(--accent);border-color:var(--accent)}
+    pre{padding:16px 20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:#e6edf3}
+    pre::-webkit-scrollbar{height:4px}
+    pre::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .attr-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+    .attr-table th{text-align:left;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--bg2)}
+    .attr-table td{padding:9px 12px;border-bottom:1px solid rgba(48,54,61,0.5);vertical-align:top}
+    .attr-table tr:last-child td{border-bottom:none}
+    .attr-table tr:hover td{background:rgba(255,255,255,0.02)}
+    .attr-name{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:12px;font-weight:600;white-space:nowrap}
+    .attr-type{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cyan)}
+    .attr-desc{color:var(--text-muted);font-size:13px}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .info-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+    .ic-label{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+    .ic-val{font-size:14px;font-weight:600;color:var(--text)}
+    .ic-val.yes{color:var(--green)}
+    .ic-val.no{color:var(--red)}
+    .note{padding:12px 16px;border-radius:8px;border-left:3px solid;margin:10px 0;font-size:13px;line-height:1.6}
+    .note-info{background:rgba(88,166,255,0.07);border-color:var(--blue);color:#79b8e8}
+    .note-warn{background:rgba(248,81,73,0.07);border-color:var(--red);color:#f0857f}
+    .note-tip{background:rgba(63,185,80,0.07);border-color:var(--green);color:#6ed67e}
+  </style>
+</head>
+<body>
+  <div id="welcome" class="welcome">
+    <div class="welcome-icon">{ }</div>
+    <div class="welcome-title">JavaScript Reference</div>
+    <div class="welcome-sub">A complete guide to JavaScript topics. Select any topic from the sidebar to explore syntax, examples, properties, and notes.</div>
+    <div class="welcome-grid">
+      <div class="welcome-card"><span class="wc-num">102</span><span class="wc-label">Topics</span></div>
+      <div class="welcome-card"><span class="wc-num">ES2026</span><span class="wc-label">Standard</span></div>
+      <div class="welcome-card"><span class="wc-num">6</span><span class="wc-label">Categories</span></div>
+    </div>
+    <div class="welcome-hint">Click any topic in the sidebar to begin</div>
+  </div>
+
+  <div id="tag-page" class="tag-page"></div>
+
+  <script>
+    const DB = {
+      'javascript': { title:'JavaScript', category:'Basics', type:'Programming Language', desc:'JavaScript is a high-level scripting language used to make web pages interactive. It runs in browsers and on servers through environments like Node.js.', syntax:'JavaScript code runs inside <script> tags or external .js files.', example:'console.log("Hello, world!");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use JavaScript for interactivity, logic, DOM updates, APIs, and modern web apps.', es:true },
+      'variables': { title:'Variables', category:'Basics', type:'Declaration', desc:'Variables store data values that can be reused and changed during program execution.', syntax:'let name = "Vikram"; const age = 21; var old = true;', example:'let userName = "Aman";\\nconst pi = 3.14159;', attrs:[{n:'var',t:'keyword',d:'Function-scoped, old style declaration.'},{n:'let',t:'keyword',d:'Block-scoped variable that can be reassigned.'},{n:'const',t:'keyword',d:'Block-scoped variable that cannot be reassigned.'}], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Prefer const by default, then let. Avoid var in modern code.', es:true },
+      'data-types': { title:'Data Types', category:'Basics', type:'Concept', desc:'JavaScript values are stored as primitive types or objects.', syntax:'string, number, bigint, boolean, undefined, null, symbol, object', example:'let x = "text";\\nlet y = 42;\\nlet z = true;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Know the difference between primitive values and reference types.', es:true },
+      'operators': { title:'Operators', category:'Basics', type:'Concept', desc:'Operators perform arithmetic, assignment, comparison, logical, and other operations on values.', syntax:'+ - * / % ** == === != !== > < >= <= && || ??', example:'let sum = 10 + 5;\\nlet ok = age >= 18;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use strict equality === whenever possible.', es:true },
+      'conditionals': { title:'Conditionals', category:'Basics', type:'Control Flow', desc:'Conditionals let your program choose different paths based on boolean expressions.', syntax:'if, else if, else, switch', example:'if (x > 10) {\\n  console.log("big");\\n} else {\\n  console.log("small");\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Use switch for multiple fixed values and if/else for general conditions.', es:true },
+      'loops': { title:'Loops', category:'Basics', type:'Control Flow', desc:'Loops repeat code while a condition remains true or for each item in a collection.', syntax:'for, while, do...while, for...of, for...in', example:'for (let i = 0; i < 5; i++) {\\n  console.log(i);\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Choose the loop type that best matches the task.', es:true },
+      'comments': { title:'Comments', category:'Basics', type:'Syntax', desc:'Comments are ignored by the JavaScript engine and are used to explain code.', syntax:'// single line\\n/* multi-line */', example:'// This is a comment\\n/* This is\\n   multi-line */', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Write comments for intent, not for obvious code.', es:true },
+      'keywords': { title:'Keywords', category:'Basics', type:'Syntax', desc:'Keywords are reserved words with special meaning in JavaScript syntax.', syntax:'let, const, if, return, class, import, export', example:'const name = "JS";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Keywords cannot be used as variable names.', es:true },
+      'identifiers': { title:'Identifiers', category:'Basics', type:'Naming', desc:'Identifiers are the names you give to variables, functions, classes, and more.', syntax:'let userName = "Aman";', example:'function calculateTotal() {}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use meaningful, readable names.', es:true },
+      'literals': { title:'Literals', category:'Basics', type:'Value', desc:'Literals are fixed values written directly in code.', syntax:'42, "hello", true, [], {}', example:'const name = "Vikram";\\nconst score = 100;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Literals are not computed at runtime.', es:true },
+      'strict-mode': { title:'Strict Mode', category:'Basics', type:'Safety', desc:'Strict mode enables a safer subset of JavaScript and catches more errors.', syntax:'"use strict";', example:'"use strict";\\nlet x = 10;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Strict mode helps avoid silent bugs.', es:true },
+      'types-conversion': { title:'Type Conversion', category:'Basics', type:'Conversion', desc:'Type conversion changes a value from one type to another explicitly.', syntax:'Number("10"), String(20), Boolean(1)', example:'const n = Number("42");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Conversion is explicit and controlled by the programmer.', es:true },
+      'type-coercion': { title:'Type Coercion', category:'Basics', type:'Conversion', desc:'Type coercion is automatic type conversion done by JavaScript during operations.', syntax:'"5" + 1, 5 == "5"', example:'console.log("5" + 1); // "51"', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Coercion can be confusing; prefer explicit conversion.', es:true },
+      'truthy-and-falsy': { title:'Truthy and Falsy', category:'Basics', type:'Concept', desc:'Truthy values behave like true in conditions and falsy values behave like false.', syntax:'false, 0, "", null, undefined, NaN are falsy', example:'if ("hello") { console.log("truthy"); }', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Falsy values are important in condition checks.', es:true },
+      'template-literals': { title:'Template Literals', category:'Basics', type:'String Syntax', desc:'Template literals use backticks and allow interpolation and multi-line strings.', syntax:'`Hello ${name}`', example:'const msg = `Hello ${userName}`;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use template literals for readable string building.', es:true },
+      'strings': { title:'Strings', category:'Basics', type:'Primitive', desc:'Strings store text data in JavaScript.', syntax:'"text", "hello", `world`', example:'const text = "JavaScript";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Strings have many methods like slice, replace, and includes.', es:true },
+      'numbers': { title:'Numbers', category:'Basics', type:'Primitive', desc:'Numbers represent numeric values including integers and decimals.', syntax:'10, 3.14, NaN, Infinity', example:'let price = 99.99;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'JavaScript uses one number type for most numeric values.', es:true },
+      'booleans': { title:'Booleans', category:'Basics', type:'Primitive', desc:'Booleans can only be true or false.', syntax:'true, false', example:'const isLoggedIn = true;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Booleans are widely used in logic and conditionals.', es:true },
+      'bigint': { title:'BigInt', category:'Basics', type:'Primitive', desc:'BigInt is used for integers larger than Number can safely represent.', syntax:'12345678901234567890n', example:'const big = 12345678901234567890n;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use BigInt only when large integer precision is required.', es:true },
+      'symbols': { title:'Symbols', category:'Basics', type:'Primitive', desc:'Symbols are unique and immutable values often used as object property keys.', syntax:'Symbol("id")', example:'const id = Symbol("id");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Symbols help avoid property name collisions.', es:true },
+      'null': { title:'Null', category:'Basics', type:'Primitive', desc:'Null represents an intentional absence of any object value.', syntax:'null', example:'let result = null;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Null is assigned intentionally when something has no value.', es:true },
+      'undefined': { title:'Undefined', category:'Basics', type:'Primitive', desc:'Undefined means a variable has been declared but not assigned a value.', syntax:'undefined', example:'let value; // undefined', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Undefined is the default state of unassigned variables.', es:true },
+
+      'functions': { title:'Functions', category:'Functions & Scope', type:'Reusable Block', desc:'A function is a reusable block of code that performs a task or returns a value.', syntax:'function greet(name) { return "Hi " + name; }', example:'function add(a, b) {\\n  return a + b;\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Functions are central to modular JavaScript code.', es:true },
+      'arrow-function': { title:'Arrow Function', category:'Functions & Scope', type:'Function Syntax', desc:'Arrow functions provide a shorter syntax for writing functions and capture lexical this.', syntax:'const sum = (a, b) => a + b;', example:'const double = n => n * 2;', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Arrow functions do not have their own this, arguments, or prototype.', es:true },
+      'scope': { title:'Scope', category:'Functions & Scope', type:'Concept', desc:'Scope defines where variables can be accessed in code.', syntax:'Global scope, function scope, block scope', example:'{ let x = 1; }\\n// x is not accessible here', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'let and const are block-scoped; var is function-scoped.', es:true },
+      'hoisting': { title:'Hoisting', category:'Functions & Scope', type:'Behavior', desc:'Hoisting is JavaScript behavior where declarations are moved conceptually to the top of their scope.', syntax:'Declarations are processed before execution.', example:'console.log(x);\\nvar x = 5;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'let and const are hoisted too, but remain in the temporal dead zone.', es:true },
+      'closures': { title:'Closures', category:'Functions & Scope', type:'Concept', desc:'A closure is a function that remembers variables from its outer lexical scope.', syntax:'function outer() { let x = 1; return function inner() { return x; } }', example:'function counter() {\\n  let count = 0;\\n  return () => ++count;\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Closures are useful for private state and factory functions.', es:true },
+      'this-keyword': { title:'this Keyword', category:'Functions & Scope', type:'Context', desc:'The this keyword refers to the object or context that is executing the current function.', syntax:'this.method()', example:'const obj = { name: "A", show(){ console.log(this.name); } };', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'The value of this depends on how a function is called.', es:true },
+      'arguments': { title:'Arguments', category:'Functions & Scope', type:'Object-like Value', desc:'Arguments is a special array-like object available inside regular functions.', syntax:'function f() { console.log(arguments); }', example:'function sum() {\\n  return arguments[0] + arguments[1];\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Prefer rest parameters over arguments in modern code.', es:true },
+      'rest-parameters': { title:'Rest Parameters', category:'Functions & Scope', type:'Syntax', desc:'Rest parameters collect multiple function arguments into a single array.', syntax:'function sum(...nums) {}', example:'function total(...nums) {\\n  return nums.reduce((a,b) => a+b, 0);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Rest parameters must be the last parameter.', es:true },
+      'default-parameters': { title:'Default Parameters', category:'Functions & Scope', type:'Syntax', desc:'Default parameters provide fallback values when arguments are missing.', syntax:'function greet(name = "Guest") {}', example:'function say(msg = "Hello") {\\n  console.log(msg);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Defaults make functions easier to use safely.', es:true },
+      'recursion': { title:'Recursion', category:'Functions & Scope', type:'Technique', desc:'Recursion is when a function calls itself to solve a problem in smaller steps.', syntax:'function fact(n) { return n <= 1 ? 1 : n * fact(n - 1); }', example:'function factorial(n) {\\n  if (n <= 1) return 1;\\n  return n * factorial(n - 1);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Always define a base case to stop recursion.', es:true },
+      'callback': { title:'Callback', category:'Functions & Scope', type:'Function', desc:'A callback is a function passed into another function to be executed later.', syntax:'setTimeout(() => {}, 1000)', example:'function process(name, cb) {\\n  cb(name);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Callbacks are common in async code and event handling.', es:true },
+      'higher-order-function': { title:'Higher Order Function', category:'Functions & Scope', type:'Function Pattern', desc:'A higher-order function takes a function as an argument or returns a function.', syntax:'array.map(fn)', example:'const result = [1,2,3].map(n => n * 2);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Map, filter, and reduce are higher-order functions.', es:true },
+      'iife': { title:'IIFE', category:'Functions & Scope', type:'Pattern', desc:'An Immediately Invoked Function Expression runs as soon as it is defined.', syntax:'(function(){ ... })();', example:'(function() {\\n  console.log("run once");\\n})();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'IIFEs were common before modules became standard.', es:true },
+      'lexical-scope': { title:'Lexical Scope', category:'Functions & Scope', type:'Concept', desc:'Lexical scope means variable access is determined by where code is written.', syntax:'Inner functions can access outer variables.', example:'function outer() {\\n  let x = 1;\\n  function inner() { return x; }\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Lexical scope is the basis of closures.', es:true },
+      'block-scope': { title:'Block Scope', category:'Functions & Scope', type:'Scope Rule', desc:'Block scope limits variable access to the nearest pair of braces.', syntax:'{ let x = 1; }', example:'if (true) {\\n  let a = 10;\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'let and const are block-scoped.', es:true },
+      'function-expression': { title:'Function Expression', category:'Functions & Scope', type:'Function Syntax', desc:'A function expression stores a function in a variable or another expression.', syntax:'const add = function(a, b) { return a + b; };', example:'const greet = function(name) {\\n  return "Hi " + name;\\n};', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Function expressions can be named or anonymous.', es:true },
+      'function-declaration': { title:'Function Declaration', category:'Functions & Scope', type:'Function Syntax', desc:'A function declaration defines a named function using the function keyword.', syntax:'function add(a, b) { return a + b; }', example:'function greet(name) {\\n  return "Hello " + name;\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Function declarations are hoisted.', es:true },
+
+      'arrays': { title:'Arrays', category:'Objects & Arrays', type:'Collection', desc:'An array stores ordered lists of values in a single variable.', syntax:'let items = ["a", "b", "c"];', example:'const nums = [1, 2, 3];', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Arrays have many built-in methods like map, filter, push, and slice.', es:true },
+      'array-methods': { title:'Array Methods', category:'Objects & Arrays', type:'Methods', desc:'JavaScript arrays provide helper methods for transforming, searching, and iterating values.', syntax:'map(), filter(), reduce(), forEach(), find()', example:'const doubled = [1,2,3].map(n => n * 2);', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Use map for transformation and filter for selection.', es:true },
+      'objects': { title:'Objects', category:'Objects & Arrays', type:'Data Structure', desc:'Objects store related data as key-value pairs.', syntax:'const user = { name: "Vikram", age: 21 };', example:'const person = {\\n  name: "Aman",\\n  city: "Kanpur"\\n};', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Objects are used heavily for structured data in JavaScript.', es:true },
+      'object-methods': { title:'Object Methods', category:'Objects & Arrays', type:'Methods', desc:'Object methods are functions stored as object properties or built-in utilities for objects.', syntax:'Object.keys(obj), Object.values(obj), Object.entries(obj)', example:'const keys = Object.keys({ a: 1, b: 2 });', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Object methods help inspect and manipulate object data.', es:true },
+      'destructuring': { title:'Destructuring', category:'Objects & Arrays', type:'Syntax', desc:'Destructuring extracts values from arrays or objects into separate variables.', syntax:'const { name } = user;\\nconst [a, b] = arr;', example:'const user = { name: "Aman", age: 21 };\\nconst { name, age } = user;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Destructuring makes data extraction concise.', es:true },
+      'spread-operator': { title:'Spread Operator', category:'Objects & Arrays', type:'Syntax', desc:'The spread operator expands iterables or objects into individual elements or properties.', syntax:'[...arr], {...obj}', example:'const copy = [...items];', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Spread is useful for copying and merging values.', es:true },
+      'rest-operator': { title:'Rest Operator', category:'Objects & Arrays', type:'Syntax', desc:'The rest operator gathers remaining elements into an array or object.', syntax:'function f(...args) {}', example:'const [first, ...rest] = nums;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Rest is the opposite of spread in syntax even though it uses ...', es:true },
+      'prototype': { title:'Prototype', category:'Objects & Arrays', type:'Inheritance', desc:'The prototype is an object from which other objects can inherit properties and methods.', syntax:'obj.__proto__', example:'function Person() {}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'JavaScript uses prototype-based inheritance.', es:true },
+      'prototypes': { title:'Prototypes', category:'Objects & Arrays', type:'Concept', desc:'Prototypes are the mechanism JavaScript uses for sharing behavior across objects.', syntax:'constructor.prototype', example:'Person.prototype.sayHi = function() {};', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Prototype chains are searched when a property is missing.', es:true },
+      'classes': { title:'Classes', category:'Objects & Arrays', type:'Syntax', desc:'Classes are a syntax for creating object-oriented structures in JavaScript.', syntax:'class User { constructor(name) { this.name = name; } }', example:'class Car {\\n  constructor(brand) {\\n    this.brand = brand;\\n  }\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Classes are built on JavaScript prototypes.', es:true },
+      'constructors': { title:'Constructors', category:'Objects & Arrays', type:'Function', desc:'A constructor is a special function used to create and initialize objects.', syntax:'new Person("Aman")', example:'function User(name) {\\n  this.name = name;\\n}', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Constructors are often used with new.', es:true },
+      'encapsulation': { title:'Encapsulation', category:'Objects & Arrays', type:'OOP Principle', desc:'Encapsulation keeps data and the methods that work on it together and hides internal details.', syntax:'private state + public methods', example:'class Counter {\\n  #count = 0;\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Encapsulation helps protect internal state.', es:true },
+      'inheritance': { title:'Inheritance', category:'Objects & Arrays', type:'OOP Principle', desc:'Inheritance allows one object or class to reuse behavior from another.', syntax:'class Child extends Parent {}', example:'class Dog extends Animal {}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Inheritance can reduce duplication but should be used carefully.', es:true },
+      'polymorphism': { title:'Polymorphism', category:'Objects & Arrays', type:'OOP Principle', desc:'Polymorphism means different objects can be used through the same interface.', syntax:'method overriding', example:'class Cat { speak() { return "meow"; } }', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Polymorphism improves flexibility.', es:true },
+      'this-binding': { title:'this Binding', category:'Objects & Arrays', type:'Context', desc:'This binding decides what this refers to in a given call context.', syntax:'call, apply, bind', example:'fn.call(obj);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Bind is useful for fixing this in callbacks.', es:true },
+      'property-descriptor': { title:'Property Descriptor', category:'Objects & Arrays', type:'Meta Data', desc:'Property descriptors describe how object properties behave.', syntax:'Object.getOwnPropertyDescriptor(obj, "x")', example:'Object.defineProperty(obj, "x", { writable: false });', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Descriptors control writability, enumerability, and configurability.', es:true },
+      'json': { title:'JSON', category:'Objects & Arrays', type:'Data Format', desc:'JSON is a lightweight text format for storing and exchanging data.', syntax:'JSON.stringify(obj)\\nJSON.parse(text)', example:'const json = JSON.stringify({ name: "Aman" });', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'JSON is widely used in APIs and data exchange.', es:true },
+
+      'dom': { title:'DOM', category:'DOM & Events', type:'API', desc:'The Document Object Model represents the page as a tree that JavaScript can read and modify.', syntax:'document.querySelector(".box")', example:'document.getElementById("btn").textContent = "Clicked";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'The DOM lets JavaScript update HTML and CSS dynamically.', es:true },
+      'dom-selection': { title:'DOM Selection', category:'DOM & Events', type:'API', desc:'DOM selection is the process of finding elements in the page for reading or updating.', syntax:'querySelector, getElementById, getElementsByClassName', example:'const box = document.querySelector(".box");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use querySelector for flexible selection.', es:true },
+      'dom-manipulation': { title:'DOM Manipulation', category:'DOM & Events', type:'API', desc:'DOM manipulation means changing the page structure, content, styles, or attributes with JavaScript.', syntax:'element.innerHTML = ..., classList.add(...)', example:'box.textContent = "New Text";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Avoid unsafe innerHTML when inserting untrusted data.', es:true },
+      'events': { title:'Events', category:'DOM & Events', type:'Interaction', desc:'Events are browser actions such as clicks, key presses, form submissions, and page load.', syntax:'element.addEventListener("click", handler)', example:'button.addEventListener("click", () => {\\n  alert("Clicked");\\n});', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Prefer addEventListener over inline event handlers.', es:true },
+      'event-delegation': { title:'Event Delegation', category:'DOM & Events', type:'Pattern', desc:'Event delegation handles events on a parent element instead of each child separately.', syntax:'parent.addEventListener("click", ...)', example:'list.addEventListener("click", e => {\\n  if (e.target.matches("li")) {}\\n});', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Delegation improves performance and works for dynamic elements.', es:true },
+      'event-bubbling': { title:'Event Bubbling', category:'DOM & Events', type:'Event Flow', desc:'Event bubbling means an event starts on the target and then moves upward through ancestors.', syntax:'click event bubbles upward', example:'child -> parent -> grandparent', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use stopPropagation carefully.', es:true },
+      'event-capturing': { title:'Event Capturing', category:'DOM & Events', type:'Event Flow', desc:'Event capturing is the phase where an event travels from the root down to the target.', syntax:'addEventListener("click", handler, true)', example:'element.addEventListener("click", handler, true);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Capturing is the opposite phase of bubbling.', es:true },
+      'forms': { title:'Forms', category:'DOM & Events', type:'UI Element', desc:'Forms collect user input and submit data to a server or JavaScript handler.', syntax:'<form>...</form>', example:'document.querySelector("form").addEventListener("submit", e => e.preventDefault());', attrs:[], info:{display:'block', selfClose:'No', block:'Yes', inline:'No'}, notes:'Forms are often validated before submission.', es:true },
+      'form-validation': { title:'Form Validation', category:'DOM & Events', type:'Technique', desc:'Form validation checks if user input meets required rules before submission.', syntax:'required, minlength, pattern', example:'if (!email.includes("@")) { error = true; }', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Validate on both client and server side.', es:true },
+      'localstorage': { title:'localStorage', category:'DOM & Events', type:'Web Storage', desc:'localStorage stores key-value data in the browser with no expiration time.', syntax:'localStorage.setItem("key", "value")', example:'localStorage.setItem("theme", "dark");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use localStorage for small persistent client-side data.', es:true },
+      'sessionstorage': { title:'sessionStorage', category:'DOM & Events', type:'Web Storage', desc:'sessionStorage stores data only for the current browser tab session.', syntax:'sessionStorage.setItem("key", "value")', example:'sessionStorage.setItem("step", "2");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Data disappears when the tab is closed.', es:true },
+      'cookies': { title:'Cookies', category:'DOM & Events', type:'Web Storage', desc:'Cookies are small pieces of data stored in the browser and sent with requests to matching domains.', syntax:'document.cookie = "name=value"', example:'document.cookie = "theme=dark; path=/";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Cookies are often used for sessions and preferences.', es:true },
+      'browser-object-model': { title:'Browser Object Model', category:'DOM & Events', type:'API', desc:'The Browser Object Model exposes browser-level objects like window, location, history, and navigator.', syntax:'window, location, history, navigator', example:'console.log(window.innerWidth);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'BOM is about the browser, while DOM is about the page.', es:true },
+
+      'callbacks': { title:'Callbacks', category:'Async & APIs', type:'Async Pattern', desc:'A callback is a function passed into another function to be executed later.', syntax:'setTimeout(() => {}, 1000)', example:'function process(name, cb) {\\n  cb(name);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Callbacks are common in async code and event handling.', es:true },
+      'promises': { title:'Promises', category:'Async & APIs', type:'Async Pattern', desc:'A promise represents a value that may be available now, later, or never.', syntax:'fetch(url).then(res => res.json())', example:'const p = new Promise((resolve, reject) => {\\n  resolve("done");\\n});', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Promises help avoid callback nesting.', es:true },
+      'async-await': { title:'Async Await', category:'Async & APIs', type:'Async Syntax', desc:'Async and await make asynchronous code look and read more like synchronous code.', syntax:'async function load() { const res = await fetch(url); }', example:'async function getData() {\\n  const res = await fetch("/api/data");\\n  return await res.json();\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use try/catch for error handling inside async functions.', es:true },
+      'fetch': { title:'Fetch', category:'Async & APIs', type:'API', desc:'Fetch is a modern browser API for making network requests.', syntax:'fetch("/api/users")', example:'fetch("/api/posts")\\n  .then(res => res.json())\\n  .then(data => console.log(data));', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Fetch returns a promise and is commonly used with async/await.', es:true },
+      'ajax': { title:'AJAX', category:'Async & APIs', type:'Technique', desc:'AJAX lets web pages send and receive data without reloading the page.', syntax:'XMLHttpRequest or fetch', example:'// Use fetch for modern AJAX-style requests', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'AJAX is a concept, not a single API.', es:true },
+      'xmlhttprequest': { title:'XMLHttpRequest', category:'Async & APIs', type:'API', desc:'XMLHttpRequest is an older browser API for making HTTP requests.', syntax:'const xhr = new XMLHttpRequest();', example:'const xhr = new XMLHttpRequest();\\nxhr.open("GET", "/api");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Fetch is preferred in modern code.', es:true },
+      'web-api': { title:'Web API', category:'Async & APIs', type:'Platform API', desc:'Web APIs are browser-provided interfaces such as fetch, DOM, Storage, and more.', syntax:'window APIs, document APIs, storage APIs', example:'navigator.geolocation.getCurrentPosition(...)', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Web APIs are not part of core JavaScript language itself.', es:true },
+      'error-handling': { title:'Error Handling', category:'Async & APIs', type:'Safety', desc:'Error handling lets your program recover gracefully from failures.', syntax:'try { ... } catch (err) { ... }', example:'try {\\n  JSON.parse("bad");\\n} catch (err) {\\n  console.error(err);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use try/catch for synchronous code and .catch for promises.', es:true },
+      'try-catch': { title:'Try Catch', category:'Async & APIs', type:'Error Handling', desc:'Try catch handles exceptions that may happen while running code.', syntax:'try { risky(); } catch (e) {}', example:'try {\\n  JSON.parse("{}");\\n} catch (e) {\\n  console.error(e);\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Always handle errors where they may occur.', es:true },
+      'timers': { title:'Timers', category:'Async & APIs', type:'Timing', desc:'Timers schedule code to run later or repeatedly.', syntax:'setTimeout, setInterval', example:'setTimeout(() => console.log("later"), 1000);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Timers are handled by the browser event loop.', es:true },
+      'settimeout': { title:'setTimeout', category:'Async & APIs', type:'Timing API', desc:'setTimeout runs a function once after a specified delay.', syntax:'setTimeout(fn, delay)', example:'setTimeout(() => {\\n  console.log("Hello");\\n}, 1000);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Delay is approximate, not exact.', es:true },
+      'setinterval': { title:'setInterval', category:'Async & APIs', type:'Timing API', desc:'setInterval runs a function repeatedly at a specified interval.', syntax:'setInterval(fn, delay)', example:'const id = setInterval(() => {\\n  console.log("tick");\\n}, 1000);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use clearInterval to stop it.', es:true },
+      'generator': { title:'Generator', category:'Async & APIs', type:'Function Type', desc:'Generators are functions that can pause and resume execution using yield.', syntax:'function* gen() { yield 1; }', example:'function* numbers() {\\n  yield 1;\\n  yield 2;\\n}', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Generators return iterable objects.', es:true },
+      'iterator': { title:'Iterator', category:'Async & APIs', type:'Protocol', desc:'An iterator is an object that produces values one at a time.', syntax:'next()', example:'const it = [1,2][Symbol.iterator]();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Iterators are the foundation of for...of loops.', es:true },
+      'asynchronous-javascript': { title:'Asynchronous JavaScript', category:'Async & APIs', type:'Concept', desc:'Asynchronous JavaScript allows tasks to run without blocking the main thread.', syntax:'callbacks, promises, async/await', example:'fetch("/api").then(console.log);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Async code is essential for networking and timing operations.', es:true },
+
+      'modules': { title:'Modules', category:'Advanced', type:'System', desc:'Modules split code into reusable files with import and export.', syntax:'export function test() {}\\nimport { test } from "./file.js";', example:'export const name = "JS";', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use modules for scalable code organization.', es:true },
+      'es6': { title:'ES6', category:'Advanced', type:'Standard', desc:'ES6 introduced many modern features such as let, const, classes, modules, and arrow functions.', syntax:'let, const, class, import, export, =>', example:'const add = (a, b) => a + b;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'ES6 is the base of modern JavaScript style.', es:true },
+      'memory-management': { title:'Memory Management', category:'Advanced', type:'Runtime Concept', desc:'Memory management is how JavaScript allocates and releases memory for values and objects.', syntax:'allocation, usage, garbage collection', example:'let obj = { a: 1 }; obj = null;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Avoid memory leaks by cleaning references and listeners.', es:true },
+      'garbage-collection': { title:'Garbage Collection', category:'Advanced', type:'Runtime Concept', desc:'Garbage collection automatically frees memory that is no longer reachable.', syntax:'automatic cleanup by runtime', example:'let data = {}; data = null;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'GC behavior is handled by the JavaScript engine.', es:true },
+      'event-loop': { title:'Event Loop', category:'Advanced', type:'Runtime Model', desc:'The event loop coordinates the call stack, task queues, and asynchronous callbacks.', syntax:'call stack + task queue + microtasks', example:'setTimeout(() => console.log("later"), 0);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'The event loop is key to understanding async behavior.', es:true },
+      'microtask-queue': { title:'Microtask Queue', category:'Advanced', type:'Runtime Model', desc:'The microtask queue holds promise callbacks and related jobs that run before the next task.', syntax:'Promise.then, queueMicrotask', example:'Promise.resolve().then(() => console.log("microtask"));', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Microtasks run before regular task queue items.', es:true },
+      'prototype-chain': { title:'Prototype Chain', category:'Advanced', type:'Inheritance Model', desc:'The prototype chain is the linked path JavaScript follows to find properties and methods.', syntax:'object -> prototype -> prototype...', example:'obj.toString();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Property lookup continues up the chain until null.', es:true },
+      'map': { title:'Map', category:'Advanced', type:'Data Structure', desc:'Map stores key-value pairs and allows keys of any type.', syntax:'new Map()', example:'const m = new Map();\\nm.set("a", 1);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Map preserves insertion order.', es:true },
+      'set': { title:'Set', category:'Advanced', type:'Data Structure', desc:'Set stores unique values of any type.', syntax:'new Set()', example:'const s = new Set([1, 1, 2]);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Set removes duplicates automatically.', es:true },
+      'weakmap': { title:'WeakMap', category:'Advanced', type:'Data Structure', desc:'WeakMap stores object keys weakly so entries can be garbage collected.', syntax:'new WeakMap()', example:'const wm = new WeakMap();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'WeakMap keys must be objects.', es:true },
+      'weakset': { title:'WeakSet', category:'Advanced', type:'Data Structure', desc:'WeakSet stores objects weakly so they can be garbage collected when no longer referenced.', syntax:'new WeakSet()', example:'const ws = new WeakSet();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'WeakSet values must be objects.', es:true },
+      'date': { title:'Date', category:'Advanced', type:'Built-in Object', desc:'Date represents dates and times in JavaScript.', syntax:'new Date()', example:'const now = new Date();', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Date methods help format and manipulate time values.', es:true },
+      'regexp': { title:'RegExp', category:'Advanced', type:'Built-in Object', desc:'Regular expressions are patterns used to match text.', syntax:'/pattern/flags', example:'const re = /hello/i;', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'RegExp is useful for search and validation.', es:true },
+      'math-object': { title:'Math Object', category:'Advanced', type:'Built-in Object', desc:'Math provides constants and functions for numeric operations.', syntax:'Math.random(), Math.floor()', example:'const n = Math.floor(Math.random() * 10);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Math methods are static and do not require new.', es:true },
+      'intl': { title:'Intl', category:'Advanced', type:'Built-in API', desc:'Intl provides internationalization helpers for formatting dates, numbers, and text.', syntax:'Intl.DateTimeFormat, Intl.NumberFormat', example:'new Intl.DateTimeFormat("en-IN").format(new Date());', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Intl makes locale-aware formatting easy.', es:true },
+      'web-workers': { title:'Web Workers', category:'Advanced', type:'Browser Feature', desc:'Web Workers run scripts in background threads separate from the main page thread.', syntax:'new Worker("worker.js")', example:'const worker = new Worker("worker.js");', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Workers help keep the UI responsive.', es:true },
+      'promises-combinators': { title:'Promise Combinators', category:'Advanced', type:'Async Pattern', desc:'Promise combinators combine multiple promises and handle their results together.', syntax:'Promise.all, Promise.race, Promise.any, Promise.allSettled', example:'Promise.all([p1, p2]).then(console.log);', attrs:[], info:{display:'N/A', selfClose:'No', block:'No', inline:'No'}, notes:'Use the right combinator for your async workflow.', es:true }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const tag = params.get('tag');
+    const welcome = document.getElementById('welcome');
+    const tp = document.getElementById('tag-page');
+
+    function copyCode(btn){
+      const pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1200);
+      });
+    }
+
+    function esc(s){ return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function renderTag(tag){
+      const d = DB[tag];
+      if(!d){
+        return `<div class="welcome" style="min-height:100vh">
+          <div class="welcome-icon">{ }</div>
+          <div class="welcome-title">Topic not found</div>
+          <div class="welcome-sub">Select a topic from the sidebar.</div>
+        </div>`;
+      }
+
+      const attrsHTML = d.attrs && d.attrs.length ? `
+        <div class="section">
+          <div class="section-title">Properties / Keywords</div>
+          <table class="attr-table">
+            <thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              ${d.attrs.map(a => `<tr><td><span class="attr-name">${a.n}</span></td><td><span class="attr-type">${a.t}</span></td><td class="attr-desc">${a.d}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>` : '';
+
+      return `
+        <div class="tag-hero">
+          <div class="hero-breadcrumb">JavaScript Reference <span>${d.category}</span> &nbsp;|&nbsp; <span>${tag}</span></div>
+          <div class="hero-tag-name"><span class="angle">&lt;</span><span class="tname">${d.title}</span><span class="angle">&gt;</span></div>
+          <div class="hero-desc">${d.desc}</div>
+          <div class="hero-badges">
+            <span class="hbadge hb-cat">${d.category}</span>
+            <span class="hbadge hb-type">${d.type}</span>
+            <span class="hbadge hb-es">ES2026</span>
+          </div>
+        </div>
+
+        <div class="tag-content">
+          <div class="section">
+            <div class="section-title">Syntax</div>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JavaScript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre>${esc(d.syntax)}</pre>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Example</div>
+            <div class="code-block">
+              <div class="code-header"><span class="code-lang">JavaScript Example</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre>${esc(d.example)}</pre>
+            </div>
+          </div>
+
+          ${attrsHTML}
+
+          <div class="section">
+            <div class="section-title">Technical Info</div>
+            <div class="info-grid">
+              <div class="info-card"><div class="ic-label">Display</div><div class="ic-val">${d.info.display}</div></div>
+              <div class="info-card"><div class="ic-label">Self Closing</div><div class="ic-val ${d.info.selfClose==='Yes'?'yes':'no'}">${d.info.selfClose}</div></div>
+              <div class="info-card"><div class="ic-label">Block Element</div><div class="ic-val ${d.info.block==='Yes'?'yes':'no'}">${d.info.block}</div></div>
+              <div class="info-card"><div class="ic-label">Inline Element</div><div class="ic-val ${d.info.inline==='Yes'?'yes':'no'}">${d.info.inline}</div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Notes & Best Practices</div>
+            <div class="note note-tip">${d.notes}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    if(tag){
+      welcome.style.display = 'none';
+      tp.style.display = 'block';
+      tp.innerHTML = renderTag(tag);
+      document.title = tag + ' | JavaScript Reference';
+    }
+  </script>
+</body>
+</html>

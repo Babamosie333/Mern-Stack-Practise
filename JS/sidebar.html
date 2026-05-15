@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript Sidebar</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0d1117;
+      --bg2:#161b22;
+      --text:#e6edf3;
+      --text-muted:#8b949e;
+      --border:#30363d;
+      --hover:#1c2128;
+      --active-bg: rgba(240,219,79,0.10);
+      --active-border: #f0db4f;
+      --accent:#f0db4f;
+      --accent2:#4e5cfb;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);font-family:'Sora',sans-serif;color:var(--text);overflow:hidden}
+    #sidebar{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      border-right:1px solid var(--border);
+    }
+    .search-wrap{
+      padding:12px;
+      border-bottom:1px solid var(--border);
+      background:var(--bg);
+      flex-shrink:0;
+    }
+    .search-box{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text);
+      outline:none;
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;
+    }
+    .search-box::placeholder{color:var(--text-muted)}
+    .search-box:focus{border-color:var(--accent)}
+    .search-stat{
+      display:flex;
+      justify-content:space-between;
+      padding:8px 2px 0;
+      font-size:10px;
+      font-family:'JetBrains Mono',monospace;
+      color:var(--text-muted);
+    }
+    .search-stat span:last-child{color:var(--accent)}
+    .tag-list{
+      flex:1;
+      overflow-y:auto;
+      padding:8px 0 14px;
+    }
+    .tag-list::-webkit-scrollbar{width:5px}
+    .tag-list::-webkit-scrollbar-track{background:transparent}
+    .tag-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    .cat{
+      margin:0 8px 10px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.02);
+    }
+    .cat-header{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      cursor:pointer;
+      user-select:none;
+      background:rgba(255,255,255,0.03);
+      font-size:9px;
+      font-family:'JetBrains Mono',monospace;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:var(--text-muted);
+    }
+    .cat-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+    .cat-count{margin-left:auto;color:var(--accent)}
+    .cat-items{padding:6px}
+    .cat-header.collapsed + .cat-items{display:none}
+    .tag-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      margin-bottom:6px;
+      border-radius:8px;
+      cursor:pointer;
+      border-left:2px solid transparent;
+      transition:all .15s;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .tag-item:hover{background:var(--hover);border-left-color:rgba(240,219,79,0.4)}
+    .tag-item.active{background:var(--active-bg);border-left-color:var(--active-border)}
+    .tag-label{
+      font-family:'JetBrains Mono',monospace;
+      font-size:12px;
+      font-weight:600;
+      color:var(--text);
+    }
+    .tag-item.active .tag-label{color:var(--accent)}
+    .tag-angle{
+      margin-left:auto;
+      font-family:'JetBrains Mono',monospace;
+      font-size:10px;
+      color:var(--text-muted);
+    }
+    .no-results{
+      padding:20px 14px;
+      color:var(--text-muted);
+      text-align:center;
+      font-size:11px;
+      font-family:'JetBrains Mono',monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <div class="search-wrap">
+      <input class="search-box" id="search" type="text" placeholder="Search topics..." autocomplete="off">
+      <div class="search-stat">
+        <span>JavaScript Topics</span>
+        <span id="tag-count">0 shown</span>
+      </div>
+    </div>
+    <div class="tag-list" id="tag-list"></div>
+  </div>
+
+  <script>
+    const categories = [
+      { name:'Basics', color:'#f0db4f', tags:[
+        { t:'javascript', f:'javascript' },
+        { t:'variables', f:'variables' },
+        { t:'data types', f:'data-types' },
+        { t:'operators', f:'operators' },
+        { t:'conditionals', f:'conditionals' },
+        { t:'loops', f:'loops' },
+        { t:'comments', f:'comments' },
+        { t:'keywords', f:'keywords' },
+        { t:'identifiers', f:'identifiers' },
+        { t:'literals', f:'literals' },
+        { t:'strict mode', f:'strict-mode' },
+        { t:'types conversion', f:'types-conversion' },
+        { t:'type coercion', f:'type-coercion' },
+        { t:'truthy and falsy', f:'truthy-and-falsy' },
+        { t:'template literals', f:'template-literals' },
+        { t:'strings', f:'strings' },
+        { t:'numbers', f:'numbers' },
+        { t:'booleans', f:'booleans' },
+        { t:'bigint', f:'bigint' },
+        { t:'symbols', f:'symbols' },
+        { t:'null', f:'null' },
+        { t:'undefined', f:'undefined' }
+      ]},
+      { name:'Functions & Scope', color:'#4e5cfb', tags:[
+        { t:'functions', f:'functions' },
+        { t:'arrow function', f:'arrow-function' },
+        { t:'scope', f:'scope' },
+        { t:'hoisting', f:'hoisting' },
+        { t:'closures', f:'closures' },
+        { t:'this keyword', f:'this-keyword' },
+        { t:'arguments', f:'arguments' },
+        { t:'rest parameters', f:'rest-parameters' },
+        { t:'default parameters', f:'default-parameters' },
+        { t:'recursion', f:'recursion' },
+        { t:'callback', f:'callback' },
+        { t:'higher order function', f:'higher-order-function' },
+        { t:'IIFE', f:'iife' },
+        { t:'lexical scope', f:'lexical-scope' },
+        { t:'block scope', f:'block-scope' },
+        { t:'function expression', f:'function-expression' },
+        { t:'function declaration', f:'function-declaration' }
+      ]},
+      { name:'Objects & Arrays', color:'#bc8cff', tags:[
+        { t:'arrays', f:'arrays' },
+        { t:'array methods', f:'array-methods' },
+        { t:'objects', f:'objects' },
+        { t:'object methods', f:'object-methods' },
+        { t:'destructuring', f:'destructuring' },
+        { t:'spread operator', f:'spread-operator' },
+        { t:'rest operator', f:'rest-operator' },
+        { t:'prototype', f:'prototype' },
+        { t:'prototypes', f:'prototypes' },
+        { t:'classes', f:'classes' },
+        { t:'constructors', f:'constructors' },
+        { t:'encapsulation', f:'encapsulation' },
+        { t:'inheritance', f:'inheritance' },
+        { t:'polymorphism', f:'polymorphism' },
+        { t:'this binding', f:'this-binding' },
+        { t:'property descriptor', f:'property-descriptor' },
+        { t:'json', f:'json' }
+      ]},
+      { name:'DOM & Events', color:'#3fb950', tags:[
+        { t:'dom', f:'dom' },
+        { t:'dom selection', f:'dom-selection' },
+        { t:'dom manipulation', f:'dom-manipulation' },
+        { t:'events', f:'events' },
+        { t:'event delegation', f:'event-delegation' },
+        { t:'event bubbling', f:'event-bubbling' },
+        { t:'event capturing', f:'event-capturing' },
+        { t:'forms', f:'forms' },
+        { t:'form validation', f:'form-validation' },
+        { t:'localstorage', f:'localstorage' },
+        { t:'sessionstorage', f:'sessionstorage' },
+        { t:'cookies', f:'cookies' },
+        { t:'browser object model', f:'browser-object-model' }
+      ]},
+      { name:'Async & APIs', color:'#8be9fd', tags:[
+        { t:'callbacks', f:'callbacks' },
+        { t:'promises', f:'promises' },
+        { t:'async await', f:'async-await' },
+        { t:'fetch', f:'fetch' },
+        { t:'ajax', f:'ajax' },
+        { t:'xmlhttprequest', f:'xmlhttprequest' },
+        { t:'web api', f:'web-api' },
+        { t:'error handling', f:'error-handling' },
+        { t:'try catch', f:'try-catch' },
+        { t:'timers', f:'timers' },
+        { t:'settimeout', f:'settimeout' },
+        { t:'setinterval', f:'setinterval' },
+        { t:'generator', f:'generator' },
+        { t:'iterator', f:'iterator' },
+        { t:'asynchronous javascript', f:'asynchronous-javascript' }
+      ]},
+      { name:'Advanced', color:'#e06c35', tags:[
+        { t:'modules', f:'modules' },
+        { t:'es6', f:'es6' },
+        { t:'strict mode', f:'strict-mode' },
+        { t:'memory management', f:'memory-management' },
+        { t:'garbage collection', f:'garbage-collection' },
+        { t:'event loop', f:'event-loop' },
+        { t:'microtask queue', f:'microtask-queue' },
+        { t:'prototype chain', f:'prototype-chain' },
+        { t:'map', f:'map' },
+        { t:'set', f:'set' },
+        { t:'weakmap', f:'weakmap' },
+        { t:'weakset', f:'weakset' },
+        { t:'date', f:'date' },
+        { t:'regexp', f:'regexp' },
+        { t:'math object', f:'math-object' },
+        { t:'intl', f:'intl' },
+        { t:'web workers', f:'web-workers' },
+        { t:'promises combinators', f:'promises-combinators' }
+      ]}
+    ];
+
+    const tagList = document.getElementById('tag-list');
+    const tagCountEl = document.getElementById('tag-count');
+    const searchInput = document.getElementById('search');
+    let activeItem = null;
+
+    function render(filter = '') {
+      tagList.innerHTML = '';
+      const fl = filter.trim().toLowerCase();
+      let total = 0;
+
+      categories.forEach(cat => {
+        const filtered = cat.tags.filter(x => x.t.toLowerCase().includes(fl) || x.f.toLowerCase().includes(fl));
+        if (!filtered.length) return;
+
+        total += filtered.length;
+        const header = document.createElement('div');
+        header.className = 'cat';
+
+        header.innerHTML = `
+          <div class="cat-header">
+            <span class="cat-dot" style="background:${cat.color}"></span>
+            <span>${cat.name}</span>
+            <span class="cat-count">${filtered.length}</span>
+          </div>
+          <div class="cat-items"></div>
+        `;
+
+        const head = header.querySelector('.cat-header');
+        const items = header.querySelector('.cat-items');
+
+        filtered.forEach(tag => {
+          const item = document.createElement('div');
+          item.className = 'tag-item';
+          item.dataset.tag = tag.f;
+          item.innerHTML = `
+            <span class="tag-label">&lt;${tag.t}&gt;</span>
+            <span class="tag-angle">&gt;</span>
+          `;
+          item.addEventListener('click', () => {
+            if (activeItem) activeItem.classList.remove('active');
+            item.classList.add('active');
+            activeItem = item;
+            parent.document.getElementById('content-frame').src = 'content.html?tag=' + encodeURIComponent(tag.f);
+          });
+          items.appendChild(item);
+        });
+
+        head.addEventListener('click', () => head.classList.toggle('collapsed'));
+        tagList.appendChild(header);
+      });
+
+      tagCountEl.textContent = total + ' shown';
+      if (!total) tagList.innerHTML = '<div class="no-results">No topics found</div>';
+    }
+
+    searchInput.addEventListener('input', e => render(e.target.value));
+    render();
+  </script>
+</body>
+</html>

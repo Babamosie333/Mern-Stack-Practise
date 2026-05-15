@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart | NovaCart</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="js/script.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html" class="logo">Nova<span>Cart</span></a>
+      <nav class="menu" id="menu">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html" class="cart-link active">Cart <span id="cart-count">0</span></a>
+      </nav>
+      <button class="menu-btn" id="menu-btn">☰</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container cart-page">
+      <h1>Your Cart</h1>
+      <div id="cart-items"></div>
+      <div class="cart-summary">
+        <h3>Total: ₹<span id="cart-total">0</span></h3>
+        <a href="#" class="btn btn-primary">Checkout</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
