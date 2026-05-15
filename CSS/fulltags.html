@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Properties Reference — Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent:#6c8bff; --accent2:#a259ff; --accent3:#ff6584;
+    --green:#00e5a0;  --cyan:#38d9f5;   --yellow:#ffd580; --orange:#ff8c69;
+    --bg:#07090f;     --bg2:#0e1120;    --bg3:#131729;
+    --text:#dde2f5;   --muted:#5a6385;  --border:#1a1f36;
+    --nav-h:60px;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; background:var(--bg); font-family:'Outfit',sans-serif; color:var(--text); }
+
+  /* ═══════════════ NAVBAR ═══════════════ */
+  #navbar {
+    position:fixed; top:0; left:0; right:0; height:var(--nav-h);
+    background:linear-gradient(90deg,#0c0f1a,#10152a 60%,#0c0f1a);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px; z-index:999;
+    box-shadow:0 2px 30px rgba(0,0,0,.8);
+  }
+  .nav-brand { display:flex; align-items:center; gap:13px; cursor:pointer; }
+  .nav-logo {
+    width:40px; height:40px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700;
+    color:#fff; box-shadow:0 0 20px rgba(108,139,255,.25); flex-shrink:0;
+  }
+  .nav-titles { display:flex; flex-direction:column; line-height:1; }
+  .nav-title  { font-size:16px; font-weight:700; color:var(--text); }
+  .nav-sub    { font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:3px; font-family:'JetBrains Mono',monospace; }
+  .nav-center {
+    display:flex; align-items:center;
+    background:rgba(108,139,255,.05); border:1px solid rgba(108,139,255,.15);
+    border-radius:8px; padding:7px 18px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+  }
+  .nav-center span { color:var(--accent); }
+  .nav-right { display:flex; align-items:center; gap:12px; }
+  .badge {
+    padding:4px 13px; border-radius:20px;
+    font-size:10px; font-family:'JetBrains Mono',monospace;
+    font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  }
+  .b1 { background:rgba(108,139,255,.12); color:var(--accent); border:1px solid rgba(108,139,255,.3); }
+  .b2 { background:rgba(162,89,255,.12);  color:var(--accent2); border:1px solid rgba(162,89,255,.3); }
+  .b3 { background:rgba(255,101,132,.12); color:var(--accent3); border:1px solid rgba(255,101,132,.3); }
+  .nav-dot { width:8px; height:8px; border-radius:50%; background:#00e5a0; box-shadow:0 0 10px rgba(0,229,160,.7); animation:pulse 2s infinite; }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* ═══════════════ LAYOUT ═══════════════ */
+  #layout {
+    position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
+    display:flex;
+  }
+
+  /* ─── SIDEBAR ─── */
+  #sidebar {
+    width:268px; min-width:180px; max-width:460px;
+    display:flex; flex-direction:column;
+    background:var(--bg); border-right:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .search-wrap { padding:12px 12px 8px; border-bottom:1px solid var(--border); flex-shrink:0; }
+  .search-inner { position:relative; }
+  .s-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:13px; pointer-events:none; }
+  #search {
+    width:100%; padding:8px 10px 8px 30px;
+    background:var(--bg2); border:1px solid var(--border); border-radius:7px;
+    color:var(--text); font-family:'JetBrains Mono',monospace; font-size:12px;
+    outline:none; transition:border-color .2s;
+  }
+  #search::placeholder { color:var(--muted); }
+  #search:focus { border-color:var(--accent); }
+  .search-stats { display:flex; justify-content:space-between; padding:5px 2px 0; font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--muted); }
+  #prop-count { color:var(--accent); }
+  #prop-list { flex:1; overflow-y:auto; padding:4px 0 20px; }
+  #prop-list::-webkit-scrollbar { width:5px; }
+  #prop-list::-webkit-scrollbar-track { background:transparent; }
+  #prop-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  .cat-header {
+    padding:10px 14px 4px; font-size:9px; font-weight:700;
+    font-family:'JetBrains Mono',monospace; color:var(--muted);
+    letter-spacing:2px; text-transform:uppercase;
+    display:flex; align-items:center; gap:7px;
+    user-select:none; cursor:pointer;
+  }
+  .cat-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .cat-count { margin-left:auto; background:rgba(255,255,255,.05); padding:1px 7px; border-radius:10px; font-size:9px; }
+  .cat-items.collapsed { display:none; }
+  .prop-item {
+    display:flex; align-items:center; padding:5px 14px;
+    cursor:pointer; border-left:2px solid transparent; transition:all .13s; gap:7px;
+  }
+  .prop-item:hover { background:#111528; border-left-color:rgba(108,139,255,.4); }
+  .prop-item.active { background:rgba(108,139,255,.09); border-left-color:var(--accent); }
+  .prop-label { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text); font-weight:600; flex:1; }
+  .prop-item.active .prop-label { color:var(--accent); }
+  .pbadge { font-size:9px; font-family:'JetBrains Mono',monospace; padding:1px 5px; border-radius:4px; white-space:nowrap; }
+  .pnew { background:rgba(0,229,160,.1); color:var(--green); border:1px solid rgba(0,229,160,.2); }
+  .no-results { padding:22px 14px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-align:center; }
+
+  /* ─── DIVIDER ─── */
+  #divider {
+    width:4px; background:var(--border); cursor:col-resize; flex-shrink:0;
+    transition:background .2s; position:relative;
+  }
+  #divider:hover, #divider.drag { background:var(--accent); }
+
+  /* ─── CONTENT PANE ─── */
+  #content { flex:1; overflow-y:auto; background:var(--bg); }
+  #content::-webkit-scrollbar { width:6px; }
+  #content::-webkit-scrollbar-track { background:transparent; }
+  #content::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+  /* ═══════════════ WELCOME ═══════════════ */
+  #welcome {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:100%; padding:48px;
+    background:radial-gradient(ellipse at 50% 30%,rgba(108,139,255,.07) 0%,transparent 65%);
+  }
+  .w-logo {
+    font-family:'JetBrains Mono',monospace; font-size:80px; font-weight:700;
+    background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    line-height:1; margin-bottom:26px; filter:drop-shadow(0 0 40px rgba(108,139,255,.25));
+  }
+  .w-title { font-size:30px; font-weight:700; color:var(--text); margin-bottom:10px; }
+  .w-sub   { color:var(--muted); font-size:14px; text-align:center; max-width:440px; margin-bottom:34px; line-height:1.6; }
+  .w-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; max-width:520px; width:100%; }
+  .w-stat  { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+  .w-stat .num {
+    font-family:'JetBrains Mono',monospace; font-size:24px; font-weight:700; display:block;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .w-stat .lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  .w-hint { margin-top:28px; padding:12px 22px; background:rgba(108,139,255,.07); border:1px solid rgba(108,139,255,.2); border-radius:8px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent); }
+
+  /* ═══════════════ PROPERTY PAGE ═══════════════ */
+  #prop-page { display:none; }
+
+  /* Hero */
+  .prop-hero {
+    background:linear-gradient(135deg,#0c0f1a,#10152a);
+    border-bottom:1px solid var(--border);
+    padding:32px 42px 28px; position:relative; overflow:hidden;
+  }
+  .prop-hero::before {
+    content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px;
+    background:radial-gradient(circle,rgba(108,139,255,.07) 0%,transparent 70%); pointer-events:none;
+  }
+  .hero-bc   { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:14px; letter-spacing:.5px; }
+  .hero-bc span { color:var(--accent); }
+  .hero-name { font-family:'JetBrains Mono',monospace; font-size:38px; font-weight:700; color:var(--text); line-height:1; margin-bottom:12px; }
+  .hero-name .pname { color:var(--accent); }
+  .hero-name .colon { color:var(--muted); font-size:28px; }
+  .hero-desc { font-size:15px; color:var(--muted); max-width:720px; line-height:1.65; margin-bottom:18px; }
+  .hero-badges { display:flex; gap:8px; flex-wrap:wrap; }
+  .hbadge { padding:4px 12px; border-radius:20px; font-size:10px; font-family:'JetBrains Mono',monospace; font-weight:700; letter-spacing:.8px; text-transform:uppercase; }
+  .hb-cat { background:rgba(108,139,255,.12); color:var(--accent); border:1px solid rgba(108,139,255,.25); }
+  .hb-ver { background:rgba(0,229,160,.1); color:var(--green); border:1px solid rgba(0,229,160,.22); }
+  .hb-inh { background:rgba(162,89,255,.1); color:var(--accent2); border:1px solid rgba(162,89,255,.22); }
+  .hb-anim{ background:rgba(56,217,245,.1); color:var(--cyan); border:1px solid rgba(56,217,245,.22); }
+
+  /* Sections */
+  .prop-content { padding:32px 42px 70px; }
+  .section { margin-bottom:36px; }
+  .section-title {
+    font-size:10px; font-weight:700; font-family:'JetBrains Mono',monospace;
+    color:var(--muted); letter-spacing:2.5px; text-transform:uppercase;
+    margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+  .section p { color:#9aa3c4; line-height:1.8; margin-bottom:10px; }
+
+  /* Code block */
+  .code-block { background:#060810; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin:8px 0; }
+  .code-hdr {
+    background:var(--bg2); padding:8px 16px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid var(--border);
+  }
+  .code-lang { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.2px; }
+  .copy-btn {
+    font-size:10px; color:var(--muted); cursor:pointer; padding:2px 8px;
+    border:1px solid var(--border); border-radius:4px; background:transparent;
+    font-family:'JetBrains Mono',monospace; transition:all .15s;
+  }
+  .copy-btn:hover { color:var(--accent); border-color:var(--accent); }
+  pre {
+    padding:16px 20px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.75; color:#c8d0f0;
+  }
+  pre::-webkit-scrollbar { height:4px; }
+  pre::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  /* Syntax highlight classes */
+  .cp{color:#6c8bff} .cv{color:#ff8c69} .cs{color:#a8ff78} .cc{color:#3a4060}
+  .ck{color:#a259ff} .cn{color:#38d9f5} .cq{color:#ffd580}
+
+  /* Values table */
+  .val-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .val-table th {
+    text-align:left; padding:8px 12px; font-family:'JetBrains Mono',monospace;
+    font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase;
+    border-bottom:1px solid var(--border); background:var(--bg2);
+  }
+  .val-table td { padding:9px 12px; border-bottom:1px solid rgba(26,31,54,.7); vertical-align:top; }
+  .val-table tr:last-child td { border-bottom:none; }
+  .val-table tr:hover td { background:rgba(108,139,255,.03); }
+  .val-name { font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:12px; font-weight:600; }
+  .val-def  { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--yellow); padding:1px 6px; background:rgba(255,213,128,.07); border-radius:4px; border:1px solid rgba(255,213,128,.15); }
+  .val-desc { color:var(--muted); font-size:13px; }
+
+  /* Info cards */
+  .info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .info-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .ic-label  { font-size:9px; font-family:'JetBrains Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
+  .ic-val    { font-size:13px; font-weight:600; color:var(--text); }
+  .ic-val.yes{ color:var(--green); }
+  .ic-val.no { color:var(--accent3); }
+
+  /* Browser support */
+  .browser-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
+  .bp { display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; font-size:11px; font-family:'JetBrains Mono',monospace; }
+  .bp-yes     { background:rgba(0,229,160,.1); color:var(--green); border:1px solid rgba(0,229,160,.2); }
+  .bp-partial { background:rgba(255,213,128,.08); color:var(--yellow); border:1px solid rgba(255,213,128,.18); }
+  .bp-no      { background:rgba(255,101,132,.08); color:var(--accent3); border:1px solid rgba(255,101,132,.18); }
+
+  /* Notes */
+  .note { padding:12px 16px; border-radius:8px; border-left:3px solid; margin:10px 0; font-size:13px; line-height:1.6; }
+  .note-info { background:rgba(108,139,255,.07); border-color:var(--accent); color:#9aabff; }
+  .note-warn { background:rgba(255,101,132,.07); border-color:var(--accent3); color:#ff9aaa; }
+  .note-tip  { background:rgba(0,229,160,.07); border-color:var(--green); color:#6effd8; }
+  .note strong { font-weight:700; }
+  code { font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--accent); background:rgba(108,139,255,.1); padding:1px 5px; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <div class="nav-brand" onclick="showWelcome()">
+    <div class="nav-logo">{ }</div>
+    <div class="nav-titles">
+      <span class="nav-title">CSS Reference</span>
+      <span class="nav-sub">Complete Property Guide</span>
+    </div>
+  </div>
+  <div class="nav-center">← Pick a property &nbsp;|&nbsp; <span>View Details →</span></div>
+  <div class="nav-right">
+    <span class="badge b1">200+ Props</span>
+    <span class="badge b2">CSS3</span>
+    <span class="badge b3">Modern</span>
+    <div class="nav-dot"></div>
+  </div>
+</nav>
+
+<!-- ═══ LAYOUT ═══ -->
+<div id="layout">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="search-wrap">
+      <div class="search-inner">
+        <span class="s-icon">{ }</span>
+        <input id="search" type="text" placeholder="Search CSS properties…" autocomplete="off">
+      </div>
+      <div class="search-stats">
+        <span>CSS Properties</span>
+        <span><span id="prop-count">0</span> shown</span>
+      </div>
+    </div>
+    <div id="prop-list"></div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div id="divider"></div>
+
+  <!-- CONTENT -->
+  <div id="content">
+    <div id="welcome">
+      <div class="w-logo">{ }</div>
+      <div class="w-title">CSS Properties Reference</div>
+      <div class="w-sub">A complete guide to every CSS property — select one from the sidebar to explore its syntax, values, browser support, and live examples.</div>
+      <div class="w-stats">
+        <div class="w-stat"><span class="num">200+</span><span class="lbl">Properties</span></div>
+        <div class="w-stat"><span class="num">15</span><span class="lbl">Categories</span></div>
+        <div class="w-stat"><span class="num">CSS3</span><span class="lbl">Standard</span></div>
+        <div class="w-stat"><span class="num">2025</span><span class="lbl">Up to Date</span></div>
+      </div>
+      <div class="w-hint">← Click any property in the sidebar to begin</div>
+    </div>
+    <div id="prop-page"></div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DATA — CSS Property Database
+══════════════════════════════════════════════ */
+const DB = {
+  /* ── Box Model ── */
+  "width":{cat:"Box Model",ver:"CSS1",inh:false,anim:true,
+    desc:"Sets the width of an element's content area. With <code>box-sizing:border-box</code> it includes padding and border.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">width</span>: <span class="cv">300px</span>;         <span class="cc">/* fixed */</span>\n  <span class="cp">width</span>: <span class="cv">50%</span>;           <span class="cc">/* relative to parent */</span>\n  <span class="cp">width</span>: <span class="cv">auto</span>;          <span class="cc">/* browser decides */</span>\n  <span class="cp">width</span>: <span class="cv">max-content</span>;   <span class="cc">/* shrink to content */</span>\n  <span class="cp">width</span>: <span class="cv">fit-content</span>;   <span class="cc">/* use available space */</span>\n}`,
+    ex:`<span class="cs">.container</span> {\n  <span class="cp">width</span>: <span class="cv">800px</span>;\n  <span class="cp">max-width</span>: <span class="cv">100%</span>;    <span class="cc">/* never overflow */</span>\n}\n<span class="cs">.fluid</span>     { <span class="cp">width</span>: <span class="cv">50%</span>; }\n<span class="cs">.intrinsic</span> { <span class="cp">width</span>: <span class="cv">fit-content</span>; }`,
+    vals:[["auto","Browser calculates — block elements fill parent width","default"],["<length>","px, em, rem, vw, ch …",""],["<percentage>","% of containing block's width",""],["min-content","Smallest width without overflow",""],["max-content","Width to fit all content on one line",""],["fit-content","Available space, capped at max-content",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-tip"><strong>Tip:</strong> Always combine <code>width:100%</code> with <code>max-width</code> for responsive layouts. Prefer CSS Grid/Flexbox over manual widths.</div>'},
+
+  "height":{cat:"Box Model",ver:"CSS1",inh:false,anim:true,
+    desc:"Sets the height of an element. Percentage heights require a definite height on the parent. Use <code>100dvh</code> (dynamic viewport height) for full-page sections on mobile.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">height</span>: <span class="cv">200px</span>;\n  <span class="cp">height</span>: <span class="cv">50vh</span>;\n  <span class="cp">height</span>: <span class="cv">auto</span>;        <span class="cc">/* grows with content */</span>\n  <span class="cp">height</span>: <span class="cv">100dvh</span>;     <span class="cc">/* dynamic viewport height */</span>\n}`,
+    ex:`<span class="cs">.full-page</span> {\n  <span class="cp">height</span>: <span class="cv">100vh</span>;\n  <span class="cp">min-height</span>: <span class="cv">100dvh</span>; <span class="cc">/* better mobile support */</span>\n}\n<span class="cs">.card</span> {\n  <span class="cp">height</span>: <span class="cv">auto</span>;\n  <span class="cp">min-height</span>: <span class="cv">200px</span>;\n}`,
+    vals:[["auto","Determined by content (default)","default"],["<length>","px, em, rem, vh, dvh …",""],["<percentage>","% of parent's height (parent must have defined height)",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<p>Setting <code>height:100%</code> on a child requires the parent to have a defined height. Common pattern: <code>html, body { height:100% }</code>.</p>'},
+
+  "min-width":{cat:"Box Model",ver:"CSS2",inh:false,anim:true,desc:"Sets the minimum width of an element. Prevents the element from becoming narrower than this value, overriding width.",
+    syntax:`<span class="cs">.el</span> { <span class="cp">min-width</span>: <span class="cv">200px</span>; }`,
+    ex:`<span class="cs">.btn</span>  { <span class="cp">min-width</span>: <span class="cv">120px</span>; }  <span class="cc">/* always legible */</span>\n<span class="cs">.col</span>  { <span class="cp">min-width</span>: <span class="cv">0</span>; }     <span class="cc">/* prevent flex overflow */</span>`,
+    vals:[["<length>","Fixed minimum width",""],["<percentage>","% of containing block",""],["0","No minimum (useful in flex children)","default"]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"7"},note:'<div class="note note-tip"><strong>Flex tip:</strong> Set <code>min-width:0</code> on flex children to allow them to shrink below their content size.</div>'},
+
+  "max-width":{cat:"Box Model",ver:"CSS2",inh:false,anim:true,desc:"Sets the maximum width of an element. Overrides width. Essential for responsive containers — use it with percentage widths to prevent elements from growing too wide.",
+    syntax:`<span class="cs">.el</span> { <span class="cp">max-width</span>: <span class="cv">1200px</span>; }`,
+    ex:`<span class="cs">.container</span> {\n  <span class="cp">width</span>: <span class="cv">90%</span>;\n  <span class="cp">max-width</span>: <span class="cv">1200px</span>;\n  <span class="cp">margin</span>: <span class="cv">0 auto</span>;\n}\n<span class="cs">img</span> { <span class="cp">max-width</span>: <span class="cv">100%</span>; } <span class="cc">/* always responsive */</span>`,
+    vals:[["<length>","Fixed maximum",""],["<percentage>","% of parent",""],["none","No maximum (default)","default"]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"7"},note:'<p>Always set <code>img { max-width: 100% }</code> as a global reset for responsive images.</p>'},
+
+  "margin":{cat:"Box Model",ver:"CSS1",inh:false,anim:true,
+    desc:"Sets the margin area on all four sides of an element — space outside the border. Margins are transparent. Adjacent vertical margins of block elements collapse into the larger value.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">margin</span>: <span class="cv">10px</span>;               <span class="cc">/* all sides */</span>\n  <span class="cp">margin</span>: <span class="cv">10px 20px</span>;          <span class="cc">/* top/bottom left/right */</span>\n  <span class="cp">margin</span>: <span class="cv">10px 20px 30px 40px</span>;  <span class="cc">/* T R B L */</span>\n  <span class="cp">margin</span>: <span class="cv">0 auto</span>;             <span class="cc">/* center horizontally */</span>\n  <span class="cp">margin-block</span>: <span class="cv">2rem</span>;          <span class="cc">/* logical: top + bottom */</span>\n}`,
+    ex:`<span class="cs">.centered</span> { <span class="cp">width</span>:<span class="cv">800px</span>; <span class="cp">margin</span>:<span class="cv">0 auto</span>; }\n<span class="cs">.section</span>  { <span class="cp">margin-block</span>:<span class="cv">4rem</span>; }`,
+    vals:[["<length>","px, em, rem, vw",""],["<percentage>","% of containing block's WIDTH (even top/bottom)",""],["auto","Browser calculates — horizontal auto centers blocks",""],["negative values","Pulls element outside its normal space",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},
+    note:'<div class="note note-info"><strong>Margin collapse:</strong> Vertical margins between adjacent blocks collapse to the larger value. This does NOT happen inside flex or grid containers.</div>'},
+
+  "padding":{cat:"Box Model",ver:"CSS1",inh:false,anim:true,
+    desc:"Sets the padding area — space between the content and the border. Unlike margin, padding shows the element's background. Padding cannot be negative.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">padding</span>: <span class="cv">20px</span>;\n  <span class="cp">padding</span>: <span class="cv">10px 20px</span>;           <span class="cc">/* v h */</span>\n  <span class="cp">padding</span>: <span class="cv">10px 20px 30px 40px</span>;  <span class="cc">/* T R B L */</span>\n  <span class="cp">padding-inline</span>: <span class="cv">1.5rem</span>;        <span class="cc">/* left + right */</span>\n  <span class="cp">padding-block</span>: <span class="cv">1rem</span>;           <span class="cc">/* top + bottom */</span>\n}`,
+    ex:`<span class="cs">.card</span>   { <span class="cp">padding</span>: <span class="cv">24px 32px</span>; }\n<span class="cs">.button</span> { <span class="cp">padding</span>: <span class="cv">10px 24px</span>; }`,
+    vals:[["<length>","px, em, rem",""],["<percentage>","% of containing block's WIDTH (all sides!)",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<p>Percentage padding (even top/bottom) is relative to the container\'s <em>width</em>. This enables the 16:9 aspect-ratio hack: <code>padding-top:56.25%</code>.</p>'},
+
+  "box-sizing":{cat:"Box Model",ver:"CSS3",inh:false,anim:false,
+    desc:"Defines how total width and height are calculated. The most impactful CSS reset — <code>border-box</code> makes layout math intuitive by including padding and border in the declared size.",
+    syntax:`<span class="cc">/* Universal reset — always include */</span>\n<span class="cs">*</span>, <span class="cs">*::before</span>, <span class="cs">*::after</span> {\n  <span class="cp">box-sizing</span>: <span class="cv">border-box</span>;\n}`,
+    ex:`<span class="cc">/* content-box: actual width = 200+20+20+2+2 = 244px */</span>\n<span class="cs">.bad</span>  { <span class="cp">box-sizing</span>:<span class="cv">content-box</span>; <span class="cp">width</span>:<span class="cv">200px</span>; <span class="cp">padding</span>:<span class="cv">20px</span>; <span class="cp">border</span>:<span class="cv">2px solid</span>; }\n<span class="cc">/* border-box: actual width = 200px exactly */</span>\n<span class="cs">.good</span> { <span class="cp">box-sizing</span>:<span class="cv">border-box</span>; <span class="cp">width</span>:<span class="cv">200px</span>; <span class="cp">padding</span>:<span class="cv">20px</span>; <span class="cp">border</span>:<span class="cv">2px solid</span>; }`,
+    vals:[["content-box","Default: width/height = content only. Padding/border add to total.","default"],["border-box","Width/height include content + padding + border. Use this always.",""]],
+    br:{c:"10",f:"29",s:"5.1",e:"12",i:"8"},
+    note:'<div class="note note-tip"><strong>Best practice:</strong> Include this reset in every project. It is included in Bootstrap, Tailwind, and every major CSS framework.</div>'},
+
+  "border-radius":{cat:"Box Model",ver:"CSS3",inh:false,anim:true,
+    desc:"Rounds element corners. 1–4 values for individual corners. Two radii per corner (horizontal/vertical) separated by slash for elliptical curves.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">border-radius</span>: <span class="cv">12px</span>;                 <span class="cc">/* all corners */</span>\n  <span class="cp">border-radius</span>: <span class="cv">50%</span>;                  <span class="cc">/* circle or ellipse */</span>\n  <span class="cp">border-radius</span>: <span class="cv">10px 20px 30px 40px</span>; <span class="cc">/* TL TR BR BL */</span>\n  <span class="cp">border-radius</span>: <span class="cv">50% / 30%</span>;           <span class="cc">/* elliptical */</span>\n}`,
+    ex:`<span class="cs">.card</span>   { <span class="cp">border-radius</span>: <span class="cv">16px</span>; }\n<span class="cs">.circle</span> { <span class="cp">border-radius</span>: <span class="cv">50%</span>; <span class="cp">width</span>:<span class="cv">80px</span>; <span class="cp">height</span>:<span class="cv">80px</span>; }\n<span class="cs">.pill</span>   { <span class="cp">border-radius</span>: <span class="cv">9999px</span>; }\n<span class="cs">.leaf</span>   { <span class="cp">border-radius</span>: <span class="cv">0 50% 50% 50%</span>; }`,
+    vals:[["<length>","px, em, rem",""],["<percentage>","% of element's size",""],["50%","Circle (equal width/height) or ellipse",""]],
+    br:{c:"4",f:"4",s:"5",e:"12",i:"9"},note:'<p>Individual corners: <code>border-top-left-radius</code>, <code>border-top-right-radius</code>, <code>border-bottom-right-radius</code>, <code>border-bottom-left-radius</code>.</p>'},
+
+  "box-shadow":{cat:"Box Model",ver:"CSS3",inh:false,anim:true,
+    desc:"Applies one or more drop shadows. Each shadow: offset, blur, spread, color. Comma-separated for multiple. Use <code>inset</code> for inner shadows.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">box-shadow</span>: <span class="cv">h-offset v-offset blur spread color</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">2px 4px 8px rgba(0,0,0,.3)</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">inset 0 2px 4px rgba(0,0,0,.2)</span>;\n  <span class="cp">box-shadow</span>: <span class="cv">0 1px 3px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.15)</span>;\n}`,
+    ex:`<span class="cs">.elev-1</span> { <span class="cp">box-shadow</span>: <span class="cv">0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24)</span>; }\n<span class="cs">.elev-3</span> { <span class="cp">box-shadow</span>: <span class="cv">0 10px 30px rgba(0,0,0,.19),0 6px 10px rgba(0,0,0,.23)</span>; }\n<span class="cs">.glow</span>   { <span class="cp">box-shadow</span>: <span class="cv">0 0 20px rgba(108,139,255,.5)</span>; }\n<span class="cs">.inset</span>  { <span class="cp">box-shadow</span>: <span class="cv">inset 0 2px 6px rgba(0,0,0,.3)</span>; }`,
+    vals:[["h-offset v-offset","Required. Horizontal and vertical offset",""],["blur","Blur radius — higher = softer",""],["spread","Positive expands, negative shrinks",""],["color","Use rgba() for transparency",""],["inset","Keyword: shadow inside element",""],["none","No shadow (default)","default"]],
+    br:{c:"10",f:"4",s:"5.1",e:"12",i:"9"},
+    note:'<div class="note note-tip"><strong>Performance:</strong> box-shadow is GPU-composited and cheap to animate. Prefer it over filter:drop-shadow for rectangular elements.</div>'},
+
+  "overflow":{cat:"Box Model",ver:"CSS2",inh:false,anim:false,
+    desc:"Sets what happens when content is too large for the element. Controls clipping, scrolling, or visibility of overflowing content.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">overflow</span>: <span class="cv">visible</span>; <span class="cc">/* default */</span>\n  <span class="cp">overflow</span>: <span class="cv">hidden</span>;\n  <span class="cp">overflow</span>: <span class="cv">auto</span>;\n  <span class="cp">overflow-x</span>: <span class="cv">hidden</span>;\n  <span class="cp">overflow-y</span>: <span class="cv">auto</span>;\n}`,
+    ex:`<span class="cs">.card</span>   { <span class="cp">overflow</span>:<span class="cv">hidden</span>; <span class="cp">border-radius</span>:<span class="cv">12px</span>; } <span class="cc">/* clip children */</span>\n<span class="cs">.scroll</span> { <span class="cp">overflow-y</span>:<span class="cv">auto</span>; <span class="cp">max-height</span>:<span class="cv">400px</span>; }`,
+    vals:[["visible","Overflows and stays visible (default)","default"],["hidden","Clips. No scrollbars. No scroll possible.",""],["scroll","Always shows scrollbars",""],["auto","Scrollbars only when needed (recommended)",""],["clip","Like hidden, also disables programmatic scrolling",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-info"><strong>overflow:hidden</strong> creates a new block formatting context — clears floats inside and clips border-radius on children.</div>'},
+
+  "aspect-ratio":{cat:"Box Model",ver:"CSS4",inh:false,anim:true,
+    desc:"Sets the preferred aspect ratio for an element. The browser maintains this ratio as the element resizes. Eliminates the padding-top hack for responsive iframes and videos.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">aspect-ratio</span>: <span class="cv">16 / 9</span>;\n  <span class="cp">aspect-ratio</span>: <span class="cv">1</span>;      <span class="cc">/* square */</span>\n  <span class="cp">aspect-ratio</span>: <span class="cv">auto</span>;\n}`,
+    ex:`<span class="cs">.video-wrap</span> { <span class="cp">width</span>:<span class="cv">100%</span>; <span class="cp">aspect-ratio</span>:<span class="cv">16/9</span>; }\n<span class="cs">.avatar</span>     { <span class="cp">width</span>:<span class="cv">64px</span>; <span class="cp">aspect-ratio</span>:<span class="cv">1</span>; <span class="cp">border-radius</span>:<span class="cv">50%</span>; }`,
+    vals:[["auto","Determined by intrinsic dimensions","default"],["<ratio>","e.g. 16/9, 4/3, 1",""]],
+    br:{c:"88",f:"89",s:"15",e:"88",i:"No"},
+    note:'<div class="note note-tip"><strong>Modern must-have:</strong> Replaces the old padding-top:56.25% trick entirely. Much cleaner.</div>'},
+
+  /* ── Borders ── */
+  "border":{cat:"Borders",ver:"CSS1",inh:false,anim:true,
+    desc:"Shorthand for border-width, border-style, and border-color on all four sides. Any of the three can be omitted.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">border</span>: <span class="cv">1px solid #ccc</span>;\n  <span class="cp">border</span>: <span class="cv">2px dashed red</span>;\n  <span class="cp">border</span>: <span class="cv">none</span>;\n  <span class="cp">border-top</span>: <span class="cv">3px solid var(--accent)</span>;\n}`,
+    ex:`<span class="cs">.card</span>    { <span class="cp">border</span>: <span class="cv">1px solid rgba(255,255,255,.1)</span>; }\n<span class="cs">.divider</span> { <span class="cp">border-top</span>: <span class="cv">1px solid var(--border)</span>; }\n<span class="cs">.accent</span>  { <span class="cp">border-left</span>: <span class="cv">4px solid var(--accent)</span>; }`,
+    vals:[["border-width","thin, medium, thick, or length",""],["border-style","none, solid, dashed, dotted, double, groove, ridge, inset, outset",""],["border-color","Any color value",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>Individual sides: <code>border-top</code>, <code>border-right</code>, <code>border-bottom</code>, <code>border-left</code>.</p>'},
+
+  "outline":{cat:"Borders",ver:"CSS2",inh:false,anim:true,
+    desc:"Draws a line outside the border box. Unlike border, outline doesn't affect layout — it doesn't take up space. Critical for keyboard focus indicators. Never remove without replacing!",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">outline</span>: <span class="cv">2px solid blue</span>;\n  <span class="cp">outline-offset</span>: <span class="cv">4px</span>;  <span class="cc">/* gap between element and outline */</span>\n}`,
+    ex:`<span class="cs">:focus-visible</span> {\n  <span class="cp">outline</span>: <span class="cv">2px solid var(--accent)</span>;\n  <span class="cp">outline-offset</span>: <span class="cv">3px</span>;\n}`,
+    vals:[["outline-width","1px, 2px, thin, medium, thick",""],["outline-style","solid, dashed, dotted, double, none …",""],["outline-color","Any color",""],["outline-offset","Distance from element border",""]],
+    br:{c:"1",f:"1.5",s:"1.2",e:"12",i:"8"},
+    note:'<div class="note note-warn"><strong>Accessibility:</strong> Never use <code>outline:none</code> without providing an alternative focus indicator. It breaks keyboard navigation.</div>'},
+
+  /* ── Typography ── */
+  "font-family":{cat:"Typography",ver:"CSS1",inh:true,anim:false,
+    desc:"A prioritized list of font families. Browser uses the first available. Generic families (serif, sans-serif, monospace) serve as the final fallback.",
+    syntax:`<span class="cs">body</span> {\n  <span class="cp">font-family</span>: <span class="cv">'Inter', 'Segoe UI', Arial, sans-serif</span>;\n  <span class="cp">font-family</span>: <span class="cv">system-ui, sans-serif</span>; <span class="cc">/* OS default */</span>\n  <span class="cp">font-family</span>: <span class="cv">'JetBrains Mono', monospace</span>;\n}`,
+    ex:`<span class="ck">@import</span> <span class="cq">url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap')</span>;\n<span class="cs">:root</span> {\n  <span class="cp">--font-sans</span>: <span class="cv">'Inter', system-ui, sans-serif</span>;\n  <span class="cp">--font-mono</span>: <span class="cv">'JetBrains Mono', monospace</span>;\n}\n<span class="cs">body</span> { <span class="cp">font-family</span>: <span class="cv">var(--font-sans)</span>; }\n<span class="cs">code</span> { <span class="cp">font-family</span>: <span class="cv">var(--font-mono)</span>; }`,
+    vals:[["'Font Name'","Specific font face. Quote names with spaces.",""],["serif","Fonts with serifs (Times New Roman, Georgia)",""],["sans-serif","Fonts without serifs (Arial, Helvetica)",""],["monospace","Fixed-width (Courier, Consolas)",""],["system-ui","OS's default UI font",""],["cursive / fantasy","Decorative generics",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},note:'<p>Always end with a generic family. Use variable fonts (one file, many weights) for best performance.</p>'},
+
+  "font-size":{cat:"Typography",ver:"CSS1",inh:true,anim:true,
+    desc:"Sets the font size. Use <code>rem</code> for global consistency and accessibility. Use <code>clamp()</code> for fluid, viewport-responsive typography without media queries.",
+    syntax:`<span class="cs">p</span> {\n  <span class="cp">font-size</span>: <span class="cv">1rem</span>;                        <span class="cc">/* relative to :root */</span>\n  <span class="cp">font-size</span>: <span class="cv">clamp(1rem, 2.5vw, 2rem)</span>;  <span class="cc">/* fluid */</span>\n}`,
+    ex:`<span class="cs">html</span>  { <span class="cp">font-size</span>: <span class="cv">16px</span>; }   <span class="cc">/* 1rem = 16px */</span>\n<span class="cs">h1</span>    { <span class="cp">font-size</span>: <span class="cv">2.5rem</span>; }  <span class="cc">/* 40px */</span>\n<span class="cs">p</span>     { <span class="cp">font-size</span>: <span class="cv">1rem</span>; }    <span class="cc">/* 16px */</span>\n<span class="cs">small</span> { <span class="cp">font-size</span>: <span class="cv">0.875rem</span>; }\n<span class="cs">.hero-h1</span> { <span class="cp">font-size</span>: <span class="cv">clamp(2rem, 5vw, 5rem)</span>; }`,
+    vals:[["rem","Relative to root — best for global consistency",""],["em","Relative to parent — can compound when nested",""],["px","Absolute — good for precision, bad for accessibility",""],["vw/vh","Viewport-relative — fluid",""],["clamp(min,ideal,max)","Fluid between min and max",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},
+    note:'<div class="note note-warn"><strong>Accessibility:</strong> Never set <code>font-size</code> on <code>html</code> in px only. Use rem so users can scale text via browser settings.</div>'},
+
+  "font-weight":{cat:"Typography",ver:"CSS1",inh:true,anim:true,
+    desc:"Sets the weight (boldness) of the font. Variable fonts support any integer from 1–1000 for ultra-fine control.",
+    syntax:`<span class="cs">p</span>  { <span class="cp">font-weight</span>: <span class="cv">400</span>; }  <span class="cc">/* normal */</span>\n<span class="cs">h1</span> { <span class="cp">font-weight</span>: <span class="cv">700</span>; }  <span class="cc">/* bold */</span>\n<span class="cs">h2</span> { <span class="cp">font-weight</span>: <span class="cv">600</span>; }  <span class="cc">/* semibold */</span>`,
+    ex:`<span class="cs">h1</span>      { <span class="cp">font-weight</span>: <span class="cv">700</span>; }\n<span class="cs">h2</span>      { <span class="cp">font-weight</span>: <span class="cv">600</span>; }\n<span class="cs">p</span>       { <span class="cp">font-weight</span>: <span class="cv">400</span>; }\n<span class="cs">.light</span>  { <span class="cp">font-weight</span>: <span class="cv">300</span>; }`,
+    vals:[["100","Thin",""],["200","Extra Light",""],["300","Light",""],["400 / normal","Regular","default"],["500","Medium",""],["600","Semi Bold",""],["700 / bold","Bold",""],["800","Extra Bold",""],["900","Black",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},note:'<p>If a font doesn\'t support a specific weight, the browser fakes it or uses the closest available weight.</p>'},
+
+  "line-height":{cat:"Typography",ver:"CSS1",inh:true,anim:true,
+    desc:"Sets the height of a line box. Controls leading — the space between lines. Using a unitless value (e.g. 1.6) is recommended as it scales proportionally with font size.",
+    syntax:`<span class="cs">p</span> {\n  <span class="cp">line-height</span>: <span class="cv">1.6</span>;    <span class="cc">/* unitless — recommended */</span>\n  <span class="cp">line-height</span>: <span class="cv">24px</span>;   <span class="cc">/* fixed */</span>\n  <span class="cp">line-height</span>: <span class="cv">150%</span>;   <span class="cc">/* relative to font-size */</span>\n  <span class="cp">line-height</span>: <span class="cv">normal</span>; <span class="cc">/* browser default ~1.2 */</span>\n}`,
+    ex:`<span class="cs">body</span>    { <span class="cp">line-height</span>: <span class="cv">1.7</span>; }   <span class="cc">/* comfortable reading */</span>\n<span class="cs">h1</span>      { <span class="cp">line-height</span>: <span class="cv">1.1</span>; }   <span class="cc">/* tight headings */</span>\n<span class="cs">.code</span>   { <span class="cp">line-height</span>: <span class="cv">1.5</span>; }`,
+    vals:[["normal","Browser default, roughly 1.2","default"],["<number>","Unitless multiplier of font-size (recommended)",""],["<length>","Fixed value in px, em",""],["<percentage>","% of element's font-size",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<div class="note note-tip"><strong>Best practice:</strong> Use unitless values (1.4–1.7 for body text, 1.1–1.2 for headings) to prevent compounding issues in nested elements.</div>'},
+
+  "text-align":{cat:"Typography",ver:"CSS1",inh:true,anim:false,
+    desc:"Sets the horizontal alignment of inline content (text, inline elements) within a block element.",
+    syntax:`<span class="cs">p</span> {\n  <span class="cp">text-align</span>: <span class="cv">left</span>;\n  <span class="cp">text-align</span>: <span class="cv">center</span>;\n  <span class="cp">text-align</span>: <span class="cv">right</span>;\n  <span class="cp">text-align</span>: <span class="cv">justify</span>;\n  <span class="cp">text-align</span>: <span class="cv">start</span>; <span class="cc">/* logical */</span>\n}`,
+    ex:`<span class="cs">h1</span>      { <span class="cp">text-align</span>: <span class="cv">center</span>; }\n<span class="cs">.legal</span>  { <span class="cp">text-align</span>: <span class="cv">justify</span>; <span class="cp">hyphens</span>: <span class="cv">auto</span>; }\n<span class="cs">.rtl</span>    { <span class="cp">text-align</span>: <span class="cv">right</span>; }`,
+    vals:[["left","Align to left edge",""],["right","Align to right edge",""],["center","Center text",""],["justify","Stretch to fill line width",""],["start/end","Logical — respects writing direction",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},note:'<p>Use <code>start</code> and <code>end</code> instead of left/right for better internationalization support in RTL layouts.</p>'},
+
+  "text-transform":{cat:"Typography",ver:"CSS1",inh:true,anim:false,
+    desc:"Controls the capitalization of text. Transforms text visually without changing the underlying HTML content.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">text-transform</span>: <span class="cv">uppercase</span>;\n  <span class="cp">text-transform</span>: <span class="cv">lowercase</span>;\n  <span class="cp">text-transform</span>: <span class="cv">capitalize</span>;\n  <span class="cp">text-transform</span>: <span class="cv">none</span>;\n}`,
+    ex:`<span class="cs">.label</span> { <span class="cp">text-transform</span>: <span class="cv">uppercase</span>; <span class="cp">letter-spacing</span>: <span class="cv">2px</span>; }\n<span class="cs">h1</span>     { <span class="cp">text-transform</span>: <span class="cv">capitalize</span>; }`,
+    vals:[["none","No transformation (default)","default"],["uppercase","ALL CAPS",""],["lowercase","all lowercase",""],["capitalize","First Letter Of Each Word",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>Always use CSS text-transform rather than typing in ALL CAPS in HTML — it\'s more accessible and easier to change later.</p>'},
+
+  "letter-spacing":{cat:"Typography",ver:"CSS1",inh:true,anim:true,desc:"Sets spacing between characters (tracking). Positive values spread characters, negative values tighten them.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">letter-spacing</span>: <span class="cv">0.1em</span>;\n  <span class="cp">letter-spacing</span>: <span class="cv">2px</span>;\n  <span class="cp">letter-spacing</span>: <span class="cv">-0.02em</span>; <span class="cc">/* tight */</span>\n}`,
+    ex:`<span class="cs">.label</span>   { <span class="cp">letter-spacing</span>: <span class="cv">0.15em</span>; <span class="cp">text-transform</span>: <span class="cv">uppercase</span>; }\n<span class="cs">.display</span> { <span class="cp">letter-spacing</span>: <span class="cv">-0.03em</span>; }`,
+    vals:[["normal","Browser default","default"],["<length>","em (recommended) or px values. Em scales with font-size.",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>Use <code>em</code> units so spacing scales with font size. For uppercase labels, 0.1em–0.2em is typically ideal.</p>'},
+
+  "text-decoration":{cat:"Typography",ver:"CSS1",inh:true,anim:false,
+    desc:"Shorthand for text-decoration-line, color, style, and thickness. Used for underlines, strikethroughs, and overlines.",
+    syntax:`<span class="cs">a</span> {\n  <span class="cp">text-decoration</span>: <span class="cv">underline</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">none</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">underline wavy red 2px</span>;\n  <span class="cp">text-decoration</span>: <span class="cv">line-through</span>;\n}`,
+    ex:`<span class="cs">a</span>              { <span class="cp">text-decoration</span>: <span class="cv">none</span>; }\n<span class="cs">a:hover</span>        { <span class="cp">text-decoration</span>: <span class="cv">underline</span>; }\n<span class="cs">.fancy</span>         { <span class="cp">text-decoration</span>: <span class="cv">underline wavy var(--accent) 2px</span>; }\n<span class="cs">.strikethrough</span> { <span class="cp">text-decoration</span>: <span class="cv">line-through</span>; }`,
+    vals:[["none","No decoration",""],["underline","Line below text",""],["line-through","Strikethrough",""],["overline","Line above text",""],["solid/dashed/dotted/wavy/double","Line style",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},note:'<p>Use <code>text-underline-offset</code> to add space between text and underline, and <code>text-decoration-skip-ink:auto</code> to prevent underlines from crossing descenders.</p>'},
+
+  /* ── Colors ── */
+  "color":{cat:"Colors & Backgrounds",ver:"CSS1",inh:true,anim:true,
+    desc:"Sets the foreground color of text content and text decorations. Also sets <code>currentColor</code>, used by border and SVG fill/stroke.",
+    syntax:`<span class="cs">p</span> {\n  <span class="cp">color</span>: <span class="cv">#e06c75</span>;\n  <span class="cp">color</span>: <span class="cv">rgb(224, 108, 117)</span>;\n  <span class="cp">color</span>: <span class="cv">rgba(0, 0, 0, 0.7)</span>;\n  <span class="cp">color</span>: <span class="cv">hsl(355, 65%, 65%)</span>;\n  <span class="cp">color</span>: <span class="cv">oklch(0.65 0.2 20)</span>; <span class="cc">/* modern */</span>\n}`,
+    ex:`<span class="cs">body</span>    { <span class="cp">color</span>: <span class="cv">#333</span>; }\n<span class="cs">a</span>       { <span class="cp">color</span>: <span class="cv">#0070f3</span>; }\n<span class="cs">a:hover</span> { <span class="cp">color</span>: <span class="cv">#0050c0</span>; }\n<span class="cs">.muted</span>  { <span class="cp">color</span>: <span class="cv">rgb(100 100 100 / 70%)</span>; }`,
+    vals:[["#rrggbb / #rgb","Hex notation — most common",""],["rgb() / rgba()","RGB with optional alpha",""],["hsl() / hsla()","Hue-Saturation-Lightness",""],["oklch() / oklab()","Modern perceptually uniform color spaces",""],["named colors","140+ keywords: red, tomato, cornflowerblue…",""],["currentColor","Inherits from the element's color value",""],["transparent","rgba(0,0,0,0)",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"3"},
+    note:'<div class="note note-tip"><strong>Modern:</strong> Use <code>oklch()</code> for a perceptually-uniform color space. Supported in all modern browsers since 2023.</div>'},
+
+  "opacity":{cat:"Colors & Backgrounds",ver:"CSS3",inh:false,anim:true,
+    desc:"Sets element transparency — 0 (invisible) to 1 (opaque). Affects the entire element including children. Use <code>rgba()</code> if you only want to make the background transparent.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">opacity</span>: <span class="cv">1</span>;    <span class="cc">/* fully visible */</span>\n  <span class="cp">opacity</span>: <span class="cv">0.5</span>;  <span class="cc">/* 50% transparent */</span>\n  <span class="cp">opacity</span>: <span class="cv">0</span>;    <span class="cc">/* invisible (still in layout) */</span>\n}`,
+    ex:`<span class="cs">.overlay</span>        { <span class="cp">opacity</span>: <span class="cv">0.7</span>; }\n<span class="cs">.ghost</span>          { <span class="cp">opacity</span>: <span class="cv">0</span>; } <span class="cc">/* hidden but interactive */</span>\n<span class="cs">.fade:hover</span>     { <span class="cp">opacity</span>: <span class="cv">0.8</span>; <span class="cp">transition</span>: <span class="cv">opacity 0.2s</span>; }`,
+    vals:[["0","Fully transparent",""],["0.5","50% opacity",""],["1","Fully opaque (default)","default"]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"9"},
+    note:'<div class="note note-info"><strong>opacity vs alpha:</strong> opacity affects the whole element + children. For transparent background only: use <code>background:rgba(0,0,0,0.5)</code>.</div>'},
+
+  "background":{cat:"Colors & Backgrounds",ver:"CSS1",inh:false,anim:true,
+    desc:"Shorthand for background-color, image, repeat, position, size, attachment, clip, and origin. Multiple backgrounds can be layered with commas.",
+    syntax:`<span class="cs">.box</span> {\n  <span class="cp">background</span>: <span class="cv">#f5f5f5</span>;\n  <span class="cp">background</span>: <span class="cv">url('bg.jpg') no-repeat center/cover</span>;\n  <span class="cp">background</span>: <span class="cv">linear-gradient(135deg, #667eea, #764ba2)</span>;\n}`,
+    ex:`<span class="cs">.hero</span> {\n  <span class="cp">background</span>: <span class="cv">url('hero.jpg') no-repeat center/cover</span>;\n  <span class="cp">background-color</span>: <span class="cv">#222</span>; <span class="cc">/* fallback */</span>\n}\n<span class="cs">.gradient</span> { <span class="cp">background</span>: <span class="cv">linear-gradient(135deg,#6c8bff,#a259ff)</span>; }\n<span class="cs">.layered</span> {\n  <span class="cp">background</span>: <span class="cv">url('overlay.png') center/cover,\n    linear-gradient(#000,#444)</span>;\n}`,
+    vals:[["background-color","Solid fill below images",""],["background-image","url(), gradients",""],["background-repeat","repeat, no-repeat, repeat-x, repeat-y, round, space",""],["background-position","center, top right, 50% 50%",""],["background-size","cover, contain, px/% values",""],["background-attachment","scroll, fixed, local",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>First listed background is on top. Only the bottom-most layer can have a background-color.</p>'},
+
+  "filter":{cat:"Colors & Backgrounds",ver:"CSS3",inh:false,anim:true,
+    desc:"Applies graphical effects: blur, brightness, contrast, grayscale, hue-rotate, invert, saturate, sepia, and drop-shadow. Can be combined.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">filter</span>: <span class="cv">blur(4px)</span>;\n  <span class="cp">filter</span>: <span class="cv">brightness(1.5) contrast(1.2)</span>;\n  <span class="cp">filter</span>: <span class="cv">grayscale(100%)</span>;\n  <span class="cp">filter</span>: <span class="cv">drop-shadow(2px 4px 8px #000)</span>;\n}`,
+    ex:`<span class="cs">img:hover</span>    { <span class="cp">filter</span>: <span class="cv">brightness(1.1) saturate(1.2)</span>; }\n<span class="cs">.grayscale</span>   { <span class="cp">filter</span>: <span class="cv">grayscale(1)</span>; }\n<span class="cs">.icon-shadow</span> { <span class="cp">filter</span>: <span class="cv">drop-shadow(0 4px 8px rgba(0,0,0,.4))</span>; }`,
+    vals:[["blur(radius)","Gaussian blur in px",""],["brightness(n)","0=black, 1=normal, 2=double",""],["contrast(n)","0=grey, 1=normal",""],["grayscale(n)","0–1 or 0%–100%",""],["hue-rotate(deg)","Shift hue wheel",""],["saturate(n)","0=grey, >1 super-saturated",""],["drop-shadow(x y blur color)","Shadow following alpha mask (works on PNGs)",""]],
+    br:{c:"53",f:"35",s:"9.1",e:"12",i:"No"},note:'<div class="note note-tip"><strong>vs box-shadow:</strong> <code>drop-shadow()</code> follows the element\'s actual transparent shape. box-shadow always follows the rectangular box.</div>'},
+
+  "backdrop-filter":{cat:"Colors & Backgrounds",ver:"CSS4",inh:false,anim:true,
+    desc:"Applies graphical effects to the area <em>behind</em> an element. Creates the popular glassmorphism / frosted-glass effect. The element itself must be (at least partially) transparent.",
+    syntax:`<span class="cs">.glass</span> {\n  <span class="cp">background</span>: <span class="cv">rgba(255,255,255,0.1)</span>;\n  <span class="cp">backdrop-filter</span>: <span class="cv">blur(12px)</span>;\n  <span class="cp">-webkit-backdrop-filter</span>: <span class="cv">blur(12px)</span>; <span class="cc">/* Safari */</span>\n}`,
+    ex:`<span class="cs">.glass-card</span> {\n  <span class="cp">background</span>: <span class="cv">rgba(255,255,255,0.08)</span>;\n  <span class="cp">backdrop-filter</span>: <span class="cv">blur(16px) saturate(180%)</span>;\n  <span class="cp">-webkit-backdrop-filter</span>: <span class="cv">blur(16px) saturate(180%)</span>;\n  <span class="cp">border</span>: <span class="cv">1px solid rgba(255,255,255,0.15)</span>;\n}`,
+    vals:[["blur(radius)","Most common — frosted glass effect",""],["brightness/contrast/saturate","Same as filter function values",""]],
+    br:{c:"76",f:"103",s:"9",e:"79",i:"No"},
+    note:'<div class="note note-warn"><strong>Performance:</strong> backdrop-filter is GPU-intensive. Use sparingly and test on low-end devices. Always include <code>-webkit-backdrop-filter</code> for Safari.</div>'},
+
+  /* ── Flexbox ── */
+  "display (flex)":{cat:"Flexbox",ver:"CSS3",inh:false,anim:false,
+    desc:"Enables Flexbox — a one-dimensional layout system for arranging items in a row or column. The most widely-used layout method in modern CSS.",
+    syntax:`<span class="cs">.container</span> {\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">flex-direction</span>: <span class="cv">row</span>;           <span class="cc">/* main axis */</span>\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>; <span class="cc">/* main axis alignment */</span>\n  <span class="cp">align-items</span>: <span class="cv">center</span>;           <span class="cc">/* cross axis alignment */</span>\n  <span class="cp">flex-wrap</span>: <span class="cv">wrap</span>;\n  <span class="cp">gap</span>: <span class="cv">16px</span>;\n}`,
+    ex:`<span class="cc">/* Navbar */</span>\n<span class="cs">nav</span> {\n  <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">align-items</span>:<span class="cv">center</span>;\n  <span class="cp">justify-content</span>:<span class="cv">space-between</span>; <span class="cp">gap</span>:<span class="cv">1rem</span>;\n}\n<span class="cc">/* Responsive card grid */</span>\n<span class="cs">.cards</span> { <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">flex-wrap</span>:<span class="cv">wrap</span>; <span class="cp">gap</span>:<span class="cv">20px</span>; }\n<span class="cs">.card</span>  { <span class="cp">flex</span>:<span class="cv">1 1 280px</span>; }`,
+    vals:[["flex-direction","row (default), row-reverse, column, column-reverse",""],["justify-content","flex-start, flex-end, center, space-between, space-around, space-evenly",""],["align-items","stretch (default), flex-start, flex-end, center, baseline",""],["flex-wrap","nowrap (default), wrap, wrap-reverse",""],["gap","Gutter between items — cleaner than margins",""]],
+    br:{c:"29",f:"28",s:"9",e:"12",i:"11"},
+    note:'<div class="note note-tip"><strong>Shorthand:</strong> <code>flex:1</code> = <code>flex-grow:1; flex-shrink:1; flex-basis:0%</code>. Use <code>flex:1 1 auto</code> for items that grow/shrink from natural size.</div>'},
+
+  "flex-direction":{cat:"Flexbox",ver:"CSS3",inh:false,anim:false,desc:"Sets the main axis direction of a flex container — how flex items are placed.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">flex-direction</span>: <span class="cv">row</span>;            <span class="cc">/* default */</span>\n  <span class="cp">flex-direction</span>: <span class="cv">row-reverse</span>;\n  <span class="cp">flex-direction</span>: <span class="cv">column</span>;\n  <span class="cp">flex-direction</span>: <span class="cv">column-reverse</span>;\n}`,
+    ex:`<span class="cs">.sidebar-layout</span> {\n  <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">flex-direction</span>:<span class="cv">row</span>;\n}\n<span class="cs">.form</span> {\n  <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">flex-direction</span>:<span class="cv">column</span>; <span class="cp">gap</span>:<span class="cv">1rem</span>;\n}`,
+    vals:[["row","Left to right (default)","default"],["row-reverse","Right to left",""],["column","Top to bottom",""],["column-reverse","Bottom to top",""]],
+    br:{c:"29",f:"28",s:"9",e:"12",i:"11"},note:'<p>Changing flex-direction swaps which axis <code>justify-content</code> and <code>align-items</code> operate on.</p>'},
+
+  "justify-content":{cat:"Flexbox",ver:"CSS3",inh:false,anim:false,
+    desc:"Aligns flex/grid items along the main axis. Controls space distribution when items don't fill the container.",
+    syntax:`<span class="cs">.container</span> {\n  <span class="cp">justify-content</span>: <span class="cv">flex-start</span>;    <span class="cc">/* default */</span>\n  <span class="cp">justify-content</span>: <span class="cv">center</span>;\n  <span class="cp">justify-content</span>: <span class="cv">flex-end</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-around</span>;\n  <span class="cp">justify-content</span>: <span class="cv">space-evenly</span>;\n}`,
+    ex:`<span class="cs">nav</span>   { <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">justify-content</span>:<span class="cv">space-between</span>; }\n<span class="cs">.hero</span> { <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">justify-content</span>:<span class="cv">center</span>; }`,
+    vals:[["flex-start","Items at start of main axis (default)","default"],["flex-end","Items at end",""],["center","Items centered",""],["space-between","First at start, last at end, equal space between",""],["space-around","Equal space around each item (half at edges)",""],["space-evenly","Equal space between all including edges",""]],
+    br:{c:"29",f:"28",s:"9",e:"12",i:"11"},note:''},
+
+  "align-items":{cat:"Flexbox",ver:"CSS3",inh:false,anim:false,
+    desc:"Aligns flex/grid items along the cross axis. This is the key property for vertical centering in flex rows.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">align-items</span>: <span class="cv">stretch</span>;    <span class="cc">/* default */</span>\n  <span class="cp">align-items</span>: <span class="cv">center</span>;\n  <span class="cp">align-items</span>: <span class="cv">flex-start</span>;\n  <span class="cp">align-items</span>: <span class="cv">flex-end</span>;\n  <span class="cp">align-items</span>: <span class="cv">baseline</span>;\n}`,
+    ex:`<span class="cc">/* Perfect centering */</span>\n<span class="cs">.center</span> {\n  <span class="cp">display</span>:<span class="cv">flex</span>;\n  <span class="cp">justify-content</span>:<span class="cv">center</span>;\n  <span class="cp">align-items</span>:<span class="cv">center</span>;\n  <span class="cp">min-height</span>:<span class="cv">100vh</span>;\n}`,
+    vals:[["stretch","Items stretch to fill cross axis (default)","default"],["flex-start","Items at start of cross axis",""],["flex-end","Items at end of cross axis",""],["center","Items centered on cross axis",""],["baseline","Items aligned along text baseline",""]],
+    br:{c:"29",f:"28",s:"9",e:"12",i:"11"},
+    note:'<div class="note note-tip"><strong>Centering trick:</strong> <code>display:flex; align-items:center; justify-content:center</code> is the cleanest way to center anything in modern CSS.</div>'},
+
+  "gap":{cat:"Flexbox",ver:"CSS3",inh:false,anim:true,
+    desc:"Sets the gutter between flex/grid items. Cleaner than margins because it doesn't add space on outer edges.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">gap</span>: <span class="cv">20px</span>;       <span class="cc">/* row and column */</span>\n  <span class="cp">gap</span>: <span class="cv">16px 24px</span>;  <span class="cc">/* row column */</span>\n  <span class="cp">row-gap</span>: <span class="cv">16px</span>;\n  <span class="cp">column-gap</span>: <span class="cv">24px</span>;\n}`,
+    ex:`<span class="cs">.grid</span>     { <span class="cp">display</span>:<span class="cv">grid</span>; <span class="cp">grid-template-columns</span>:<span class="cv">repeat(3,1fr)</span>; <span class="cp">gap</span>:<span class="cv">2rem</span>; }\n<span class="cs">.flex-nav</span> { <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">gap</span>:<span class="cv">12px</span>; }`,
+    vals:[["<length>","px, rem, em",""],["<percentage>","% of container",""]],
+    br:{c:"66",f:"61",s:"12",e:"16",i:"No"},note:'<p>Originally grid-gap. Now works in flex containers too. Supported in all modern browsers since 2021.</p>'},
+
+  "flex":{cat:"Flexbox",ver:"CSS3",inh:false,anim:true,desc:"Shorthand for flex-grow, flex-shrink, and flex-basis. Controls how a flex item grows and shrinks.",
+    syntax:`<span class="cs">.item</span> {\n  <span class="cp">flex</span>: <span class="cv">1</span>;           <span class="cc">/* grow:1 shrink:1 basis:0% */</span>\n  <span class="cp">flex</span>: <span class="cv">0 0 200px</span>;  <span class="cc">/* fixed 200px, no grow/shrink */</span>\n  <span class="cp">flex</span>: <span class="cv">1 1 auto</span>;   <span class="cc">/* grow/shrink from natural size */</span>\n  <span class="cp">flex</span>: <span class="cv">none</span>;        <span class="cc">/* 0 0 auto — rigid */</span>\n}`,
+    ex:`<span class="cs">.sidebar</span> { <span class="cp">flex</span>: <span class="cv">0 0 260px</span>; } <span class="cc">/* fixed width */</span>\n<span class="cs">.main</span>    { <span class="cp">flex</span>: <span class="cv">1</span>; }          <span class="cc">/* fills remaining space */</span>`,
+    vals:[["<number>","flex-grow value",""],["<number> <number>","flex-grow flex-shrink",""],["<number> <number> <size>","flex-grow flex-shrink flex-basis",""],["auto","1 1 auto",""],["none","0 0 auto",""]],
+    br:{c:"29",f:"28",s:"9",e:"12",i:"11"},note:''},
+
+  /* ── Grid ── */
+  "display (grid)":{cat:"CSS Grid",ver:"CSS3",inh:false,anim:false,
+    desc:"Enables CSS Grid — a two-dimensional layout system handling rows AND columns simultaneously. The most powerful layout tool in CSS.",
+    syntax:`<span class="cs">.grid</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n  <span class="cp">grid-template-rows</span>: <span class="cv">auto</span>;\n  <span class="cp">gap</span>: <span class="cv">24px</span>;\n}`,
+    ex:`<span class="cc">/* Responsive — no media queries */</span>\n<span class="cs">.cards</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(auto-fit, minmax(280px, 1fr))</span>;\n  <span class="cp">gap</span>: <span class="cv">2rem</span>;\n}\n<span class="cc">/* Named areas */</span>\n<span class="cs">.page</span> {\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">grid-template-areas</span>:\n    <span class="cq">"header header"</span>\n    <span class="cq">"sidebar main"</span>\n    <span class="cq">"footer footer"</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">240px 1fr</span>;\n}`,
+    vals:[["fr","Fractional unit of remaining space",""],["repeat(n, size)","Repeat column definition",""],["minmax(min, max)","Track size between min and max",""],["auto-fit","Creates tracks, collapses empty ones",""],["auto-fill","Creates as many tracks as possible",""]],
+    br:{c:"57",f:"52",s:"10.1",e:"16",i:"Partial"},
+    note:'<div class="note note-tip"><strong>Magic line:</strong> <code>repeat(auto-fit, minmax(250px, 1fr))</code> creates a fully responsive grid with zero media queries.</div>'},
+
+  "grid-template-columns":{cat:"CSS Grid",ver:"CSS3",inh:false,anim:false,
+    desc:"Defines column track sizes. Accepts px, %, fr, minmax(), repeat(), auto-fill, and auto-fit. The most important grid property.",
+    syntax:`<span class="cs">.grid</span> {\n  <span class="cp">grid-template-columns</span>: <span class="cv">200px 1fr 2fr</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(3, 1fr)</span>;\n  <span class="cp">grid-template-columns</span>: <span class="cv">repeat(auto-fit, minmax(200px, 1fr))</span>;\n}`,
+    ex:`<span class="cc">/* Holy Grail Layout */</span>\n<span class="cs">.layout</span> {\n  <span class="cp">display</span>:<span class="cv">grid</span>;\n  <span class="cp">grid-template-columns</span>:<span class="cv">200px 1fr 200px</span>;\n  <span class="cp">grid-template-rows</span>:<span class="cv">auto 1fr auto</span>;\n  <span class="cp">min-height</span>:<span class="cv">100vh</span>;\n}`,
+    vals:[["px / em / rem / %","Fixed track sizes",""],["fr","Fraction of remaining space",""],["auto","Sized by content",""],["minmax(min, max)","Flexible bounded track",""],["repeat(n, size)","Repeat pattern",""],["auto-fit","Collapse empty tracks (responsive)",""],["auto-fill","Fill row with tracks, keep empty ones",""]],
+    br:{c:"57",f:"52",s:"10.1",e:"16",i:"Partial"},note:''},
+
+  "grid-area":{cat:"CSS Grid",ver:"CSS3",inh:false,anim:false,desc:"Assigns a grid item to a named grid area, or specifies row-start/column-start/row-end/column-end in shorthand.",
+    syntax:`<span class="cs">.header</span>  { <span class="cp">grid-area</span>: <span class="cv">header</span>; }\n<span class="cs">.sidebar</span> { <span class="cp">grid-area</span>: <span class="cv">sidebar</span>; }\n<span class="cs">.main</span>    { <span class="cp">grid-area</span>: <span class="cv">main</span>; }\n<span class="cs">.footer</span>  { <span class="cp">grid-area</span>: <span class="cv">footer</span>; }`,
+    ex:`<span class="cs">.page</span> {\n  <span class="cp">display</span>:<span class="cv">grid</span>;\n  <span class="cp">grid-template-areas</span>:\n    <span class="cq">"header header"</span>\n    <span class="cq">"sidebar main"</span>\n    <span class="cq">"footer footer"</span>;\n}\n<span class="cs">header</span> { <span class="cp">grid-area</span>:<span class="cv">header</span>; }\n<span class="cs">aside</span>  { <span class="cp">grid-area</span>:<span class="cv">sidebar</span>; }\n<span class="cs">main</span>   { <span class="cp">grid-area</span>:<span class="cv">main</span>; }`,
+    vals:[["<name>","Named area matching grid-template-areas",""],["row-start/col-start/row-end/col-end","Positional shorthand",""]],
+    br:{c:"57",f:"52",s:"10.1",e:"16",i:"No"},note:'<p>Named areas make grid layouts self-documenting and easy to rearrange at different breakpoints.</p>'},
+
+  /* ── Positioning ── */
+  "position":{cat:"Positioning",ver:"CSS2",inh:false,anim:false,
+    desc:"Specifies how an element is positioned. Top/right/bottom/left determine final location. Can take elements out of normal flow.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">position</span>: <span class="cv">static</span>;   <span class="cc">/* default */</span>\n  <span class="cp">position</span>: <span class="cv">relative</span>; <span class="cc">/* offset from normal position */</span>\n  <span class="cp">position</span>: <span class="cv">absolute</span>; <span class="cc">/* positioned to nearest ancestor */</span>\n  <span class="cp">position</span>: <span class="cv">fixed</span>;    <span class="cc">/* relative to viewport */</span>\n  <span class="cp">position</span>: <span class="cv">sticky</span>;   <span class="cc">/* relative until scroll threshold */</span>\n}`,
+    ex:`<span class="cs">header</span> { <span class="cp">position</span>:<span class="cv">sticky</span>; <span class="cp">top</span>:<span class="cv">0</span>; <span class="cp">z-index</span>:<span class="cv">100</span>; }\n<span class="cs">.overlay</span> {\n  <span class="cp">position</span>:<span class="cv">absolute</span>;\n  <span class="cp">top</span>:<span class="cv">50%</span>; <span class="cp">left</span>:<span class="cv">50%</span>;\n  <span class="cp">transform</span>:<span class="cv">translate(-50%,-50%)</span>;\n}`,
+    vals:[["static","Normal flow, top/left/etc. have no effect (default)","default"],["relative","Offset from its normal position, others unaffected",""],["absolute","Removed from flow, positioned to nearest non-static ancestor",""],["fixed","Removed from flow, positioned to viewport. Stays while scrolling.",""],["sticky","Relative until scrolling past threshold, then fixed-like.",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-info"><strong>sticky:</strong> Requires a scrollable parent and a defined top/bottom threshold. Also requires the parent not to have <code>overflow:hidden</code>.</div>'},
+
+  "z-index":{cat:"Positioning",ver:"CSS2",inh:false,anim:true,
+    desc:"Controls stacking order of positioned elements. Higher values appear in front. Only works on elements with position other than static.",
+    syntax:`<span class="cs">.modal</span>   { <span class="cp">z-index</span>: <span class="cv">1000</span>; <span class="cp">position</span>:<span class="cv">fixed</span>; }\n<span class="cs">.nav</span>     { <span class="cp">z-index</span>: <span class="cv">100</span>;  <span class="cp">position</span>:<span class="cv">sticky</span>; }\n<span class="cs">.tooltip</span> { <span class="cp">z-index</span>: <span class="cv">500</span>;  <span class="cp">position</span>:<span class="cv">absolute</span>; }\n<span class="cs">.behind</span>  { <span class="cp">z-index</span>: <span class="cv">-1</span>;   <span class="cp">position</span>:<span class="cv">relative</span>; }`,
+    ex:`<span class="cs">.modal-overlay</span> {\n  <span class="cp">position</span>:<span class="cv">fixed</span>; <span class="cp">inset</span>:<span class="cv">0</span>;\n  <span class="cp">z-index</span>:<span class="cv">1000</span>;\n  <span class="cp">background</span>:<span class="cv">rgba(0,0,0,.5)</span>;\n}`,
+    vals:[["auto","No new stacking context (default)","default"],["<integer>","Any positive or negative integer",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-warn"><strong>Stacking contexts:</strong> transform, opacity&lt;1, filter, will-change, and isolation:isolate all create new stacking contexts — can unexpectedly "reset" z-index battles.</div>'},
+
+  "inset":{cat:"Positioning",ver:"CSS4",inh:false,anim:true,
+    desc:"Shorthand for top, right, bottom, and left. Makes absolute/fixed positioning much more concise. Especially useful for covering an element's parent completely.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">inset</span>: <span class="cv">0</span>;          <span class="cc">/* top right bottom left = 0 */</span>\n  <span class="cp">inset</span>: <span class="cv">10px 20px</span>;  <span class="cc">/* vertical horizontal */</span>\n  <span class="cp">inset-block</span>: <span class="cv">0</span>;    <span class="cc">/* top + bottom */</span>\n  <span class="cp">inset-inline</span>: <span class="cv">0</span>;   <span class="cc">/* left + right */</span>\n}`,
+    ex:`<span class="cc">/* Cover parent completely */</span>\n<span class="cs">.cover</span> {\n  <span class="cp">position</span>:<span class="cv">absolute</span>;\n  <span class="cp">inset</span>:<span class="cv">0</span>;\n}\n<span class="cc">/* Instead of: top:0;right:0;bottom:0;left:0 */</span>`,
+    vals:[["<length>","px, rem, %",""],["0","Flush with parent edges",""]],
+    br:{c:"87",f:"87",s:"14.1",e:"87",i:"No"},note:'<p>Much cleaner than writing four separate properties. Especially common for overlays and pseudo-elements.</p>'},
+
+  /* ── Transforms ── */
+  "transform":{cat:"Transforms",ver:"CSS3",inh:false,anim:true,
+    desc:"Applies 2D or 3D transformation — translating, rotating, scaling, skewing — without affecting the document flow. Creates a new stacking context.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">transform</span>: <span class="cv">translateX(50px)</span>;\n  <span class="cp">transform</span>: <span class="cv">rotate(45deg)</span>;\n  <span class="cp">transform</span>: <span class="cv">scale(1.5)</span>;\n  <span class="cp">transform</span>: <span class="cv">translate(-50%, -50%) rotate(45deg)</span>;\n}`,
+    ex:`<span class="cc">/* Center absolute element */</span>\n<span class="cs">.centered</span> {\n  <span class="cp">position</span>:<span class="cv">absolute</span>;\n  <span class="cp">top</span>:<span class="cv">50%</span>; <span class="cp">left</span>:<span class="cv">50%</span>;\n  <span class="cp">transform</span>:<span class="cv">translate(-50%,-50%)</span>;\n}\n<span class="cs">.hover-lift:hover</span> { <span class="cp">transform</span>:<span class="cv">translateY(-4px) scale(1.02)</span>; }`,
+    vals:[["translate(x,y)","Move without affecting flow",""],["rotate(angle)","Rotate around transform-origin",""],["scale(x,y)","Scale — 1 is normal, 2 is double",""],["skewX/Y(angle)","Shear transform",""],["perspective(n)","3D depth",""],["rotateX/Y/Z()","3D rotation",""]],
+    br:{c:"36",f:"16",s:"9",e:"12",i:"10"},
+    note:'<div class="note note-tip"><strong>GPU tip:</strong> <code>transform:translateZ(0)</code> or <code>will-change:transform</code> promotes element to its own GPU compositing layer for smoother animation.</div>'},
+
+  "transition":{cat:"Transitions & Animation",ver:"CSS3",inh:false,anim:false,
+    desc:"Shorthand for transition-property, duration, timing-function, and delay. Creates smooth animated changes between property states triggered by :hover, class changes, etc.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">transition</span>: <span class="cv">property duration timing delay</span>;\n  <span class="cp">transition</span>: <span class="cv">all 0.3s ease</span>;\n  <span class="cp">transition</span>: <span class="cv">opacity 0.2s ease, transform 0.3s ease-out</span>;\n}`,
+    ex:`<span class="cs">.button</span> {\n  <span class="cp">background</span>:<span class="cv">#6c8bff</span>;\n  <span class="cp">transform</span>:<span class="cv">scale(1)</span>;\n  <span class="cp">transition</span>:<span class="cv">background 0.2s ease, transform 0.2s ease</span>;\n}\n<span class="cs">.button:hover</span> {\n  <span class="cp">background</span>:<span class="cv">#4a6fe8</span>;\n  <span class="cp">transform</span>:<span class="cv">scale(1.04)</span>;\n}`,
+    vals:[["property","Which property to animate: all, opacity, transform…",""],["duration","How long: 0.3s, 300ms",""],["timing-function","ease (default), linear, ease-in, ease-out, ease-in-out, cubic-bezier()",""],["delay","Wait before starting",""]],
+    br:{c:"26",f:"16",s:"9",e:"12",i:"10"},
+    note:'<div class="note note-warn"><strong>Performance:</strong> Only transition <code>opacity</code> and <code>transform</code> for 60fps. Transitioning width, height, top, left triggers expensive layout recalculation.</div>'},
+
+  "animation":{cat:"Transitions & Animation",ver:"CSS3",inh:false,anim:false,
+    desc:"Shorthand for all animation sub-properties. Works with @keyframes for multi-step animations. Plays automatically and can loop, reverse, and delay.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">animation</span>: <span class="cv">name duration timing delay iteration direction fill-mode</span>;\n  <span class="cp">animation</span>: <span class="cv">spin 2s linear infinite</span>;\n  <span class="cp">animation</span>: <span class="cv">fadeIn 0.5s ease forwards</span>;\n}`,
+    ex:`<span class="ck">@keyframes</span> <span class="cs">fadeIn</span> {\n  <span class="cs">from</span> { <span class="cp">opacity</span>:<span class="cv">0</span>; <span class="cp">transform</span>:<span class="cv">translateY(20px)</span>; }\n  <span class="cs">to</span>   { <span class="cp">opacity</span>:<span class="cv">1</span>; <span class="cp">transform</span>:<span class="cv">translateY(0)</span>; }\n}\n<span class="ck">@keyframes</span> <span class="cs">spin</span> { <span class="cs">to</span> { <span class="cp">transform</span>:<span class="cv">rotate(360deg)</span>; } }\n\n<span class="cs">.appear</span>  { <span class="cp">animation</span>:<span class="cv">fadeIn 0.6s ease both</span>; }\n<span class="cs">.spinner</span> { <span class="cp">animation</span>:<span class="cv">spin 1s linear infinite</span>; }`,
+    vals:[["animation-name","References an @keyframes rule",""],["animation-duration","How long one cycle",""],["animation-timing-function","Speed curve",""],["animation-iteration-count","1, 3, infinite",""],["animation-direction","normal, reverse, alternate, alternate-reverse",""],["animation-fill-mode","none, forwards, backwards, both",""],["animation-play-state","running, paused",""]],
+    br:{c:"43",f:"16",s:"9",e:"12",i:"10"},note:''},
+
+  "@keyframes":{cat:"Transitions & Animation",ver:"CSS3",inh:false,anim:false,
+    desc:"Defines multi-step animation sequences with from/to or percentage waypoints (0%–100%).",
+    syntax:`<span class="ck">@keyframes</span> <span class="cs">name</span> {\n  <span class="cs">from</span> { <span class="cc">/* start */</span> }\n  <span class="cs">to</span>   { <span class="cc">/* end */</span> }\n}\n<span class="ck">@keyframes</span> <span class="cs">name</span> {\n  <span class="cn">0%</span>  { }\n  <span class="cn">50%</span> { }\n  <span class="cn">100%</span>{ }\n}`,
+    ex:`<span class="ck">@keyframes</span> <span class="cs">slideUp</span> {\n  <span class="cs">from</span> { <span class="cp">opacity</span>:<span class="cv">0</span>; <span class="cp">transform</span>:<span class="cv">translateY(60px)</span>; }\n  <span class="cs">to</span>   { <span class="cp">opacity</span>:<span class="cv">1</span>; <span class="cp">transform</span>:<span class="cv">translateY(0)</span>; }\n}\n<span class="ck">@keyframes</span> <span class="cs">pulse</span> {\n  <span class="cn">0%</span>,<span class="cn">100%</span> { <span class="cp">transform</span>:<span class="cv">scale(1)</span>; }\n  <span class="cn">50%</span>     { <span class="cp">transform</span>:<span class="cv">scale(1.05)</span>; }\n}`,
+    vals:[["from","0% — animation start state",""],["to","100% — animation end state",""],["0%–100%","Percentage waypoints in timeline",""]],
+    br:{c:"43",f:"16",s:"9",e:"12",i:"10"},note:'<p>For best performance, only animate <code>transform</code> and <code>opacity</code> inside keyframes.</p>'},
+
+  /* ── Display ── */
+  "display":{cat:"Display & Visibility",ver:"CSS1",inh:false,anim:false,
+    desc:"Specifies the display rendering mode — block, inline, flex, grid, or none. The single most fundamental CSS property.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">display</span>: <span class="cv">block</span>;\n  <span class="cp">display</span>: <span class="cv">inline</span>;\n  <span class="cp">display</span>: <span class="cv">inline-block</span>;\n  <span class="cp">display</span>: <span class="cv">flex</span>;\n  <span class="cp">display</span>: <span class="cv">grid</span>;\n  <span class="cp">display</span>: <span class="cv">none</span>;     <span class="cc">/* removed from layout */</span>\n  <span class="cp">display</span>: <span class="cv">contents</span>; <span class="cc">/* element disappears, children remain */</span>\n}`,
+    ex:`<span class="cs">.flex-row</span> { <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">gap</span>:<span class="cv">1rem</span>; }\n<span class="cs">.grid</span>     { <span class="cp">display</span>:<span class="cv">grid</span>; <span class="cp">grid-template-columns</span>:<span class="cv">repeat(3,1fr)</span>; }\n<span class="cs">.hidden</span>   { <span class="cp">display</span>:<span class="cv">none</span>; }`,
+    vals:[["block","Full-width, stacks vertically, accepts width/height",""],["inline","Flows with text, ignores width/height",""],["inline-block","Inline flow but accepts box model",""],["flex","Block-level flex container",""],["grid","Block-level grid container",""],["none","Completely removed from layout tree",""],["contents","Element generates no box — only children render",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-info"><strong>none vs visibility:hidden:</strong> <code>display:none</code> removes element from layout (no space). <code>visibility:hidden</code> hides it but preserves space.</div>'},
+
+  "visibility":{cat:"Display & Visibility",ver:"CSS2",inh:true,anim:false,desc:"Shows or hides an element without removing it from the document layout.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">visibility</span>: <span class="cv">visible</span>;  <span class="cc">/* default */</span>\n  <span class="cp">visibility</span>: <span class="cv">hidden</span>;   <span class="cc">/* invisible but occupies space */</span>\n  <span class="cp">visibility</span>: <span class="cv">collapse</span>; <span class="cc">/* for table rows/cols */</span>\n}`,
+    ex:`<span class="cs">.tooltip</span> { <span class="cp">visibility</span>:<span class="cv">hidden</span>; <span class="cp">opacity</span>:<span class="cv">0</span>; <span class="cp">transition</span>:<span class="cv">all 0.2s</span>; }\n<span class="cs">.tooltip.show</span> { <span class="cp">visibility</span>:<span class="cv">visible</span>; <span class="cp">opacity</span>:<span class="cv">1</span>; }`,
+    vals:[["visible","Element is visible (default)","default"],["hidden","Invisible but space is preserved",""],["collapse","Hides table rows/columns removing their space",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>Unlike <code>display:none</code>, <code>visibility:hidden</code> keeps the layout space. Combine with opacity for smooth fade transitions.</p>'},
+
+  "cursor":{cat:"Display & Visibility",ver:"CSS2",inh:true,anim:false,
+    desc:"Sets the cursor type shown when hovering. Communicates interactivity and affordances to users.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">cursor</span>: <span class="cv">pointer</span>;\n  <span class="cp">cursor</span>: <span class="cv">not-allowed</span>;\n  <span class="cp">cursor</span>: <span class="cv">grab</span>;\n  <span class="cp">cursor</span>: <span class="cv">col-resize</span>;\n}`,
+    ex:`<span class="cs">button</span>            { <span class="cp">cursor</span>:<span class="cv">pointer</span>; }\n<span class="cs">button:disabled</span>   { <span class="cp">cursor</span>:<span class="cv">not-allowed</span>; }\n<span class="cs">.draggable</span>        { <span class="cp">cursor</span>:<span class="cv">grab</span>; }\n<span class="cs">.draggable:active</span> { <span class="cp">cursor</span>:<span class="cv">grabbing</span>; }`,
+    vals:[["default","Standard arrow",""],["pointer","Hand — indicates clickable",""],["text","I-beam — selectable text",""],["not-allowed","Disabled state",""],["grab/grabbing","Drag interaction",""],["crosshair","Precise selection",""],["wait/progress","Loading",""],["col-resize/row-resize","Resize handles",""],["none","Hide the cursor",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>Always use <code>cursor:pointer</code> on interactive elements. Never use it on non-clickable elements.</p>'},
+
+  /* ── CSS Variables ── */
+  "--custom-property":{cat:"CSS Variables & Misc",ver:"CSS4",inh:true,anim:true,
+    desc:"CSS Custom Properties — store values in named variables (--name) and reuse via var(). They cascade, are inherited, and can be changed via JavaScript.",
+    syntax:`<span class="cs">:root</span> {\n  <span class="cp">--color-primary</span>: <span class="cv">#6c8bff</span>;\n  <span class="cp">--spacing-md</span>: <span class="cv">1rem</span>;\n  <span class="cp">--font-sans</span>: <span class="cv">'Inter', sans-serif</span>;\n}\n<span class="cs">.button</span> {\n  <span class="cp">color</span>: <span class="cv">var(--color-primary)</span>;\n  <span class="cp">padding</span>: <span class="cv">var(--spacing-md)</span>;\n}`,
+    ex:`<span class="cs">:root</span> { <span class="cp">--bg</span>:<span class="cv">#fff</span>; <span class="cp">--text</span>:<span class="cv">#111</span>; }\n<span class="cs">[data-theme="dark"]</span> { <span class="cp">--bg</span>:<span class="cv">#111</span>; <span class="cp">--text</span>:<span class="cv">#fff</span>; }\n<span class="cs">body</span> {\n  <span class="cp">background</span>:<span class="cv">var(--bg)</span>;\n  <span class="cp">color</span>:<span class="cv">var(--text)</span>;\n  <span class="cp">transition</span>:<span class="cv">background 0.3s,color 0.3s</span>;\n}\n<span class="cc">/* Fallback value */</span>\n<span class="cs">p</span> { <span class="cp">color</span>: <span class="cv">var(--text-color, #333)</span>; }`,
+    vals:[["var(--name)","Access a custom property",""],["var(--name, fallback)","With fallback if not defined",""],["--name: value","Define in any selector scope",""]],
+    br:{c:"49",f:"31",s:"9.1",e:"15",i:"No"},
+    note:'<div class="note note-tip"><strong>Dark mode:</strong> CSS variables are the cleanest dark mode solution. Redefine in <code>@media (prefers-color-scheme:dark)</code> and every component updates automatically.</div>'},
+
+  "clamp()":{cat:"CSS Variables & Misc",ver:"CSS4",inh:false,anim:true,
+    desc:"Clamps a value between a minimum and maximum with a fluid preferred value. Eliminates most responsive typography media queries.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">font-size</span>: <span class="cv">clamp(min, preferred, max)</span>;\n  <span class="cp">font-size</span>: <span class="cv">clamp(1rem, 2.5vw, 3rem)</span>;\n  <span class="cp">padding</span>: <span class="cv">clamp(1rem, 5vw, 3rem)</span>;\n}`,
+    ex:`<span class="cs">h1</span>          { <span class="cp">font-size</span>:<span class="cv">clamp(1.5rem, 5vw, 4rem)</span>; }\n<span class="cs">.container</span>  { <span class="cp">padding-inline</span>:<span class="cv">clamp(1rem, 5%, 4rem)</span>; }`,
+    vals:[["clamp(min,ideal,max)","Returns ideal if within range, otherwise clamps",""],["min(a,b)","Returns smallest value",""],["max(a,b)","Returns largest value",""]],
+    br:{c:"79",f:"75",s:"13.1",e:"79",i:"No"},note:'<div class="note note-tip"><strong>Fluid type:</strong> <code>clamp(1rem, 0.5rem + 2vw, 2rem)</code> — the vw makes it fluid, min/max prevent extremes. No media queries needed.</div>'},
+
+  /* ── Pseudo & At-Rules ── */
+  "@media":{cat:"Pseudo & At-Rules",ver:"CSS2",inh:false,anim:false,
+    desc:"Applies CSS rules conditionally based on media type, viewport size, color scheme, device capabilities, and user preferences.",
+    syntax:`<span class="ck">@media</span> <span class="cs">screen and (min-width: 768px)</span> { }\n<span class="ck">@media</span> <span class="cs">(prefers-color-scheme: dark)</span>   { }\n<span class="ck">@media</span> <span class="cs">(prefers-reduced-motion: reduce)</span>{ }\n<span class="ck">@media</span> <span class="cs">print</span> { }`,
+    ex:`<span class="cc">/* Mobile-first */</span>\n<span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>:<span class="cv">1fr</span>; }\n<span class="ck">@media</span> <span class="cs">(min-width: 768px)</span>  { <span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>:<span class="cv">repeat(2,1fr)</span>; } }\n<span class="ck">@media</span> <span class="cs">(min-width: 1024px)</span> { <span class="cs">.grid</span> { <span class="cp">grid-template-columns</span>:<span class="cv">repeat(3,1fr)</span>; } }\n<span class="cc">/* Dark mode */</span>\n<span class="ck">@media</span> <span class="cs">(prefers-color-scheme: dark)</span> {\n  <span class="cs">body</span> { <span class="cp">background</span>:<span class="cv">#111</span>; <span class="cp">color</span>:<span class="cv">#f0f0f0</span>; }\n}`,
+    vals:[["min-width/max-width","Viewport width breakpoints",""],["prefers-color-scheme","dark or light",""],["prefers-reduced-motion","reduce — less animation",""],["orientation","portrait or landscape",""],["hover","hover (mouse) or none (touch)",""],["print","Print media",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"9"},
+    note:'<div class="note note-tip"><strong>Mobile-first:</strong> Write base styles for mobile, use min-width to add complexity for larger screens. Results in less CSS and better mobile performance.</div>'},
+
+  ":hover":{cat:"Pseudo & At-Rules",ver:"CSS1",inh:false,anim:false,
+    desc:"Matches when the user hovers over an element with a pointing device. Use with transitions for smooth interactive effects.",
+    syntax:`<span class="cs">a:hover</span>      { <span class="cp">color</span>: <span class="cv">blue</span>; }\n<span class="cs">.card:hover</span> { <span class="cp">transform</span>: <span class="cv">translateY(-4px)</span>; }`,
+    ex:`<span class="cs">.button</span>       { <span class="cp">background</span>:<span class="cv">#6c8bff</span>; <span class="cp">transition</span>:<span class="cv">all 0.2s</span>; }\n<span class="cs">.button:hover</span> {\n  <span class="cp">background</span>:<span class="cv">#4a6fe8</span>;\n  <span class="cp">box-shadow</span>:<span class="cv">0 4px 16px rgba(108,139,255,.4)</span>;\n  <span class="cp">transform</span>:<span class="cv">translateY(-2px)</span>;\n}`,
+    vals:[],br:{c:"1",f:"1",s:"1",e:"12",i:"4"},
+    note:'<div class="note note-warn"><strong>Touch devices:</strong> Use <code>@media (hover:hover)</code> to apply hover styles only on devices that support it — prevents stuck hover states on mobile.</div>'},
+
+  ":focus":{cat:"Pseudo & At-Rules",ver:"CSS1",inh:false,anim:false,
+    desc:"Matches an element that has received focus. Critical for keyboard accessibility. Use :focus-visible for smarter focus rings.",
+    syntax:`<span class="cs">input:focus</span>   { <span class="cp">border-color</span>: <span class="cv">blue</span>; }\n<span class="cs">:focus-visible</span> { <span class="cp">outline</span>: <span class="cv">2px solid var(--accent)</span>; }`,
+    ex:`<span class="cs">input:focus</span> {\n  <span class="cp">outline</span>:<span class="cv">none</span>;\n  <span class="cp">border-color</span>:<span class="cv">#6c8bff</span>;\n  <span class="cp">box-shadow</span>:<span class="cv">0 0 0 3px rgba(108,139,255,.3)</span>;\n}\n<span class="cs">:focus-visible</span> {\n  <span class="cp">outline</span>:<span class="cv">2px solid #6c8bff</span>;\n  <span class="cp">outline-offset</span>:<span class="cv">2px</span>;\n}`,
+    vals:[],br:{c:"1",f:"1",s:"1",e:"12",i:"8"},
+    note:'<div class="note note-warn"><strong>Never remove outline without replacement.</strong> Removing focus styles breaks keyboard navigation for users with disabilities. Use :focus-visible for smarter behavior.</div>'},
+
+  "::before":{cat:"Pseudo & At-Rules",ver:"CSS2",inh:false,anim:false,
+    desc:"Creates a virtual first child of the matched element. Must have a <code>content</code> property (even empty) to render. Used for decorative content without changing HTML.",
+    syntax:`<span class="cs">.el::before</span> {\n  <span class="cp">content</span>: <span class="cv">''</span>;     <span class="cc">/* required */</span>\n  <span class="cp">display</span>: <span class="cv">block</span>;\n}`,
+    ex:`<span class="cs">li::before</span> { <span class="cp">content</span>:<span class="cv">'→ '</span>; <span class="cp">color</span>:<span class="cv">var(--accent)</span>; }\n<span class="cs">.hero::before</span> {\n  <span class="cp">content</span>:<span class="cv">''</span>; <span class="cp">position</span>:<span class="cv">absolute</span>;\n  <span class="cp">inset</span>:<span class="cv">0</span>; <span class="cp">background</span>:<span class="cv">rgba(0,0,0,.4)</span>;\n}\n<span class="cs">label.required::after</span> { <span class="cp">content</span>:<span class="cv">' *'</span>; <span class="cp">color</span>:<span class="cv">red</span>; }`,
+    vals:[["content:''","Empty — decorative uses",""],["content:'text'","Inserts literal text",""],["content:attr(data-x)","Inserts HTML attribute value",""],["content:counter(name)","CSS counter value",""]],
+    br:{c:"4",f:"3.5",s:"3.1",e:"12",i:"8"},note:'<p>Pseudo-elements are not in the DOM and cannot be selected by JavaScript. They must have content: property to render.</p>'},
+
+  "::after":{cat:"Pseudo & At-Rules",ver:"CSS2",inh:false,anim:false,desc:"Creates a virtual last child. Same as ::before but at the end. Often used for clearfix, decorative badges, or required field markers.",
+    syntax:`<span class="cs">.el::after</span> { <span class="cp">content</span>: <span class="cv">''</span>; }`,
+    ex:`<span class="cc">/* Required field */</span>\n<span class="cs">label.required::after</span> { <span class="cp">content</span>:<span class="cv">' *'</span>; <span class="cp">color</span>:<span class="cv">red</span>; }\n<span class="cc">/* Decorative gradient line */</span>\n<span class="cs">h2::after</span> {\n  <span class="cp">content</span>:<span class="cv">''</span>; <span class="cp">display</span>:<span class="cv">block</span>;\n  <span class="cp">height</span>:<span class="cv">3px</span>; <span class="cp">background</span>:<span class="cv">linear-gradient(90deg,var(--accent),transparent)</span>;\n}`,
+    vals:[["content:''","Required property — can be empty string",""]],
+    br:{c:"4",f:"3.5",s:"3.1",e:"12",i:"8"},note:''},
+
+  "@layer":{cat:"Pseudo & At-Rules",ver:"CSS4",inh:false,anim:false,
+    desc:"Declares a cascade layer for explicit control over specificity and style ordering. Styles in lower-priority layers are overridden by higher-priority layers, regardless of selector specificity.",
+    syntax:`<span class="ck">@layer</span> <span class="cs">reset, base, components, utilities</span>;\n<span class="ck">@layer</span> <span class="cs">base</span>    { <span class="cc">/* base styles */</span> }\n<span class="ck">@layer</span> <span class="cs">utilities</span> { <span class="cc">/* utility classes */</span> }`,
+    ex:`<span class="ck">@layer</span> <span class="cs">reset, base, theme, components, utilities</span>;\n<span class="ck">@layer</span> <span class="cs">reset</span>   { <span class="cs">*</span> { <span class="cp">box-sizing</span>:<span class="cv">border-box</span>; } }\n<span class="ck">@layer</span> <span class="cs">theme</span>   { <span class="cs">:root</span> { <span class="cp">--accent</span>:<span class="cv">#6c8bff</span>; } }\n<span class="ck">@layer</span> <span class="cs">utilities</span> { <span class="cs">.hidden</span> { <span class="cp">display</span>:<span class="cv">none</span>; } }`,
+    vals:[["@layer name","Declare and/or populate a layer",""],["@layer a, b, c","Declare layer order (first = lowest priority)",""]],
+    br:{c:"99",f:"97",s:"15.4",e:"99",i:"No"},note:'<div class="note note-tip"><strong>Modern:</strong> @layer solves specificity wars without !important hacks. Utilities always win over base styles, regardless of selector weight.</div>'},
+
+  "@container":{cat:"Pseudo & At-Rules",ver:"CSS4",inh:false,anim:false,
+    desc:"Container queries — apply styles based on the size of an ancestor container rather than the viewport. The biggest CSS advancement in a decade for truly modular components.",
+    syntax:`<span class="cs">.card-wrapper</span> {\n  <span class="cp">container-type</span>: <span class="cv">inline-size</span>;\n  <span class="cp">container-name</span>: <span class="cv">card</span>;\n}\n<span class="ck">@container</span> <span class="cs">card (min-width: 400px)</span> {\n  <span class="cs">.card</span> { <span class="cc">/* wider card styles */</span> }\n}`,
+    ex:`<span class="cs">.sidebar-card</span> { <span class="cp">container-type</span>:<span class="cv">inline-size</span>; }\n<span class="ck">@container</span> <span class="cs">(min-width: 300px)</span> {\n  <span class="cs">.card-body</span> { <span class="cp">display</span>:<span class="cv">flex</span>; }\n}\n<span class="ck">@container</span> <span class="cs">(min-width: 500px)</span> {\n  <span class="cs">.card-body</span> { <span class="cp">grid-template-columns</span>:<span class="cv">1fr 2fr</span>; }\n}`,
+    vals:[["container-type: inline-size","Track horizontal size",""],["container-type: size","Track both dimensions",""],["container-name","Name for targeting specific containers",""],["@container (condition)","Apply when container matches condition",""]],
+    br:{c:"105",f:"110",s:"16",e:"105",i:"No"},
+    note:'<div class="note note-tip"><strong>Game changer:</strong> Components can now adapt to their container size, not just viewport size. This enables truly reusable components that work in any layout context.</div>'},
+
+  "scroll-behavior":{cat:"Scroll & Overflow",ver:"CSS3",inh:false,anim:false,
+    desc:"Specifies whether scrolling is instant or animates smoothly when triggered by navigation or scroll APIs.",
+    syntax:`<span class="cs">html</span> { <span class="cp">scroll-behavior</span>: <span class="cv">smooth</span>; }`,
+    ex:`<span class="cs">html</span> { <span class="cp">scroll-behavior</span>: <span class="cv">smooth</span>; }\n<span class="cc">/* Always respect reduced-motion! */</span>\n<span class="ck">@media</span> <span class="cs">(prefers-reduced-motion: reduce)</span> {\n  <span class="cs">html</span> { <span class="cp">scroll-behavior</span>: <span class="cv">auto</span>; }\n}`,
+    vals:[["auto","Instant scrolling (default)","default"],["smooth","Animated smooth scroll",""]],
+    br:{c:"61",f:"36",s:"15.4",e:"79",i:"No"},
+    note:'<div class="note note-warn"><strong>Accessibility:</strong> Always pair smooth scrolling with <code>@media (prefers-reduced-motion:reduce)</code> for users with vestibular disorders.</div>'},
+
+  "scroll-snap-type":{cat:"Scroll & Overflow",ver:"CSS4",inh:false,anim:false,
+    desc:"Enables scroll snapping on a container. Children with scroll-snap-align snap to positions during scrolling — creates carousel/slideshow behavior with pure CSS.",
+    syntax:`<span class="cs">.slider</span> {\n  <span class="cp">overflow-x</span>: <span class="cv">auto</span>;\n  <span class="cp">scroll-snap-type</span>: <span class="cv">x mandatory</span>;\n}`,
+    ex:`<span class="cs">.slider</span> {\n  <span class="cp">display</span>:<span class="cv">flex</span>; <span class="cp">overflow-x</span>:<span class="cv">auto</span>;\n  <span class="cp">scroll-snap-type</span>:<span class="cv">x mandatory</span>;\n}\n<span class="cs">.slide</span> {\n  <span class="cp">flex</span>:<span class="cv">0 0 100%</span>;\n  <span class="cp">scroll-snap-align</span>:<span class="cv">start</span>;\n}`,
+    vals:[["x mandatory","Horizontal, always snaps",""],["y mandatory","Vertical, always snaps",""],["x proximity","Horizontal, snaps when close",""],["both mandatory","Both axes",""]],
+    br:{c:"69",f:"68",s:"11",e:"79",i:"No"},note:'<p>Combine with <code>scroll-snap-align: start|center|end</code> on children to define snap points.</p>'},
+
+  "list-style":{cat:"Lists & Tables",ver:"CSS1",inh:true,anim:false,
+    desc:"Shorthand for list-style-type, list-style-image, and list-style-position. Controls the marker of list items.",
+    syntax:`<span class="cs">ul</span> {\n  <span class="cp">list-style</span>: <span class="cv">none</span>;         <span class="cc">/* remove bullets */</span>\n  <span class="cp">list-style</span>: <span class="cv">disc inside</span>;   <span class="cc">/* type position */</span>\n  <span class="cp">list-style-type</span>: <span class="cv">circle</span>;\n}`,
+    ex:`<span class="cs">ul.clean</span> { <span class="cp">list-style</span>:<span class="cv">none</span>; <span class="cp">padding</span>:<span class="cv">0</span>; }\n<span class="cs">ol.roman</span> { <span class="cp">list-style-type</span>:<span class="cv">upper-roman</span>; }`,
+    vals:[["none","No marker",""],["disc","Filled circle (default for ul)","default"],["circle","Hollow circle",""],["square","Filled square",""],["decimal","Numbers (default for ol)",""],["upper-roman/lower-roman","Roman numerals",""],["upper-alpha/lower-alpha","Letters",""]],
+    br:{c:"1",f:"1",s:"1",e:"12",i:"4"},note:'<p>To fully remove list styles, also set <code>padding:0; margin:0</code> — browsers add default padding to lists.</p>'},
+
+  "will-change":{cat:"Display & Visibility",ver:"CSS4",inh:false,anim:false,
+    desc:"Hints to the browser what properties will change so it can optimize in advance. Promotes element to its own GPU layer.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">will-change</span>: <span class="cv">transform</span>;\n  <span class="cp">will-change</span>: <span class="cv">opacity</span>;\n  <span class="cp">will-change</span>: <span class="cv">transform, opacity</span>;\n}`,
+    ex:`<span class="cs">.animated-card</span> { <span class="cp">will-change</span>:<span class="cv">transform</span>; }\n<span class="cs">.fade-element</span>  { <span class="cp">will-change</span>:<span class="cv">opacity</span>; }`,
+    vals:[["auto","No optimization hint (default)","default"],["transform","Will animate transform",""],["opacity","Will animate opacity",""],["scroll-position","Will scroll",""]],
+    br:{c:"36",f:"36",s:"9.1",e:"79",i:"No"},
+    note:'<div class="note note-warn"><strong>Use sparingly:</strong> will-change consumes GPU memory. Add it only during animation via JavaScript, remove it afterward. Don\'t apply globally.</div>'},
+
+  "columns":{cat:"Columns & Multi-col",ver:"CSS3",inh:false,anim:true,
+    desc:"Shorthand for column-count and column-width. Creates multi-column text layout — content flows automatically between columns like a newspaper.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">columns</span>: <span class="cv">3</span>;           <span class="cc">/* 3 columns */</span>\n  <span class="cp">columns</span>: <span class="cv">200px</span>;       <span class="cc">/* columns at least 200px */</span>\n  <span class="cp">columns</span>: <span class="cv">3 200px</span>;    <span class="cc">/* max 3, at least 200px wide */</span>\n}`,
+    ex:`<span class="cs">.article</span> {\n  <span class="cp">columns</span>: <span class="cv">3</span>;\n  <span class="cp">column-gap</span>: <span class="cv">2rem</span>;\n  <span class="cp">column-rule</span>: <span class="cv">1px solid #ddd</span>;\n}\n<span class="cs">.masonry-like</span> { <span class="cp">columns</span>: <span class="cv">repeat(auto-fill, 200px)</span>; }`,
+    vals:[["<integer>","Number of columns",""],["<length>","Optimal column width (browser chooses count)",""],["auto","Browser decides","default"]],
+    br:{c:"50",f:"52",s:"9",e:"12",i:"10"},note:'<p>Use <code>break-inside: avoid</code> on children to prevent items from being split across columns.</p>'},
+
+  "user-select":{cat:"Display & Visibility",ver:"CSS3",inh:true,anim:false,desc:"Controls whether text can be selected by the user.",
+    syntax:`<span class="cs">.el</span> {\n  <span class="cp">user-select</span>: <span class="cv">none</span>;  <span class="cc">/* can't select */</span>\n  <span class="cp">user-select</span>: <span class="cv">all</span>;   <span class="cc">/* one click selects all */</span>\n  <span class="cp">user-select</span>: <span class="cv">text</span>;  <span class="cc">/* default */</span>\n}`,
+    ex:`<span class="cs">button</span>  { <span class="cp">user-select</span>:<span class="cv">none</span>; }  <span class="cc">/* prevent accidental selection */</span>\n<span class="cs">.code</span>   { <span class="cp">user-select</span>:<span class="cv">all</span>; }   <span class="cc">/* one click selects code */</span>`,
+    vals:[["none","Text cannot be selected",""],["auto","Default browser behavior","default"],["text","Text can be selected",""],["all","One click selects entire element content",""]],
+    br:{c:"54",f:"69",s:"3",e:"79",i:"No"},note:'<p>Always use <code>-webkit-user-select</code> alongside for broader Safari support.</p>'},
+};
+
+/* ══════════════════════════════════════════════
+   CATEGORIES LIST
+══════════════════════════════════════════════ */
+const CATS = [
+  {name:"Box Model",         color:"#6c8bff", props:["width","height","min-width","max-width","margin","padding","box-sizing","border-radius","box-shadow","overflow","aspect-ratio"]},
+  {name:"Borders",           color:"#a259ff", props:["border","outline"]},
+  {name:"Typography",        color:"#ff6584", props:["font-family","font-size","font-weight","line-height","text-align","text-transform","letter-spacing","text-decoration"]},
+  {name:"Colors & Backgrounds",color:"#ffb347",props:["color","opacity","background","filter","backdrop-filter"]},
+  {name:"Flexbox",           color:"#00e5a0", props:["display (flex)","flex-direction","justify-content","align-items","gap","flex"]},
+  {name:"CSS Grid",          color:"#38d9f5", props:["display (grid)","grid-template-columns","grid-area"]},
+  {name:"Positioning",       color:"#f7c59f", props:["position","z-index","inset"]},
+  {name:"Display & Visibility",color:"#c0ca33",props:["display","visibility","cursor","user-select","will-change"]},
+  {name:"Transitions & Animation",color:"#ff8c69",props:["transition","animation","@keyframes"]},
+  {name:"Transforms",        color:"#da77ff", props:["transform"]},
+  {name:"Lists & Tables",    color:"#79b8e8", props:["list-style"]},
+  {name:"Columns & Multi-col",color:"#56d364",props:["columns"]},
+  {name:"Scroll & Overflow", color:"#f78166", props:["scroll-behavior","scroll-snap-type"]},
+  {name:"CSS Variables & Misc",color:"#d29922",props:["--custom-property","clamp()"]},
+  {name:"Pseudo & At-Rules", color:"#9e9e9e", props:[":hover",":focus","::before","::after","@media","@layer","@container"]},
+];
+
+/* ══════════════════════════════════════════════
+   BUILD SIDEBAR
+══════════════════════════════════════════════ */
+const propList   = document.getElementById('prop-list');
+const searchBox  = document.getElementById('search');
+const countEl    = document.getElementById('prop-count');
+let   activeEl   = null;
+
+function buildSidebar(filter) {
+  propList.innerHTML = '';
+  const fl = filter.toLowerCase().trim();
+  let total = 0;
+
+  CATS.forEach(cat => {
+    const filtered = cat.props.filter(p => p.toLowerCase().includes(fl));
+    if (!filtered.length) return;
+
+    /* category header */
+    const hdr = document.createElement('div');
+    hdr.className = 'cat-header';
+    hdr.innerHTML = `<span class="cat-dot" style="background:${cat.color}"></span>${cat.name}<span class="cat-count">${filtered.length}</span>`;
+    const items = document.createElement('div');
+    items.className = 'cat-items';
+    hdr.addEventListener('click', () => items.classList.toggle('collapsed'));
+
+    /* property items */
+    filtered.forEach(p => {
+      total++;
+      const el = document.createElement('div');
+      el.className = 'prop-item';
+      el.dataset.prop = p;
+      const badge = p in DB && DB[p].ver === 'CSS4' ? '<span class="pbadge pnew">new</span>' : '';
+      el.innerHTML = `<span class="prop-label">${p}</span>${badge}`;
+      el.addEventListener('click', () => {
+        if (activeEl) activeEl.classList.remove('active');
+        el.classList.add('active');
+        activeEl = el;
+        showProp(p);
+      });
+      items.appendChild(el);
+    });
+
+    propList.appendChild(hdr);
+    propList.appendChild(items);
+  });
+
+  countEl.textContent = total;
+  if (!total) propList.innerHTML = `<div class="no-results">No properties matching "${filter}"</div>`;
+}
+
+searchBox.addEventListener('input', () => buildSidebar(searchBox.value));
+buildSidebar('');
+
+/* ══════════════════════════════════════════════
+   RENDER PROPERTY
+══════════════════════════════════════════════ */
+function showWelcome() {
+  document.getElementById('welcome').style.display = '';
+  document.getElementById('prop-page').style.display = 'none';
+  document.getElementById('content').scrollTop = 0;
+  if (activeEl) { activeEl.classList.remove('active'); activeEl = null; }
+}
+
+function showProp(prop) {
+  document.getElementById('welcome').style.display = 'none';
+  const page  = document.getElementById('prop-page');
+  page.style.display = 'block';
+  page.innerHTML = buildPropHTML(prop);
+  document.getElementById('content').scrollTop = 0;
+}
+
+function buildPropHTML(prop) {
+  const d = DB[prop];
+  if (!d) return `
+    <div class="prop-hero">
+      <div class="hero-bc">CSS Reference <span>▸ ${prop}</span></div>
+      <div class="hero-name"><span class="pname">${prop}</span></div>
+      <div class="hero-desc">A valid CSS property. Full documentation available on MDN Web Docs.</div>
+      <div class="hero-badges"><span class="hbadge hb-cat">CSS</span></div>
+    </div>
+    <div class="prop-content">
+      <p>Visit <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/${encodeURIComponent(prop)}" target="_blank" style="color:var(--accent)">MDN Web Docs</a> for full documentation on this property.</p>
+    </div>`;
+
+  const valsHTML = d.vals && d.vals.length ? `
+    <div class="section">
+      <div class="section-title">Accepted Values</div>
+      <table class="val-table">
+        <thead><tr><th>Value</th><th>Description</th></tr></thead>
+        <tbody>${d.vals.map(([v,desc,def]) => `<tr>
+          <td><span class="val-name">${v}</span>${def === 'default' ? ' <span class="val-def">default</span>' : ''}</td>
+          <td class="val-desc">${desc}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>` : '';
+
+  const brHTML = d.br ? `
+    <div class="section">
+      <div class="section-title">Browser Support</div>
+      <div class="browser-row">
+        ${bpill('Chrome',  d.br.c)}
+        ${bpill('Firefox', d.br.f)}
+        ${bpill('Safari',  d.br.s)}
+        ${bpill('Edge',    d.br.e)}
+        ${bpill('IE',      d.br.i)}
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="prop-hero">
+      <div class="hero-bc">CSS Reference <span>▸ ${d.cat} ▸ ${prop}</span></div>
+      <div class="hero-name"><span class="pname">${prop}</span><span class="colon">: …;</span></div>
+      <div class="hero-desc">${d.desc}</div>
+      <div class="hero-badges">
+        <span class="hbadge hb-cat">${d.cat}</span>
+        <span class="hbadge hb-ver">${d.ver}</span>
+        ${d.inh  ? '<span class="hbadge hb-inh">Inherited</span>'   : ''}
+        ${d.anim ? '<span class="hbadge hb-anim">Animatable</span>' : ''}
+      </div>
+    </div>
+    <div class="prop-content">
+      <div class="section">
+        <div class="section-title">Syntax</div>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre>${d.syntax}</pre>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Example</div>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">CSS Example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre>${d.ex}</pre>
+        </div>
+      </div>
+      ${valsHTML}
+      <div class="section">
+        <div class="section-title">Technical Info</div>
+        <div class="info-grid">
+          <div class="info-card"><div class="ic-label">CSS Version</div><div class="ic-val">${d.ver}</div></div>
+          <div class="info-card"><div class="ic-label">Inherited</div><div class="ic-val ${d.inh?'yes':'no'}">${d.inh?'Yes':'No'}</div></div>
+          <div class="info-card"><div class="ic-label">Animatable</div><div class="ic-val ${d.anim?'yes':'no'}">${d.anim?'Yes':'No'}</div></div>
+        </div>
+      </div>
+      ${brHTML}
+      ${d.note ? `<div class="section"><div class="section-title">Notes & Best Practices</div>${d.note}</div>` : ''}
+    </div>`;
+}
+
+function bpill(name, ver) {
+  if (ver === 'No')       return `<span class="bp bp-no">✕ ${name}</span>`;
+  if (ver === 'Partial')  return `<span class="bp bp-partial">~ ${name} partial</span>`;
+  return `<span class="bp bp-yes">✓ ${name} ${ver}+</span>`;
+}
+
+function copyCode(btn) {
+  const text = btn.closest('.code-block').querySelector('pre').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+  }).catch(() => {
+    btn.textContent = 'Error';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   RESIZABLE DIVIDER
+══════════════════════════════════════════════ */
+const divider  = document.getElementById('divider');
+const sidebar  = document.getElementById('sidebar');
+let   dragging = false;
+
+divider.addEventListener('mousedown', e => {
+  dragging = true;
+  divider.classList.add('drag');
+  document.body.style.cssText = 'cursor:col-resize;user-select:none;pointer-events:none';
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const layout = document.getElementById('layout').getBoundingClientRect();
+  sidebar.style.width = Math.max(180, Math.min(460, e.clientX - layout.left)) + 'px';
+});
+document.addEventListener('mouseup', () => {
+  if (!dragging) return;
+  dragging = false;
+  divider.classList.remove('drag');
+  document.body.style.cssText = '';
+});
+</script>
+</body>
+</html>
